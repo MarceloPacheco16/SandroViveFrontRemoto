@@ -12,6 +12,11 @@ import { ContactComponent } from "./components/contact/contact.component";
 // ContactComponent
 const routes: Routes = [
 	{
+		path: '',
+		redirectTo: 'usuarios/inicio',
+		pathMatch: 'full'
+	},
+	{
 		path: 'usuarios/navigation',
 		component: NavigationComponent
 	},

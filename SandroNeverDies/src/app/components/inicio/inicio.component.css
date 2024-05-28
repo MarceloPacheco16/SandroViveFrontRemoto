@@ -9714,3 +9714,7 @@
   i.icon-h1 {
     font-size: 2.5em; /* Ajusta este valor según el tamaño de tu h1 */
   }
+
+  /* .navbar-nav .dropdown:hover>.dropdown-menu {
+    display: block;
+} */

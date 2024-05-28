@@ -7,7 +7,7 @@
         <form action="">
             <h3>Iniciar Sesion</h3>
             <div class="form-wrapper">
-                <p style="color: black;">"¿Es tu primera vez"</p><p style="color: blue;">Registrate</p>
+                <a routerLink="../../usuarios/usuario-registro"><p style="color: black;">"¿Es tu primera vez"</p><p style="color: blue;">Registrate</p></a>
             </div>
             <h3></h3>
             
@@ -24,10 +24,11 @@
             <div class="form-wrapper">
                 <p style="color: black;">¿Olvidaste la Contraseña?</p>
             </div>
-            <button type="button">
-                <a href="../../online-shop-website-template/index.html" style=" color: white;"> 
+            <button (click)="login()" type="button">
+                <!-- <a href="../../online-shop-website-template/index.html" style=" color: white;"> 
                     Iniciar sesion <i class="zmdi zmdi-arrow-right"></i>
-                </a>
+                </a> -->
+                    <p style=" color: white;">Iniciar sesion <i class="zmdi zmdi-arrow-right"></i></p>
             </button>
         </form>
     </div>
