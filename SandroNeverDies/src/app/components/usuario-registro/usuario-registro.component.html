@@ -28,18 +28,29 @@
         <form action="">
             <h3>Formulario de Registro</h3>
             <div class="form-group">
-                <input type="text" placeholder="Nombre" class="form-control">
-                <input type="text" placeholder="Apellido" class="form-control">
+                <input type="text" [(ngModel)]="nuevoCliente.nombre" name="nuevoCliente.nombre" placeholder="Nombre" class="form-control">
+                <input type="text" [(ngModel)]="nuevoCliente.apellido" name="nuevoCliente.apellido"  placeholder="Apellido" class="form-control">
             </div>
+            
             <div class="form-wrapper">
-                <input type="text" placeholder="Nombre de Usuario" class="form-control">
-                <i class="zmdi zmdi-account"></i>
-            </div>
-            <div class="form-wrapper">
-                <input type="text" placeholder="Email" class="form-control">
+                <input type="text" [(ngModel)]="nuevoCliente.email" name="nuevoCliente.email" placeholder="Email" class="form-control">
                 <i class="zmdi zmdi-email"></i>
             </div>
+
             <div class="form-wrapper">
+                <input type="text" [(ngModel)]="nuevoCliente.telefono" name="nuevoCliente.telefono"  placeholder="Telefono" class="form-control">
+                <input type="text" [(ngModel)]="nuevoCliente.domicilio" name="nuevoCliente.domicilio"  placeholder="Domicilio" class="form-control">
+                <input type="text" [(ngModel)]="nuevoCliente.localidad" name="nuevoCliente.localidad"  placeholder="Localidad" class="form-control">
+                <input type="text" [(ngModel)]="nuevoCliente.provincia" name="nuevoCliente.provincia"  placeholder="Provincia" class="form-control">
+                <input type="text" [(ngModel)]="nuevoCliente.codigo_postal" name="nuevoCliente.codigo_postal"  placeholder="Codigo Postal" class="form-control">
+                <i class="zmdi zmdi-account"></i>
+            </div>
+
+            <div class="form-wrapper">
+                <input type="text" [(ngModel)]="nuevoCliente.usuario" name="nuevoCliente.usuario" placeholder="Nombre de Usuario" class="form-control">
+                <i class="zmdi zmdi-account"></i>
+            </div>
+            <!-- <div class="form-wrapper">
                 <select name="" id="" class="form-control">
                     <option value="" disabled selected>Sexo</option>
                     <option value="male">Mujer</option>
@@ -47,16 +58,17 @@
                     <option value="other">Otros</option>
                 </select>
                 <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
-            </div>
+            </div> -->
+
             <div class="form-wrapper">
-                <input type="password" placeholder="Contraseña" class="form-control">
+                <input type="password" [(ngModel)]="nuevoCliente.contrasenia" name="nuevoCliente.contrasenia" placeholder="Contraseña" class="form-control">
                 <i class="zmdi zmdi-lock"></i>
             </div>
             <div class="form-wrapper">
                 <input type="password" placeholder="Confirme Contraseña" class="form-control">
                 <i class="zmdi zmdi-lock"></i>
             </div>
-            <button (click)="registrar()" type="button">
+            <button (click)="registrarCliente()" type="button">
                 <!-- <a href="../../online-shop-website-template/index.html" style=" color: white;">
                     Registrar <i class="zmdi zmdi-arrow-right"></i>
                 </a> -->
