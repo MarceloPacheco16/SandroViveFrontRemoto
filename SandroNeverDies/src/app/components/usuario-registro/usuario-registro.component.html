@@ -33,7 +33,7 @@
             </div>
             
             <div class="form-wrapper">
-                <input type="text" [(ngModel)]="nuevoCliente.email" name="nuevoCliente.email" placeholder="Email" class="form-control">
+                <input type="text" [(ngModel)]="nuevoUsuario.email" name="nuevoUsuario.email" placeholder="Email" class="form-control">
                 <i class="zmdi zmdi-email"></i>
             </div>
 
@@ -46,10 +46,10 @@
                 <i class="zmdi zmdi-account"></i>
             </div>
 
-            <div class="form-wrapper">
+            <!-- <div class="form-wrapper">
                 <input type="text" [(ngModel)]="nuevoCliente.usuario" name="nuevoCliente.usuario" placeholder="Nombre de Usuario" class="form-control">
                 <i class="zmdi zmdi-account"></i>
-            </div>
+            </div> -->
             <!-- <div class="form-wrapper">
                 <select name="" id="" class="form-control">
                     <option value="" disabled selected>Sexo</option>
@@ -61,14 +61,15 @@
             </div> -->
 
             <div class="form-wrapper">
-                <input type="password" [(ngModel)]="nuevoCliente.contrasenia" name="nuevoCliente.contrasenia" placeholder="Contraseña" class="form-control">
+                <input type="password" [(ngModel)]="nuevoUsuario.contrasenia" name="nuevoUsuario.contrasenia" placeholder="Contraseña" class="form-control">
                 <i class="zmdi zmdi-lock"></i>
             </div>
             <div class="form-wrapper">
                 <input type="password" placeholder="Confirme Contraseña" class="form-control">
                 <i class="zmdi zmdi-lock"></i>
             </div>
-            <button (click)="registrarCliente()" type="button">
+            <!-- <button (click)="registrarUsuario()" type="button"> -->
+            <button (click)="registrarUsuario()" type="button">
                 <!-- <a href="../../online-shop-website-template/index.html" style=" color: white;">
                     Registrar <i class="zmdi zmdi-arrow-right"></i>
                 </a> -->

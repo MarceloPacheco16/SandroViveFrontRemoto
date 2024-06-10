@@ -1,7 +1,7 @@
 export interface Usuario{
 	id?: string;
-	usuario?: string;
+	email?: string;
 	contrasenia?: string;
-	rol?: string;
-	activo?: string;
+	cant_intentos?: string;
+	activo?: number;
 }

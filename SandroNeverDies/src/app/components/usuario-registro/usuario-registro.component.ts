@@ -23,27 +23,32 @@ export class UsuarioRegistroComponent {
     console.log("Ir a Registrar...");
 
     this.usuarios = [];
-    // this.nuevoUsuario = {};
-    this.nuevoCliente = {
+    this.nuevoUsuario = {      
+      email: '',
+      contrasenia: '',
+      cant_intentos: '0',
+      activo: 1  // Valor predeterminado para 'activo'
+    };
+    this.nuevoCliente = {   
+      id: '',   
       nombre: '',
       apellido: '',
-      email: '',
       telefono: '',
       domicilio: '',
       localidad: '',
       provincia: '',
       codigo_postal: '',
       usuario: '',
-      contrasenia: '',
       activo: 1  // Valor predeterminado para 'activo'
     };
   }
   
   
+  //METODO PARA REGISTRAR A UN USUARIO Y LUEGO IR A REGISTRAR AL CLIENTE
   registrarUsuario(): void {
     //POST USUARIO
-    this.nuevoUsuario.rol = "cliente"
-    this.nuevoUsuario.activo = "1"
+    // this.nuevoUsuario.rol = "cliente"
+    // this.nuevoUsuario.activo = "1"
     this.usuariosService.postUsuario(this.nuevoUsuario).subscribe({
       next: () => {
         console.log('Usuario registrado con éxito');
@@ -60,39 +65,81 @@ export class UsuarioRegistroComponent {
     });
   }
 
-  getUsuarios(): void {
-    this.usuariosService.getUsuarios().subscribe(
-      (data: Usuario[]) => {
-        this.usuarios = data;
-        console.log(this.usuarios);
-      }
-    );
-  }
-
   registrarCliente(): void {
-    // this.getUsuarios();
-
-    // let ultimoID = this.usuarios.length - 1;
-    // if(ultimoID < 0){
-    //   ultimoID = 0;
-    // }
-    // console.log("ultimoID usuario;" + ultimoID);
-
-    //POST CLIENTE
-    // this.nuevoCliente.usuario = this.usuarios[ultimoID].id;
-    // this.nuevoCliente.activo = 1;
-    this.clientesService.postClientes(this.nuevoCliente).subscribe({
-      next: () => {
-        console.log('Cliente registrado con éxito');
-        
-        this.router.navigate(['usuarios/login']);
+    this.usuariosService.getUsuarios().subscribe({
+      next: (data: Usuario[]) => {
+        this.usuarios = data;
+  
+        let ultimoID = this.usuarios.length - 1;
+        if (ultimoID < 0) {
+          ultimoID = 0;
+        }
+        console.log("ultimoID : " + ultimoID);
+  
+        console.log("ID usuario: " + this.usuarios[ultimoID].id);
+  
+        // POST CLIENTE
+        this.nuevoCliente.usuario = this.usuarios[ultimoID].id;
+        this.nuevoCliente.activo = 1;
+  
+        this.clientesService.postClientes(this.nuevoCliente).subscribe({
+          next: () => {
+            console.log('Cliente registrado con éxito');
+            this.router.navigate(['usuarios/login']);
+          },
+          error: (error) => {
+            console.error('Error al registrar cliente:', error);
+            // Maneja el error según sea necesario (por ejemplo, muestra un mensaje al cliente)
+          }
+        });
       },
       error: (error) => {
-        console.error('Error al registrar cliente:', error);
-        // Maneja el error según sea necesario (por ejemplo, muestra un mensaje al cliente)
+        console.error('Error al obtener usuarios:', error);
       }
     });
   }
+  
+  // //METODO PARA OBETENER LA LISTA DE TODOS LOS USUARIOS
+  // listadoUsuarios(): void {
+  //   this.usuariosService.getUsuarios().subscribe({
+  //     next: (data: Usuario[]) => {
+  //       this.usuarios = data;
+  //       console.log(this.usuarios);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error al obtener usuarios:', error);
+  //     }
+  //   });
+  // }
+  
+  // //METODO PARA REGISTRAR A UN CLIENTE
+  // registrarCliente(): void {
+  //   this.listadoUsuarios();
+  //   console.log(this.listadoUsuarios());
+
+  //   let ultimoID = this.usuarios.length - 1;
+  //   if(ultimoID <= 0){
+  //     ultimoID = 0;
+  //   }
+  //   console.log("ultimoID : " + ultimoID);
+
+  //   console.log("ID usuario: " + this.usuarios[0].id)
+  //   //POST CLIENTE
+  //   this.nuevoCliente.usuario = this.usuarios[0].id;
+  //   this.nuevoCliente.activo = 1;
+
+  //   this.clientesService.postClientes(this.nuevoCliente).subscribe({
+  //     next: () => {
+  //       console.log('Cliente registrado con éxito');
+
+  //       this.router.navigate(['usuarios/login']);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error al registrar cliente:', error);
+  //       // Maneja el error según sea necesario (por ejemplo, muestra un mensaje al cliente)
+  //     }
+  //   });
+  // }
 
   // registrar(){
   //   console.log("Ir a Ingresar...");
