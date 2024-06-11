@@ -18,6 +18,9 @@ export class UsuarioRegistroComponent {
   nuevoCliente: Cliente = {};
   private subscription: Subscription | undefined;
 
+  conf_contrasenia: string = "";
+  distinta_contrasenia: boolean = false;
+
   constructor(private usuariosService: UsuariosService, private clientesService: ClientesService, private router:Router) { 
     // this.usuariosService.setToken();
     console.log("Ir a Registrar...");
@@ -41,11 +44,22 @@ export class UsuarioRegistroComponent {
       usuario: '',
       activo: 1  // Valor predeterminado para 'activo'
     };
+
+    this.conf_contrasenia = "";
+    this.distinta_contrasenia = false;
   }
   
   
   //METODO PARA REGISTRAR A UN USUARIO Y LUEGO IR A REGISTRAR AL CLIENTE
   registrarUsuario(): void {
+    if(this.conf_contrasenia != this.nuevoUsuario.contrasenia){
+      this.distinta_contrasenia = true;
+      return;
+    }else{
+      this.distinta_contrasenia = true;
+    }
+
+    console.log("Contraseña Confirmada");
     //POST USUARIO
     // this.nuevoUsuario.rol = "cliente"
     // this.nuevoUsuario.activo = "1"
@@ -98,7 +112,7 @@ export class UsuarioRegistroComponent {
       }
     });
   }
-  
+
   // //METODO PARA OBETENER LA LISTA DE TODOS LOS USUARIOS
   // listadoUsuarios(): void {
   //   this.usuariosService.getUsuarios().subscribe({

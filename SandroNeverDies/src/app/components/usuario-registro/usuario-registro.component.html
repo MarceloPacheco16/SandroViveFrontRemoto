@@ -65,8 +65,11 @@
                 <i class="zmdi zmdi-lock"></i>
             </div>
             <div class="form-wrapper">
-                <input type="password" placeholder="Confirme Contraseña" class="form-control">
+                <input type="password" [(ngModel)]="conf_contrasenia" name="conf_contrasenia" placeholder="Confirme Contraseña" class="form-control">
                 <i class="zmdi zmdi-lock"></i>
+            </div>
+            <div style="background-color: whitesmoke;">
+                <p [hidden]="distinta_contrasenia == false" style="color: red;">Las contraseñas deben coincidir</p>
             </div>
             <!-- <button (click)="registrarUsuario()" type="button"> -->
             <button (click)="registrarUsuario()" type="button">

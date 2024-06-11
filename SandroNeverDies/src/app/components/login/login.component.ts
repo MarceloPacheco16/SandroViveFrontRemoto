@@ -24,7 +24,6 @@ export class LoginComponent {
   constructor(private router:Router, private usuariosService:UsuariosService, private clienteService:ClientesService) { 
     // this.usuariosService.setToken();
     console.log("En Login...");
-    console.log(this.getUsuarios());
 
     this.usuarios = [];
     this.clientes = [];
@@ -54,27 +53,75 @@ export class LoginComponent {
   }
 
   login() {
+    // Verificamos que los datos de los campos sean correctos
+    if (this.validarCampos() == false) {
+      return;
+    }
+    
     if (this.usuario.email && this.usuario.contrasenia) {
       this.usuariosService.login(this.usuario.email, this.usuario.contrasenia).subscribe({
         next: (response) => {
           if (response.id) {
-            console.log("Login successful", response);
-            this.router.navigate(['usuarios/inicio']);
+            if (response.activo === 2) {
+              // Usuario bloqueado
+              console.log("Usuario bloqueado");
+              this.errorLogin = 2; // Código de error para usuario bloqueado
+            } else {
+              // Inicio de sesión exitoso
+              console.log("Inicio de sesión exitoso", response);
+              this.router.navigate(['usuarios/inicio']);
+            }
           } else {
-            console.log("Invalid credentials");
-            this.errorLogin = 1;
+            // Credenciales inválidas
+            console.log("Email o Contraseña incorrectos");
+            this.errorLogin = 1; // Código de error para intento fallido
           }
         },
         error: (error) => {
-          console.log("Error during login", error);
-          this.errorLogin = 1;
+          if (error.status === 401) {
+            // Credenciales inválidas
+            console.log("Email o Contraseña incorrectos");
+            this.errorLogin = 1; // Código de error para intento fallido
+          } else if (error.status === 403) {
+            // Usuario bloqueado
+            console.log("Usuario bloqueado");
+            this.errorLogin = 2; // Código de error para usuario bloqueado
+          } else {
+            // Error durante el inicio de sesión
+            console.log("Error durante el inicio de sesión", error);
+            this.errorLogin = 1; // Código de error para intento fallido
+          }
         }
       });
     } else {
-      console.log("Email or password is undefined");
+      // El correo electrónico o la contraseña no están definidos
+      console.log("El correo electrónico o la contraseña no están definidos");
       this.errorLogin = 1;
     }
   }
+
+  // login() {
+  //   if (this.usuario.email && this.usuario.contrasenia) {
+  //     this.usuariosService.login(this.usuario.email, this.usuario.contrasenia).subscribe({
+  //       next: (response) => {
+  //         if (response.id) {
+  //           console.log("Login successful", response);
+  //           this.router.navigate(['usuarios/inicio']);
+  //         } else {
+  //           console.log("Invalid credentials");
+  //           this.errorLogin = 1;
+  //         }
+  //       },
+  //       error: (error) => {
+  //         console.log("Error during login", error);
+  //         this.errorLogin = 1;
+  //       }
+  //     });
+  //   } else {
+  //     console.log("Email or password is undefined");
+  //     this.errorLogin = 1;
+  //   }
+  // }
 
 //   login() {
 //     if (this.usuario.email && this.usuario.contrasenia) {
@@ -198,16 +245,20 @@ export class LoginComponent {
   }
 
   private verificarEmail(email: any): number { //VALIDAR EMAIL
-    const patron = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Patrón para validar el formato del email
+    const patron = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$/; // Patrón para validar el formato del email
     //  ^[a-zA-Z0-9._%+-]+ : Comienza con uno o más caracteres que pueden ser letras (mayúsculas y minúsculas), números, puntos (.), guiones bajos (_), porcentajes (%), signos más (+) o guiones (-).
     //   @[a-zA-Z0-9.-]+ : Seguido por el símbolo @ y uno o más caracteres que pueden ser letras (mayúsculas y minúsculas), números, puntos (.) o guiones (-).
-    //   \.[a-zA-Z]{2,}$ : Termina con un punto (.) seguido de dos o más letras (mayúsculas o minúsculas).
-    if (email === undefined)
+    //   \.[a-zA-Z]{2,} : A continuacion seguimos con un punto (.) seguido de dos o más letras (mayúsculas o minúsculas). Para el TLD (dominio de nivel superior)
+    //  (?:\.[a-zA-Z]{2,})?$ Termina con un grupo opcional con un punto (,) seguido de dos o más letras (mayúsculas o minúsculas). Permite la presencia opcional de un subdominio
+    if (email === undefined){
       return 1;
-    if (email.length > 50)
+    }
+    if (email.length > 50){
       return 2;
-    if (!patron.test(email))
+    }
+    if (!patron.test(email)){
       return 3;
+    }
     return 0;
   }
   

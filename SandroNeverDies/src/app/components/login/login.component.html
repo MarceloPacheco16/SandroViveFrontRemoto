@@ -17,12 +17,34 @@
             </div> -->
             <div class="form-wrapper">
                 <input type="text" [(ngModel)]="usuario.email" name="usuario.email" placeholder="Email" class="form-control">
-            </div>        
+            </div>
+            <div style="background-color: whitesmoke;">
+                <div [ngSwitch]="errorNombre">
+                    <!-- <h5 *ngIf="errorNombre > 0" style="color: red;"><u>Error en el Nombre</u></h5> -->
+                    <div *ngSwitchCase="1"><p style="color: red;">Deben completar el campo Email</p></div>
+                    <div *ngSwitchCase="2"><p style="color: red;">Email muy largo, debe tener menos de 50 caracteres</p></div>
+                    <div *ngSwitchCase="3"><p style="color: red;">Email debe tener un formato correcto</p></div>
+                </div>     
+            </div>     
         
             <div class="form-wrapper">
                 <input type="password" [(ngModel)]="usuario.contrasenia" name="usuario.contrasenia" placeholder="Contraseña" class="form-control">
                 <i class="zmdi zmdi-lock"></i>
+            </div>            
+            <div style="background-color: whitesmoke;">
+                <div [ngSwitch]="errorPassword">
+                    <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
+                    <div *ngSwitchCase="1"><p style="color: red;">Deben completar el campo Contraseña</p></div>
+                    <div *ngSwitchCase="2"><p style="color: red;">Contraseña debe tener 8 caracteres</p></div>
+                    <div *ngSwitchCase="3"><p style="color: red;">Contraseña debe tener 8 caracteres alfanumericos</p></div>
+                </div>
+                <div [ngSwitch]="errorLogin">
+                    <!-- <h5 *ngIf="errorLogin > 0" style="color: red;"><u>Error en el Login</u></h5> -->
+                    <div *ngSwitchCase="1"><p style="color: red;">No existe ningun usuario que coincida con el Email y Contraseña</p></div>
+                    <div *ngSwitchCase="2"><p style="color: red;">El Usuario fue bloqueado debido a múltiples intentos fallidos</p></div>
+                </div>       
             </div>
+
             <div class="form-wrapper">
                 <p style="color: black;">¿Olvidaste la Contraseña?</p>
             </div>
@@ -42,24 +64,6 @@
         <ng-template #mensaje>
             <p>No existe ningun usuario en la Base de Datos</p>
         </ng-template> -->
-        <div style="background-color: whitesmoke;">
-            <div [ngSwitch]="errorNombre">
-                <h5 *ngIf="errorNombre > 0" style="color: red;"><u>Error en el Nombre</u></h5>
-                <div *ngSwitchCase="1">Deben completar el campo Nombre</div>
-                <div *ngSwitchCase="2">Nombre muy largo, debe tener al menos 4 letras</div>
-                <div *ngSwitchCase="3">Nombre debe tener entre 4 y 20 caracteres alfanumericos</div>
-            </div>
-            <div [ngSwitch]="errorPassword">
-                <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5>
-                <div *ngSwitchCase="1">Deben completar el campo Contraseña</div>
-                <div *ngSwitchCase="2">Contraseña debe tener 8 caracteres</div>
-                <div *ngSwitchCase="3">Contraseña debe tener 8 caracteres alfanumericos</div>
-            </div>
-            <div [ngSwitch]="errorLogin">
-                <h5 *ngIf="errorLogin > 0" style="color: red;"><u>Error en el Login</u></h5>
-                <div *ngSwitchCase="1">No existe ningun usuario que coincida con el USUARIO y CONTRASEÑA en la Base de Datos</div>
-            </div>       
-        </div>
     </div>
 
 </div>
