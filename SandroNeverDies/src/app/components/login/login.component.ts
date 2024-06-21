@@ -17,7 +17,7 @@ export class LoginComponent {
   clientes: Cliente[];
   usuario: Usuario;
 
-  errorNombre:number = 0;
+  errorEmail:number = 0;
   errorPassword:number = 0;
   errorLogin:number = 0;
 
@@ -38,6 +38,7 @@ export class LoginComponent {
     this.usuariosService.getUsuarios().subscribe(
       (data: Usuario[]) => {
         this.usuarios = data;
+        console.log("Lista de Usuarios");
         console.log(this.usuarios);
       }
     );
@@ -47,104 +48,49 @@ export class LoginComponent {
     this.clienteService.getClientes().subscribe(
       (data: Cliente[]) => {
         this.clientes = data;
+        console.log("Lista de Clientes");
         console.log(this.clientes);
       }
     );
   }
 
   login() {
-    // Verificamos que los datos de los campos sean correctos
-    if (this.validarCampos() == false) {
-      return;
-    }
-    
-    if (this.usuario.email && this.usuario.contrasenia) {
-      this.usuariosService.login(this.usuario.email, this.usuario.contrasenia).subscribe({
-        next: (response) => {
-          if (response.id) {
-            if (response.activo === 2) {
-              // Usuario bloqueado
-              console.log("Usuario bloqueado");
-              this.errorLogin = 2; // Código de error para usuario bloqueado
+    if (this.validarCampos()) {
+      if (this.usuario.email && this.usuario.contrasenia) {
+        this.usuariosService.login(this.usuario.email, this.usuario.contrasenia).subscribe({
+          next: (response) => {
+            if (response.id) {
+              if (response.activo === 2) {
+                console.log("Usuario bloqueado");
+                this.errorLogin = 2;
+              } else {
+                console.log("Inicio de sesión exitoso", response);
+                this.router.navigate(['usuarios/inicio']);
+              }
             } else {
-              // Inicio de sesión exitoso
-              console.log("Inicio de sesión exitoso", response);
-              this.router.navigate(['usuarios/inicio']);
+              console.log("Email o Contraseña incorrectos");
+              this.errorLogin = 1;
             }
-          } else {
-            // Credenciales inválidas
-            console.log("Email o Contraseña incorrectos");
-            this.errorLogin = 1; // Código de error para intento fallido
+          },
+          error: (error) => {
+            if (error.status === 401) {
+              console.log("Email o Contraseña incorrectos");
+              this.errorLogin = 1;
+            } else if (error.status === 403) {
+              console.log("Usuario bloqueado");
+              this.errorLogin = 2;
+            } else {
+              console.log("Error durante el inicio de sesión", error);
+              this.errorLogin = 1;
+            }
           }
-        },
-        error: (error) => {
-          if (error.status === 401) {
-            // Credenciales inválidas
-            console.log("Email o Contraseña incorrectos");
-            this.errorLogin = 1; // Código de error para intento fallido
-          } else if (error.status === 403) {
-            // Usuario bloqueado
-            console.log("Usuario bloqueado");
-            this.errorLogin = 2; // Código de error para usuario bloqueado
-          } else {
-            // Error durante el inicio de sesión
-            console.log("Error durante el inicio de sesión", error);
-            this.errorLogin = 1; // Código de error para intento fallido
-          }
-        }
-      });
-    } else {
-      // El correo electrónico o la contraseña no están definidos
-      console.log("El correo electrónico o la contraseña no están definidos");
-      this.errorLogin = 1;
+        });
+      } else {
+        console.log("El correo electrónico o la contraseña no están definidos");
+        this.errorLogin = 1;
+      }
     }
   }
-
-  // login() {
-  //   if (this.usuario.email && this.usuario.contrasenia) {
-  //     this.usuariosService.login(this.usuario.email, this.usuario.contrasenia).subscribe({
-  //       next: (response) => {
-  //         if (response.id) {
-  //           console.log("Login successful", response);
-  //           this.router.navigate(['usuarios/inicio']);
-  //         } else {
-  //           console.log("Invalid credentials");
-  //           this.errorLogin = 1;
-  //         }
-  //       },
-  //       error: (error) => {
-  //         console.log("Error during login", error);
-  //         this.errorLogin = 1;
-  //       }
-  //     });
-  //   } else {
-  //     console.log("Email or password is undefined");
-  //     this.errorLogin = 1;
-  //   }
-  // }
-
-//   login() {
-//     if (this.usuario.email && this.usuario.contrasenia) {
-//         this.usuariosService.login(this.usuario.email, this.usuario.contrasenia).subscribe({
-//             next: (response) => {
-//                 if (response.id) {
-//                     console.log("Login successful", response);
-//                     this.router.navigate(['usuarios/inicio']);
-//                 } else {
-//                     console.log("Invalid credentials");
-//                     this.errorLogin = 1;
-//                 }
-//             },
-//             error: (error) => {
-//                 console.log("Error during login", error);
-//                 this.errorLogin = 1;
-//             }
-//         });
-//     } else {
-//         console.log("Email or password is undefined");
-//         this.errorLogin = 1;
-//     }
-// }
 
   // login(): void {
   //   if (this.validarCampos()) {
@@ -161,86 +107,15 @@ export class LoginComponent {
   //   }
   // }
 
-  // login() {
-  //   if (this.validarCampos()) {
-  //     this.usuariosService.login(this.usuario).subscribe({
-  //       next: response => {
-  //         console.log("Login successful", response);
-  //         // Guarda el ID del usuario o el token según tu lógica
-  //         this.router.navigate(['usuarios/inicio']);
-  //       },
-  //       error: (error) => {
-  //         console.log("Error during login", error);
-  //         this.errorLogin = 1;
-  //       }
-  //     });
-  //   }
-  // }
-  
-  // login(){
-  //   if(this.validarCampos() == true)
-  //   {
-  //     console.log("email: " + this.usuario.email);
-  //     console.log("contraseña: " + this.usuario.contrasenia);
-  //     console.log("Buscando Usuario...");
-  //     let rolString = "";
-
-  //     console.log("cant Usuarios:" + this.usuarios.length)
-  
-  //     //BUSCAMOS SI EL USUARIO EXISTE EN LA BASE DE DATOS
-  //     for(let i=0;i<this.usuarios.length;i++){
-  //       console.log("email: " + this.usuarios[i].email);
-  //       console.log("contraseña: " + this.usuarios[i].contrasenia);
-  //       if(this.usuario.email == this.usuarios[i].email){
-  //         console.log("email: " + this.usuarios[i].email);
-  //         if(this.usuario.contrasenia == this.usuarios[i].contrasenia){
-  //           console.log("contraseña: " + this.usuarios[i].contrasenia);
-  //           // console.log(this.usuarios[i].rol);
-  
-  //           // if(this.usuarios[i].rol == undefined){
-  //           //   rolString = "";
-  //           // }else{
-  //           //   rolString = this.usuarios[i].rol ?? rolString;
-  //           // }
-                  
-  //           console.log("usuario ID:" + this.usuarios[i]);
-  //           // this.usuariosService.setRol(rolString);
-  //           // this.usuariosService.setToken();
-  //           console.log("Ir a Inicio...");
-  //           this.router.navigate(['usuarios/inicio']);
-  //         }
-  //       }
-  //     }
-  
-  //     // console.log("Buscando Cliente...");
-  //     // //BUSCAR SI ES CLIENTE
-  //     // for(let i=0;i<this.clientes.length;i++){
-  //     //   if(this.usuario.usuario == this.clientes[i].usuario){
-  //     //     // console.log(this.usuarios[i].nombre);
-  //     //     if(this.usuario.contrasenia == this.clientes[i].contrasenia){
-  //     //       // console.log(this.usuarios[i].password);
-  //     //       // console.log(this.usuarios[i].rol);
-                  
-  //     //       console.log("cliente ID:" +this.clientes[i]);
-  //     //       // this.usuariosService.setRol(rolString);
-  //     //       // this.usuariosService.setToken();
-  //     //       console.log("Ir a Inicio...");
-  //     //       this.router.navigate(['usuarios/inicio']);
-  //     //     }
-  //     //   }
-  //     // }
-  //     console.log("error login: " + this.errorLogin)
-  //     this.errorLogin = 1;
-  //   }    
-  // }
-
   validarCampos():Boolean{
     console.log("Validando los campos del formulario!!!");
-    this.errorNombre=this.verificarEmail(this.usuario.email);
+    this.errorEmail=this.verificarEmail(this.usuario.email);
     this.errorPassword =+ this.verificarPassword(this.usuario.contrasenia);
-    if( (this.errorNombre + this.errorPassword)>0){
+    if( (this.errorEmail + this.errorPassword)>0){
+      console.log("Los Datos colocados son Incorrectos");
       return false;
     }
+    console.log("Los Datos colocados son Correctos");
     return true;
   }
 
@@ -263,7 +138,15 @@ export class LoginComponent {
   }
   
   private verificarPassword(password: any): number {
-    const patron = /^\w+$/; //Asegura que contenga 8 caracteres alfanumericos
+    // const patron = /^\w+$/; //Asegura que contenga 8 caracteres alfanumericos
+    const patron = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()-_=+[\]{}|;:,.<>?])\S{8,}$$/;
+    //Asegura que tengo una Mayuscula, una Minuscula, un Numero y un Caracter Especial
+    // ^: Coincide con el inicio de la cadena.
+    // (?=.*[A-Z]): Al menos una letra mayúscula.
+    // (?=.*[a-z]): Al menos una letra minúscula.
+    // (?=.*\d): Al menos un dígito (\d).
+    // (?=.*[!@#$%^&*()-_=+[\]{}|;:,.<>?]): Al menos uno de los caracteres especiales especificados.
+    // \S{8,}$: Asegura que la cadena tenga al menos 8 caracteres de longitud
     if (password === undefined)
       return 1;
     if (password.length != 8)

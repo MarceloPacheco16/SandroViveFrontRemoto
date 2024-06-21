@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Usuario } from "src/app/models/usuarioModel";
 
 import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { EncryptionService } from './encryption.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,92 +12,68 @@ import { Observable } from 'rxjs';
 export class UsuariosService{
 	API_URI = 'http://localhost:8000/usuario';
   AUTH_API = 'http://localhost:8000/verificar-credenciales/';
-  // AUTH_API = 'http://localhost:8000/auth/';
   FORMAT_JSON = "?format=json";
-	// usuarios: Usuario[];
 	
-	constructor(private http: HttpClient/*private http: HttpClient*/){ //http: Http
-    // this.usuarios = [{
-    //   "id": "1",
-    //   "nombre": "Pedro",
-    //   "email": "pedro@email.net",
-    //   "password": "123456",
-    //   "rol": "admin"
-    // }, {
-    //   "id": "2",
-    //   "nombre": "Juan",
-    //   "email": "juan@email.net",
-    //   "password": "123456",
-    //   "rol": "usuario"
-    // }, {
-    //   "id": "3",
-    //   "nombre": "Hugo",
-    //   "email": "hugo@email.net",
-    //   "password": "123456",
-    //   "rol": "usuario"
-    // }];
+	constructor(private http: HttpClient, private encryptionService: EncryptionService/*private http: HttpClient*/)
+  { 
+
   }
-
-  // private headers = new Headers ({'Content-Type': 'application/json'});
-
-  // getUsuarios(): Promise<Usuario[]>{
-  //   return this.http.get('http://localhost:8000/depositos?format=json', {headers: this.headers})
-  //   .toPromise()
-  //   // .then((response: { json: () => Usuario[]; }) => response.json() as Usuario[])
-  //   // .then(response => response.json() as Usuario[])
-  // }
 
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
 
   getUsuarios(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(this.API_URI + this.FORMAT_JSON, { headers: this.headers });
-    // return this.http.get<Usuario[]>('http://127.0.0.1:8000/usuario?format=json', { headers: this.headers });
   }
-
-  // postUsuario(nuevoUsuario: Usuario): Observable<any> {
-  //   return this.http.post<any>(this.API_URI + this.FORMAT_JSON, nuevoUsuario, { headers: this.headers });
-  // }
 
   postUsuario(nuevoUsuario: Usuario): Observable<any> {
     return this.http.post<any>(this.API_URI + this.FORMAT_JSON, nuevoUsuario, { headers: this.headers });
   }
 
+  // // Método para obtener la clave pública desde el servidor
+  // private getPublicKey(): Observable<any> {
+  //   return this.http.get<any>('http://localhost:8000/get-public-key/');
+  // }
+
+  // Método para iniciar sesión con email y contraseña encriptados
   login(email: string, contrasenia: string): Observable<any> {
-    // Construye la URL con los parámetros de email y contrasenia
-    const url = `${this.AUTH_API}?email=${encodeURIComponent(email)}&contrasenia=${encodeURIComponent(contrasenia)}`;
-    // Realiza una solicitud GET
-    return this.http.get<any>(url);
+    // Encriptar el email y la contraseña utilizando el servicio de encriptación
+    return this.encryptionService.encrypt(email).pipe(
+      map(encryptedEmail => {
+        return this.encryptionService.encrypt(contrasenia).pipe(
+          map(encryptedPassword => {
+            // Construir la URL con los datos cifrados
+            const url = `${this.AUTH_API}?email=${encodeURIComponent(encryptedEmail)}&contrasenia=${encodeURIComponent(encryptedPassword)}`;
+            
+            // Hacer la solicitud GET al servidor con los datos cifrados
+            return this.http.get<any>(url);
+          })
+        );
+      })
+    );
   }
+  // // Método para iniciar sesión con email y contraseña
+  // login(email: string, contrasenia: string): Observable<any> {
+  //   return this.getPublicKey().pipe(
+  //     switchMap(publicKey => {
+  //       // Usar el servicio de encriptación para cifrar el email y la contraseña
+  //       const encryptedEmail = this.encryptionService.encrypt(email);
+  //       const encryptedPassword = this.encryptionService.encrypt(contrasenia);
+  //       // const encryptedEmail = this.encryptionService.encryptData(email, publicKey.public_key);
+  //       // const encryptedPassword = this.encryptionService.encryptData(contrasenia, publicKey.public_key);
+
+  //       // Construir la URL con los parámetros cifrados
+  //       const url = `${this.AUTH_API}?email=${encodeURIComponent(encryptedEmail)}&contrasenia=${encodeURIComponent(encryptedPassword)}`;
+  //       // Hacer la solicitud GET al servidor con los datos cifrados
+  //       return this.http.get<any>(url);
+  //     })
+  //   );
+  // }
 
   // login(email: string, contrasenia: string): Observable<any> {
-  //   const body = { email, contrasenia };
-  //   const csrfToken = this.getCookie('csrftoken'); // Obtener el token CSRF
-  
-  //   // Verificar si el token CSRF no es nulo
-  //   const headersObj: { [key: string]: string } = {
-  //     'Content-Type': 'application/json'
-  //   };
-  //   if (csrfToken) {
-  //     headersObj['X-CSRFToken'] = csrfToken;
-  //   }
-  
-  //   const headers = new HttpHeaders(headersObj);
-  //   return this.http.post<any>(this.AUTH_API, body, { headers });
-  // }
-  
-  // private getCookie(name: string): string | null {
-  //   let cookieValue = null;
-  //   if (document.cookie && document.cookie !== '') {
-  //     const cookies = document.cookie.split(';');
-  //     for (let i = 0; i < cookies.length; i++) {
-  //       const cookie = cookies[i].trim();
-  //       if (cookie.substring(0, name.length + 1) === name + '=') {
-  //         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-  //         break;
-  //       }
-  //     }
-  //   }
-  //   return cookieValue;
+  //   // Construye la URL con los parámetros de email y contrasenia
+  //   const url = `${this.AUTH_API}?email=${encodeURIComponent(email)}&contrasenia=${encodeURIComponent(contrasenia)}`;
+  //   // Realiza una solicitud GET
+  //   return this.http.get<any>(url);
   // }
 
   // login(email: string, contrasenia: string): Observable<any> {

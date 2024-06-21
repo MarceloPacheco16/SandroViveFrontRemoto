@@ -5,6 +5,8 @@ import { Usuario } from 'src/app/models/usuarioModel';
 import { Cliente } from 'src/app/models/clienteModel';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { UbicacionesService } from 'src/app/services/ubicaciones.service';
+import { Provincia } from 'src/app/models/provinciaModel';
 
 @Component({
   selector: 'app-usuario-registro',
@@ -18,15 +20,25 @@ export class UsuarioRegistroComponent {
   nuevoCliente: Cliente = {};
   private subscription: Subscription | undefined;
 
+  provincias: any[];
+  localidades: any[];
+  // provinciaSeleccionada: Provincia;
+  provinciaSeleccionada: any;
+  localidadSeleccionada: any;
+
+  errorEmail: number = 0;
+  errorPassword: number = 0;
+
   conf_contrasenia: string = "";
   distinta_contrasenia: boolean = false;
 
-  constructor(private usuariosService: UsuariosService, private clientesService: ClientesService, private router:Router) { 
+  constructor(private usuariosService: UsuariosService, private clientesService: ClientesService, private ubicacionesService: UbicacionesService, private router:Router) { 
     // this.usuariosService.setToken();
     console.log("Ir a Registrar...");
 
     this.usuarios = [];
-    this.nuevoUsuario = {      
+    this.nuevoUsuario = {   
+      id: '',       
       email: '',
       contrasenia: '',
       cant_intentos: '0',
@@ -47,22 +59,31 @@ export class UsuarioRegistroComponent {
 
     this.conf_contrasenia = "";
     this.distinta_contrasenia = false;
+
+    this.provincias = [];
+    this.localidades = [];
+
+    
+    this.provinciaSeleccionada = -1;
+    this.localidadSeleccionada = -1;
   }
   
   
   //METODO PARA REGISTRAR A UN USUARIO Y LUEGO IR A REGISTRAR AL CLIENTE
   registrarUsuario(): void {
+    if(this.validarCampos() == false){
+      return;
+    }
+    
     if(this.conf_contrasenia != this.nuevoUsuario.contrasenia){
       this.distinta_contrasenia = true;
       return;
     }else{
-      this.distinta_contrasenia = true;
+      this.distinta_contrasenia = false;
     }
 
     console.log("Contraseña Confirmada");
     //POST USUARIO
-    // this.nuevoUsuario.rol = "cliente"
-    // this.nuevoUsuario.activo = "1"
     this.usuariosService.postUsuario(this.nuevoUsuario).subscribe({
       next: () => {
         console.log('Usuario registrado con éxito');
@@ -79,21 +100,27 @@ export class UsuarioRegistroComponent {
     });
   }
 
+  //METODO PARA REGISTRAR AL CLIENTE DEL RESPECTIVO USUARIO
   registrarCliente(): void {
+
+    // this.nuevoCliente.provincia = this.nuevoCliente.provincia?.toString().trim();
+    // this.nuevoCliente.localidad = this.nuevoCliente.localidad?.toString().trim();
+
     this.usuariosService.getUsuarios().subscribe({
       next: (data: Usuario[]) => {
         this.usuarios = data;
-  
+
         let ultimoID = this.usuarios.length - 1;
         if (ultimoID < 0) {
           ultimoID = 0;
         }
-        console.log("ultimoID : " + ultimoID);
+        // console.log("ultimoID : " + ultimoID);
   
-        console.log("ID usuario: " + this.usuarios[ultimoID].id);
+        // console.log("ID usuario: " + this.usuarios[ultimoID].id);
   
         // POST CLIENTE
         this.nuevoCliente.usuario = this.usuarios[ultimoID].id;
+        console.log("ID usuario de Cliente: " + this.nuevoCliente.usuario);
         this.nuevoCliente.activo = 1;
   
         this.clientesService.postClientes(this.nuevoCliente).subscribe({
@@ -113,50 +140,108 @@ export class UsuarioRegistroComponent {
     });
   }
 
-  // //METODO PARA OBETENER LA LISTA DE TODOS LOS USUARIOS
-  // listadoUsuarios(): void {
-  //   this.usuariosService.getUsuarios().subscribe({
-  //     next: (data: Usuario[]) => {
-  //       this.usuarios = data;
-  //       console.log(this.usuarios);
-  //     },
-  //     error: (error) => {
-  //       console.error('Error al obtener usuarios:', error);
-  //     }
-  //   });
-  // }
+  getProvincias(): void {
+    this.ubicacionesService.getProvincias()
+      .subscribe(data => {
+        this.provincias = data;
+      });
+  }
+
+  onProvinciaChange(): void {
+    // console.log(this.provinciaSeleccionada.id);
+    if (this.provinciaSeleccionada.id !== -1) {
+      this.ubicacionesService.getLocalidadesPorProvincia(this.provinciaSeleccionada.id).subscribe(data => {
+        this.localidades = data;
+        this.nuevoCliente.provincia = this.provinciaSeleccionada.descripcion; // Actualizar el nombre de la provincia en nuevoCliente
+      });
+    } else {
+      this.localidades = []; // Limpiar localidades si no se ha seleccionado ninguna provincia
+      this.nuevoCliente.provincia = ''; // También se puede establecer en null o undefined según el requerimiento
+    }
+  }
+
+  existeEmail(): void{
+    this.usuariosService.getUsuarios().subscribe({
+      next: (data: Usuario[]) => {
+        this.usuarios = data;
+
+        console.log("Canti usuarios:" + this.usuarios.length);
+
+        let emailCoincide = false;
+
+        for(let i = 0; i < this.usuarios.length; i++){
+          if(this.nuevoUsuario.email == this.usuarios[i].email){
+            console.log(this.usuarios[i].email);
+            emailCoincide = true;
+            break;
+          }
+        }
+
+        if(emailCoincide == true){
+          this.errorEmail = 4;
+        }
+        else{
+          this.errorEmail = 0;
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener usuarios:', error);
+      }
+    });
+
+  }
+
+  validarCampos():Boolean{
+    console.log("Validando los campos del formulario!!!");
+    this.errorEmail=this.verificarEmail(this.nuevoUsuario.email);
+    if(this.errorEmail == 0){
+      this.existeEmail();
+    }
+    this.errorPassword =+ this.verificarPassword(this.nuevoUsuario.contrasenia);
+    if( (this.errorEmail + this.errorPassword)>0){
+      return false;
+    }
+    return true;
+  }
+
+  private verificarEmail(email: any): number { //VALIDAR EMAIL
+    const patron = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$/; // Patrón para validar el formato del email
+    //  ^[a-zA-Z0-9._%+-]+ : Comienza con uno o más caracteres que pueden ser letras (mayúsculas y minúsculas), números, puntos (.), guiones bajos (_), porcentajes (%), signos más (+) o guiones (-).
+    //   @[a-zA-Z0-9.-]+ : Seguido por el símbolo @ y uno o más caracteres que pueden ser letras (mayúsculas y minúsculas), números, puntos (.) o guiones (-).
+    //   \.[a-zA-Z]{2,} : A continuacion seguimos con un punto (.) seguido de dos o más letras (mayúsculas o minúsculas). Para el TLD (dominio de nivel superior)
+    //  (?:\.[a-zA-Z]{2,})?$ Termina con un grupo opcional con un punto (,) seguido de dos o más letras (mayúsculas o minúsculas). Permite la presencia opcional de un subdominio
+    if (email === undefined){
+      return 1;
+    }
+    if (email.length > 50){
+      return 2;
+    }
+    if (!patron.test(email)){
+      return 3;
+    }
+    return 0;
+  }
   
-  // //METODO PARA REGISTRAR A UN CLIENTE
-  // registrarCliente(): void {
-  //   this.listadoUsuarios();
-  //   console.log(this.listadoUsuarios());
+  private verificarPassword(password: any): number {
+    // const patron = /^\w+$/; //Asegura que contenga 8 caracteres alfanumericos
+    const patron = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()-_=+[\]{}|;:,.<>?])\S{8,}$$/;
+    //Asegura que tengo una Mayuscula, una Minuscula, un Numero y un Caracter Especial
+    // ^: Coincide con el inicio de la cadena.
+    // (?=.*[A-Z]): Al menos una letra mayúscula.
+    // (?=.*[a-z]): Al menos una letra minúscula.
+    // (?=.*\d): Al menos un dígito (\d).
+    // (?=.*[!@#$%^&*()-_=+[\]{}|;:,.<>?]): Al menos uno de los caracteres especiales especificados.
+    // \S{8,}$: Asegura que la cadena tenga al menos 8 caracteres de longitud
+    if (password === undefined)
+      return 1;
+    if (password.length != 8)
+      return 2;
+    if (!patron.test(password))
+      return 3;
+    return 0;
+  }
 
-  //   let ultimoID = this.usuarios.length - 1;
-  //   if(ultimoID <= 0){
-  //     ultimoID = 0;
-  //   }
-  //   console.log("ultimoID : " + ultimoID);
-
-  //   console.log("ID usuario: " + this.usuarios[0].id)
-  //   //POST CLIENTE
-  //   this.nuevoCliente.usuario = this.usuarios[0].id;
-  //   this.nuevoCliente.activo = 1;
-
-  //   this.clientesService.postClientes(this.nuevoCliente).subscribe({
-  //     next: () => {
-  //       console.log('Cliente registrado con éxito');
-
-  //       this.router.navigate(['usuarios/login']);
-  //     },
-  //     error: (error) => {
-  //       console.error('Error al registrar cliente:', error);
-  //       // Maneja el error según sea necesario (por ejemplo, muestra un mensaje al cliente)
-  //     }
-  //   });
-  // }
-
-  // registrar(){
-  //   console.log("Ir a Ingresar...");
-  //   this.router.navigate(['usuarios/login']);
-  // }
+  ngOnInit(): void {
+    this.getProvincias();
+  }
 }

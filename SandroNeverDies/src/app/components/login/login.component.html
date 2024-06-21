@@ -17,9 +17,10 @@
             </div> -->
             <div class="form-wrapper">
                 <input type="text" [(ngModel)]="usuario.email" name="usuario.email" placeholder="Email" class="form-control">
+                <i class="zmdi zmdi-email"></i>
             </div>
             <div style="background-color: whitesmoke;">
-                <div [ngSwitch]="errorNombre">
+                <div [ngSwitch]="errorEmail">
                     <!-- <h5 *ngIf="errorNombre > 0" style="color: red;"><u>Error en el Nombre</u></h5> -->
                     <div *ngSwitchCase="1"><p style="color: red;">Deben completar el campo Email</p></div>
                     <div *ngSwitchCase="2"><p style="color: red;">Email muy largo, debe tener menos de 50 caracteres</p></div>
@@ -36,7 +37,7 @@
                     <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
                     <div *ngSwitchCase="1"><p style="color: red;">Deben completar el campo Contraseña</p></div>
                     <div *ngSwitchCase="2"><p style="color: red;">Contraseña debe tener 8 caracteres</p></div>
-                    <div *ngSwitchCase="3"><p style="color: red;">Contraseña debe tener 8 caracteres alfanumericos</p></div>
+                    <div *ngSwitchCase="3"><p style="color: red;">Contraseña debe tener 8 caracteres y al menos uno de estos: Mayuscula - Minuscula - Numero - Caracter Especial</p></div>
                 </div>
                 <div [ngSwitch]="errorLogin">
                     <!-- <h5 *ngIf="errorLogin > 0" style="color: red;"><u>Error en el Login</u></h5> -->

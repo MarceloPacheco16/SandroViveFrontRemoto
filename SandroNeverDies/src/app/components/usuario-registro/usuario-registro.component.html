@@ -36,29 +36,55 @@
                 <input type="text" [(ngModel)]="nuevoUsuario.email" name="nuevoUsuario.email" placeholder="Email" class="form-control">
                 <i class="zmdi zmdi-email"></i>
             </div>
+            <div style="background-color: whitesmoke;">
+                <div [ngSwitch]="errorEmail">
+                    <!-- <h5 *ngIf="errorNombre > 0" style="color: red;"><u>Error en el Nombre</u></h5> -->
+                    <div *ngSwitchCase="1" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Deben completar el campo Email</p></div>
+                    <div *ngSwitchCase="2" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email muy largo, debe tener menos de 50 caracteres</p></div>
+                    <div *ngSwitchCase="3" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email debe tener un formato correcto</p></div>
+                    <div *ngSwitchCase="4" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email ya Existe en la Base de Datos</p></div>
+                </div>     
+            </div>   
 
             <div class="form-wrapper">
                 <input type="text" [(ngModel)]="nuevoCliente.telefono" name="nuevoCliente.telefono"  placeholder="Telefono" class="form-control">
-                <input type="text" [(ngModel)]="nuevoCliente.domicilio" name="nuevoCliente.domicilio"  placeholder="Domicilio" class="form-control">
-                <input type="text" [(ngModel)]="nuevoCliente.localidad" name="nuevoCliente.localidad"  placeholder="Localidad" class="form-control">
-                <input type="text" [(ngModel)]="nuevoCliente.provincia" name="nuevoCliente.provincia"  placeholder="Provincia" class="form-control">
-                <input type="text" [(ngModel)]="nuevoCliente.codigo_postal" name="nuevoCliente.codigo_postal"  placeholder="Codigo Postal" class="form-control">
-                <i class="zmdi zmdi-account"></i>
+                <!-- <i class="fa-solid fa-phone"></i> -->
+                <i class="zmdi zmdi-phone"></i>
+            </div>
+            <!-- CSS de select modificado a .custom-select -->
+            <!-- <input type="text" [(ngModel)]="nuevoCliente.provincia" name="nuevoCliente.provincia"  placeholder="Provincia" class="form-control"> -->
+            <!-- <div class="form-group">
+                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
+                    <option value="-1" disabled selected>Seleccione una Provincia</option>
+                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
+                </select>
+            </div> -->
+            <div class="form-group">
+                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
+                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
+                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <!-- CSS de select modificado a .custom-select -->
+                <!-- <input type="text" [(ngModel)]="nuevoCliente.localidad" name="nuevoCliente.localidad"  placeholder="Localidad" class="form-control"> -->
+                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
+                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
+                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
+                </select>
             </div>
 
-            <!-- <div class="form-wrapper">
-                <input type="text" [(ngModel)]="nuevoCliente.usuario" name="nuevoCliente.usuario" placeholder="Nombre de Usuario" class="form-control">
-                <i class="zmdi zmdi-account"></i>
-            </div> -->
-            <!-- <div class="form-wrapper">
-                <select name="" id="" class="form-control">
-                    <option value="" disabled selected>Sexo</option>
-                    <option value="male">Mujer</option>
-                    <option value="femal">Hombre</option>
-                    <option value="other">Otros</option>
-                </select>
-                <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
-            </div> -->
+            <div class="form-wrapper">
+                <input type="text" [(ngModel)]="nuevoCliente.domicilio" name="nuevoCliente.domicilio"  placeholder="Domicilio" class="form-control">
+                <!-- <i class="fa-solid fa-location-dot"></i> -->
+                <i class="zmdi zmdi-pin"></i>
+            </div>
+
+            <div class="form-wrapper">
+                <input type="text" [(ngModel)]="nuevoCliente.codigo_postal" name="nuevoCliente.codigo_postal"  placeholder="Codigo Postal" class="form-control">
+                <!-- <i class="fa-solid fa-location-dot"></i> -->
+                <i class="zmdi zmdi-pin"></i>
+            </div>
 
             <div class="form-wrapper">
                 <input type="password" [(ngModel)]="nuevoUsuario.contrasenia" name="nuevoUsuario.contrasenia" placeholder="Contraseña" class="form-control">
@@ -69,9 +95,17 @@
                 <i class="zmdi zmdi-lock"></i>
             </div>
             <div style="background-color: whitesmoke;">
+                <div [ngSwitch]="errorPassword">
+                    <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
+                    <div *ngSwitchCase="1"><p style="color: red;">Deben completar el campo Contraseña</p></div>
+                    <div *ngSwitchCase="2"><p style="color: red;">Contraseña debe tener 8 caracteres</p></div>
+                    <div *ngSwitchCase="3"><p style="color: red;">Contraseña debe tener 8 caracteres y al menos uno de estos: Mayuscula - Minuscula - Numero - Caracter Especial</p></div>
+                </div>     
+            </div>
+            <div style="background-color: whitesmoke;">
                 <p [hidden]="distinta_contrasenia == false" style="color: red;">Las contraseñas deben coincidir</p>
             </div>
-            <!-- <button (click)="registrarUsuario()" type="button"> -->
+            <!-- <button (click)="registrarCliente()" type="button"> -->
             <button (click)="registrarUsuario()" type="button">
                 <!-- <a href="../../online-shop-website-template/index.html" style=" color: white;">
                     Registrar <i class="zmdi zmdi-arrow-right"></i>

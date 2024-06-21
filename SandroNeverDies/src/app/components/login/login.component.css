@@ -48,7 +48,8 @@ a:hover {
 .inner {
   padding: 20px;
   background: #fff;
-  max-width: 850px;
+  width: 900px;
+  /* max-width: 850px; */
   margin: auto;
   display: flex; }
   .inner .image-holder {
@@ -187,14 +188,21 @@ button {
     transform: translateX(0); } }
 @media (max-width: 1199px) {
   .wrapper {
-    background-position: right center; } }
+    background-position: right center; }
+    .inner{    
+      width: 900px;
+    } }
 @media (max-width: 991px) {
+  .inner{    
+    width: 700px;
+  }
   .inner form {
     padding-top: 10px;
     padding-left: 30px;
     padding-right: 30px; } }
 @media (max-width: 767px) {
   .inner {
+    width: 250px;
     display: block; }
     .inner .image-holder {
       width: 100%; }
