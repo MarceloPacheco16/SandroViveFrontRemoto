@@ -34,23 +34,36 @@ export class UsuariosService{
   //   return this.http.get<any>('http://localhost:8000/get-public-key/');
   // }
 
-  // Método para iniciar sesión con email y contraseña encriptados
-  login(email: string, contrasenia: string): Observable<any> {
-    // Encriptar el email y la contraseña utilizando el servicio de encriptación
-    return this.encryptionService.encrypt(email).pipe(
-      map(encryptedEmail => {
-        return this.encryptionService.encrypt(contrasenia).pipe(
-          map(encryptedPassword => {
-            // Construir la URL con los datos cifrados
-            const url = `${this.AUTH_API}?email=${encodeURIComponent(encryptedEmail)}&contrasenia=${encodeURIComponent(encryptedPassword)}`;
+    // Método para iniciar sesión con email y contraseña
+    login(email: string, contrasenia: string): Observable<any> {
+      // Usar el servicio de encriptación para cifrar el email y la contraseña
+      const encryptedEmail = this.encryptionService.encrypt(email);
+      const encryptedPassword = this.encryptionService.encrypt(contrasenia);
+      // const encryptedEmail = this.encryptionService.encryptData(email, publicKey.public_key);
+      // const encryptedPassword = this.encryptionService.encryptData(contrasenia, publicKey.public_key);
+
+      // Construir la URL con los parámetros cifrados
+      const url = `${this.AUTH_API}?email=${encodeURIComponent(encryptedEmail)}&contrasenia=${encodeURIComponent(encryptedPassword)}`;
+      // Hacer la solicitud GET al servidor con los datos cifrados
+      return this.http.get<any>(url);
+    }
+  // // Método para iniciar sesión con email y contraseña encriptados
+  // login(email: string, contrasenia: string): Observable<any> {
+  //   // Encriptar el email y la contraseña utilizando el servicio de encriptación
+  //   return this.encryptionService.encrypt(email).pipe(
+  //     map(encryptedEmail => {
+  //       return this.encryptionService.encrypt(contrasenia).pipe(
+  //         map(encryptedPassword => {
+  //           // Construir la URL con los datos cifrados
+  //           const url = `${this.AUTH_API}?email=${encodeURIComponent(encryptedEmail)}&contrasenia=${encodeURIComponent(encryptedPassword)}`;
             
-            // Hacer la solicitud GET al servidor con los datos cifrados
-            return this.http.get<any>(url);
-          })
-        );
-      })
-    );
-  }
+  //           // Hacer la solicitud GET al servidor con los datos cifrados
+  //           return this.http.get<any>(url);
+  //         })
+  //       );
+  //     })
+  //   );
+  // }
   // // Método para iniciar sesión con email y contraseña
   // login(email: string, contrasenia: string): Observable<any> {
   //   return this.getPublicKey().pipe(

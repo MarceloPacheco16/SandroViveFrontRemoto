@@ -56,6 +56,8 @@ export class LoginComponent {
 
   login() {
     if (this.validarCampos()) {
+      // console.log(this.usuario.email);
+      // console.log(this.usuario.contrasenia);
       if (this.usuario.email && this.usuario.contrasenia) {
         this.usuariosService.login(this.usuario.email, this.usuario.contrasenia).subscribe({
           next: (response) => {
