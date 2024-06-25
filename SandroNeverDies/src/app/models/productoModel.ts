@@ -5,6 +5,7 @@ export interface Producto {
     talle: string;
     color: string;
     categoria: number;
+    subcategoria: number;
     precio: number;
     cantidad: number;
     cantidad_disponible: number;
@@ -12,5 +13,4 @@ export interface Producto {
     imagen: string;
     observaciones: string;
     activo: number;
-    // subcategoria: number;
   }

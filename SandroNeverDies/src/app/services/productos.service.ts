@@ -11,10 +11,15 @@ import { EncryptionService } from './encryption.service';
 })
 export class ProductosService {
 	API_URI = 'http://localhost:8000/producto';
+	API_ProductosActivos = 'http://localhost:8000/productos/activos';
+	API_ProdXCategoria = 'http://localhost:8000/productos/categoria';
+	API_ProdXSubcategoria = 'http://localhost:8000/productos/subcategoria';
   FORMAT_JSON = "?format=json";
 
-  constructor(private http: HttpClient) { 
+  productos: Producto[];
 
+  constructor(private http: HttpClient) { 
+    this.productos = [];
   }
 
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
@@ -22,5 +27,16 @@ export class ProductosService {
   getProductos(): Observable<Producto[]> {
     return this.http.get<Producto[]>(this.API_URI + this.FORMAT_JSON, { headers: this.headers });
   }
+
+  getProductosActivos(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(this.API_ProductosActivos, { headers: this.headers });
+  }
   
+  getProductsByCategory(categoriaId: number): Observable<any> {
+    return this.http.get(`${this.API_ProdXCategoria}/${categoriaId}/`);
+  }
+
+  getProductsBySubcategory(subcategoriaId: number): Observable<any> {
+    return this.http.get(`${this.API_ProdXSubcategoria}/${subcategoriaId}/`);
+  }
 }
