@@ -49,8 +49,8 @@
         <div class="col-lg-4 col-6 text-left">
             <form action="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
-                    <div class="input-group-append">
+                    <input type="text" class="form-control" [(ngModel)]="filtros.nombre" name="nombre" placeholder="Search for products">
+                    <div (click)="filtrarProductos()" class="input-group-append">
                         <span class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
                         </span>
@@ -267,10 +267,40 @@
             <div class="col-lg-3 col-md-4">
                 <!-- Price Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar
+                        por Categoria</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    
+                    <div class="form-group">
+                        <select id="categoriaSelect" [(ngModel)]="categoriaSeleccionada" name="categoria" (change)="onCategoriaChange()" class="form-control">
+                            <option [ngValue]="-1">Seleccione una Categoria</option>
+                            <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{ categoria.nombre }}</option>
+                        </select>   
+                    </div>
+                    <div class="form-group">
+                        <!-- CSS de select modificado a .custom-select -->
+                        <!-- <input type="text" [(ngModel)]="nuevoCliente.localidad" name="nuevoCliente.localidad"  placeholder="Localidad" class="form-control"> -->
+                        <select id="subcategoriaSelect" [(ngModel)]="subcategoriaSeleccionada" name="subcategoria" [disabled]="categoriaSeleccionada === -1" 
+                            (change)="onSubcategoriaChange()" class="form-control">
+                            <option [ngValue]="-1">Seleccione una Subcategoria</option>
+                            <option *ngFor="let subcategoria of subcategorias" [ngValue]="subcategoria.id">{{ subcategoria.nombre }}</option>
+                        </select>
+                    </div>
+                    
+                </div>
+                <!-- Price End -->
+
+                <!-- Price Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filtrar
                         por Precio</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form>
-                        <div
+                        <div class="control-group">
+                            <input type="number" [(ngModel)]="filtros.precio_desde" name="precio_desde" class="form-control" id="precioDesde" placeholder="Precio Desde"/>
+                        </div>
+                        <div class="control-group" style="margin-top: 20px;">
+                            <input type="number" [(ngModel)]="filtros.precio_hasta" name="precio_hasta" class="form-control" id="precioHasta" placeholder="Precio Hasta"/>
+                        </div>
+                        <!-- <div
                             class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="price-all">
                             <label class="custom-control-label" for="price-all">Todos los Precios</label>
@@ -304,7 +334,7 @@
                             <input type="checkbox" class="custom-control-input" id="price-5">
                             <label class="custom-control-label" for="price-5">$400 - $500</label>
                             <span class="badge border font-weight-normal">168</span>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
                 <!-- Price End -->
@@ -314,7 +344,42 @@
                         por Color</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form>
-                        <div
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" checked id="color-all" name="color" [(ngModel)]="filtros.color" [value]="''" checked>
+                            <label class="custom-control-label" for="color-all">Todos los Colores</label>
+                            <!-- <span class="badge border font-weight-normal">1000</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="color-1" name="color" [(ngModel)]="filtros.color" [value]="'Negro'">
+                            <label class="custom-control-label" for="color-1">Negro</label>
+                            <!-- <span class="badge border font-weight-normal">150</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="color-2" name="color" [(ngModel)]="filtros.color" [value]="'Blanco'">
+                            <label class="custom-control-label" for="color-2">Blanco</label>
+                            <!-- <span class="badge border font-weight-normal">295</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="color-3" name="color" [(ngModel)]="filtros.color" [value]="'Rojo'">
+                            <label class="custom-control-label" for="color-3">Rojo</label>
+                            <!-- <span class="badge border font-weight-normal">246</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="color-4" name="color" [(ngModel)]="filtros.color" [value]="'Azul'">
+                            <label class="custom-control-label" for="color-4">Azul</label>
+                            <!-- <span class="badge border font-weight-normal">145</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="color-5" name="color" [(ngModel)]="filtros.color" [value]="'Amarillo'">
+                            <label class="custom-control-label" for="color-5">Amarillo</label>
+                            <!-- <span class="badge border font-weight-normal">168</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
+                            <input type="radio" class="custom-control-input" id="color-6" name="color" [(ngModel)]="filtros.color" [value]="'Verde'">
+                            <label class="custom-control-label" for="color-6">Verde</label>
+                            <!-- <span class="badge border font-weight-normal">168</span> -->
+                        </div>
+                        <!-- <div
                             class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="color-all">
                             <label class="custom-control-label" for="price-all">Todos los Colores</label>
@@ -348,7 +413,7 @@
                             <input type="checkbox" class="custom-control-input" id="color-5">
                             <label class="custom-control-label" for="color-5">Green</label>
                             <span class="badge border font-weight-normal">168</span>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
                 <!-- Color End -->
@@ -358,7 +423,37 @@
                         por Tamaño</span></h5>
                 <div class="bg-light p-4 mb-30">
                     <form>
-                        <div
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" checked id="size-all" name="size" [(ngModel)]="filtros.talle" [value]="''" checked>
+                            <label class="custom-control-label" for="size-all">Todos los Tamaños</label>
+                            <!-- <span class="badge border font-weight-normal">1000</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="size-1" name="size" [(ngModel)]="filtros.talle" [value]="'XS'">
+                            <label class="custom-control-label" for="size-1">XS</label>
+                            <!-- <span class="badge border font-weight-normal">150</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="size-2" name="size" [(ngModel)]="filtros.talle" [value]="'S'">
+                            <label class="custom-control-label" for="size-2">S</label>
+                            <!-- <span class="badge border font-weight-normal">295</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="size-3" name="size" [(ngModel)]="filtros.talle" [value]="'M'">
+                            <label class="custom-control-label" for="size-3">M</label>
+                            <!-- <span class="badge border font-weight-normal">246</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="size-4" name="size" [(ngModel)]="filtros.talle" [value]="'L'">
+                            <label class="custom-control-label" for="size-4">L</label>
+                            <!-- <span class="badge border font-weight-normal">145</span> -->
+                        </div>
+                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
+                            <input type="radio" class="custom-control-input" id="size-5" name="size" [(ngModel)]="filtros.talle" [value]="'XL'">
+                            <label class="custom-control-label" for="size-5">XL</label>
+                            <!-- <span class="badge border font-weight-normal">168</span> -->
+                        </div>
+                        <!-- <div
                             class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="size-all">
                             <label class="custom-control-label" for="size-all">Todos los Tamaños</label>
@@ -392,7 +487,7 @@
                             <input type="checkbox" class="custom-control-input" id="size-5">
                             <label class="custom-control-label" for="size-5">XL</label>
                             <span class="badge border font-weight-normal">168</span>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
                 <!-- Size End -->
@@ -431,7 +526,46 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+
+                    <!-- Iteración sobre los productos con Paginacion -->
+                    <!-- <div class="row" *ngIf="paginatedProducts.length > 0; else sin_productos">
+                        <div class="col-lg-4 col-md-6 col-sm-6 pb-1" *ngFor="let product of paginatedProducts">
+                            <div class="product-item bg-light mb-4">
+                                <div class="product-img position-relative overflow-hidden">
+                                    <img class="img-fluid w-100" [src]="product.imagen" alt="{{ product.nombre }}">
+                                </div>
+                                <div class="text-center py-4">
+                                    <a class="h6 text-decoration-none text-truncate" href="">{{ product.nombre }}</a>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5>{{ product.precio }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #sin_productos>
+                        <div style="width: 100%; text-align: center;">
+                            <p><strong>No existen Productos que Coincidan con su Busqueda</strong></p>
+                        </div>
+                    </ng-template> -->
+                    
+                    <!-- Iteración sobre los productos -->
+                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1" *ngFor="let product of paginatedProducts">
+                        <div class="product-item bg-light mb-4">
+                            <div class="product-img position-relative overflow-hidden">
+                                <img class="img-fluid w-100" [src]="product.imagen" alt="{{ product.nombre }}">
+                            </div>
+                            <div class="text-center py-4">
+                                <a class="h6 text-decoration-none text-truncate" href="">{{ product.nombre }}</a>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5>{{ product.precio}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-100" src="assets/media/mujer1.jpg" alt="">
@@ -520,9 +654,31 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="col-12">
+                    <div *ngIf="productos.length > 0" class="col-12">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <!-- Boton Pagina Anterior -->
+                                <li class="page-item" [class.disabled]="currentPage === 0">
+                                    <a class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <!-- Botones de Paginas -->
+                                <li class="page-item" *ngFor="let page of [].constructor(totalPages()); let i = index" [class.active]="i === currentPage">
+                                    <a class="page-link" (click)="changePage(i)">{{ i + 1 }}</a>
+                                </li>
+                                <!-- Boton Pagina Siguiente -->
+                                <li class="page-item" [class.disabled]="currentPage >= totalPages() - 1">
+                                    <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- <div class="col-12">
                         <nav>
                             <ul class="pagination justify-content-center">
                                 <li class="page-item disabled"><a class="page-link" href="#"><span>Previous</span></a></li>
@@ -532,7 +688,7 @@
                                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
                             </ul>
                         </nav>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <!-- Shop Product End -->

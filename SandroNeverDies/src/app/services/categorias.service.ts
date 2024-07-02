@@ -18,16 +18,6 @@ export class CategoriasService {
   
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-    // // Método para obtener todas las categorías activas
-    // getCategoriasActivas(): Observable<Categoria[]> {
-    //   return this.http.get<Categoria[]>(`${this.API_Categoria}/activas/${this.FORMAT_JSON}`);
-    // }
-  
-    // // Método para obtener todas las subcategorías activas por categoría
-    // getSubcategoriasActivasPorCategoria(categoriaId: number): Observable<Subcategoria[]> {
-    //   return this.http.get<Subcategoria[]>(`${this.API_Categoria}/${categoriaId}/subcategorias/activas/${this.FORMAT_JSON}`);
-    // }
-
     // Método para obtener todas las categorías activas
     getCategoriasActivas(): Observable<Categoria[]> {
       return this.http.get<Categoria[]>(`${this.API_Categoria}/activas/`);

@@ -51,8 +51,8 @@
         <div class="col-lg-4 col-6 text-left">
             <form action="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
-                    <div (click)="getProductos()" class="input-group-append">
+                    <input type="text" class="form-control" [(ngModel)]="busqueda" name="busqueda" placeholder="Buscar productos">
+                    <div (click)="getBuscarProductosActivos()" class="input-group-append">
                         <span style="cursor: pointer" class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
                         </span>

@@ -21,6 +21,8 @@ export class InicioComponent {
   id_categoria: number;
   id_subcategoria: number;
 
+  busqueda: string;
+
   constructor(private productosService: ProductosService, private router:Router, private categoriasService: CategoriasService){
 
     this.categorias = [];
@@ -30,6 +32,8 @@ export class InicioComponent {
 
     this.id_categoria = -1;
     this.id_subcategoria = -1;
+    
+    this.busqueda = "";
   }
 
   ngOnInit(): void {
@@ -52,6 +56,23 @@ export class InicioComponent {
       }
     });
   }  
+
+  getBuscarProductosActivos(): void{
+    this.productosService.getBuscarProductosActivos(this.busqueda).subscribe({
+      next: (data: Producto[]) => {
+        this.productos = data;
+        this.productosService.productos = this.productos;
+
+        console.log("Lista de Productos");
+        console.log(this.productos);
+
+        this.router.navigate(['productos/shop']);
+      },
+      error: (error) => {
+        console.error('Error al obtener los productos:', error);
+      }
+    });
+  }
 
   cargarCategoriasActivas(): void {
     this.categoriasService.getCategoriasActivas().subscribe((categorias: Categoria[]) => {

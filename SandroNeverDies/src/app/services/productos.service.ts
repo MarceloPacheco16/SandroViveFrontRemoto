@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Producto } from '../models/productoModel';
 
@@ -11,9 +11,11 @@ import { EncryptionService } from './encryption.service';
 })
 export class ProductosService {
 	API_URI = 'http://localhost:8000/producto';
+	API_BuscarProductosActivos = 'http://localhost:8000/buscar_productos/';
 	API_ProductosActivos = 'http://localhost:8000/productos/activos';
 	API_ProdXCategoria = 'http://localhost:8000/productos/categoria';
 	API_ProdXSubcategoria = 'http://localhost:8000/productos/subcategoria';
+	API_FiltrarProductosActivos = 'http://localhost:8000/filtrar_productos/';
   FORMAT_JSON = "?format=json";
 
   productos: Producto[];
@@ -28,6 +30,9 @@ export class ProductosService {
     return this.http.get<Producto[]>(this.API_URI + this.FORMAT_JSON, { headers: this.headers });
   }
 
+  getBuscarProductosActivos(busqueda: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_BuscarProductosActivos}?busqueda=${busqueda}`);
+  }
   getProductosActivos(): Observable<Producto[]> {
     return this.http.get<Producto[]>(this.API_ProductosActivos, { headers: this.headers });
   }
@@ -38,5 +43,15 @@ export class ProductosService {
 
   getProductsBySubcategory(subcategoriaId: number): Observable<any> {
     return this.http.get(`${this.API_ProdXSubcategoria}/${subcategoriaId}/`);
+  }
+  
+  filtrarProductos(filtros: any): Observable<any> {
+    let params = new HttpParams();
+    for (const key in filtros) {
+      if (filtros[key]) {
+        params = params.set(key, filtros[key]);
+      }
+    }
+    return this.http.get<any>(this.API_FiltrarProductosActivos, { params });
   }
 }
