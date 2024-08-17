@@ -37,8 +37,8 @@ export class ShopComponent implements OnInit{
 
   constructor(private productosService: ProductosService, private categoriasService:CategoriasService, private router:Router){
 
-    this.categoriaSeleccionada = -1;
-    this.subcategoriaSeleccionada = -1;
+    this.categoriaSeleccionada = this.categoriasService.id_categoria;
+    this.subcategoriaSeleccionada = this.categoriasService.id_subcategoria;
 
     this.categorias = [];
     this.subcategorias = [];
@@ -50,21 +50,45 @@ export class ShopComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.CargarProductos();
+    // this.CargarProductos();
     this.cargarCategoriasActivas();
   }
 
   cargarCategoriasActivas(): void {
     this.categoriasService.getCategoriasActivas().subscribe((categorias: Categoria[]) => {
       this.categorias = categorias.map(categoria => ({ ...categoria, subcategorias: [] }));
-      this.categorias.forEach(categoria => {
-        this.categoriasService.getSubcategoriasActivasPorCategoria(categoria.id).subscribe((subcategorias: Subcategoria[] = []) => {
-          categoria.subcategorias = subcategorias ? subcategorias : [];
+      // this.categorias.forEach(categoria => {
+      //   this.categoriasService.getSubcategoriasActivasPorCategoria(categoria.id).subscribe((subcategorias: Subcategoria[] = []) => {
+      //     categoria.subcategorias = subcategorias ? subcategorias : [];
+      //   });
+      // });
+      // this.inicializarSeleccion();
+      const categoriaSeleccionada = this.categorias.find(c => c.id === this.categoriaSeleccionada);
+      if (categoriaSeleccionada) {
+        this.categoriasService.getSubcategoriasActivasPorCategoria(categoriaSeleccionada.id).subscribe((subcategorias: Subcategoria[]) => {
+          categoriaSeleccionada.subcategorias = subcategorias;
+          this.subcategorias = subcategorias;
+          this.inicializarSeleccion();
         });
-      });
+      } else {
+        this.inicializarSeleccion();
+      }
     });
   }
 
+  inicializarSeleccion(): void {
+    console.log("categoria: " + this.categoriaSeleccionada);
+    console.log("subcategoria: " + this.subcategoriaSeleccionada);
+    
+    if (this.categoriaSeleccionada !== -1 && this.subcategoriaSeleccionada === -1) {
+      this.onCategoriaChange();
+    }
+    if (this.subcategoriaSeleccionada !== -1) {
+      this.onSubcategoriaChange();
+    }
+    this.CargarProductos();
+  }
+  
   onCategoriaChange(): void {
     // for(let i = 0; i < this.categorias.length; i++){
     //   console.log("id: " + this.categorias[i].id);
@@ -145,6 +169,10 @@ export class ShopComponent implements OnInit{
         console.error('Error al filtrar productos:', error);
       }
     });
+  }
+
+  seleccionarProducto(producto: Producto): void {
+    this.router.navigate(['/productos/detail', producto.id]);
   }
 
   getPaginatedProducts(): void {

@@ -15,6 +15,8 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ContactComponent } from './components/contact/contact.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import { AbmClienteComponent } from './components/abm-cliente/abm-cliente.component';
+import { AbmCategoriaComponent } from './components/abm-categoria/abm-categoria.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { HttpClientModule } from '@angular/common/http';
     DetailComponent,
     CartComponent,
     CheckoutComponent,
-    ContactComponent
+    ContactComponent,
+    AbmClienteComponent,
+    AbmCategoriaComponent
   ],
   imports: [
     BrowserModule,

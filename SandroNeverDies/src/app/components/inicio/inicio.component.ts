@@ -13,162 +13,177 @@ import { ProductosService } from 'src/app/services/productos.service';
 })
 export class InicioComponent {
 
-  categorias: Categoria[];
-  // subcategoriasPorCategoria: { [key: number]: Subcategoria[] };
+  // categorias: Categoria[];
+  // // subcategoriasPorCategoria: { [key: number]: Subcategoria[] };
   
-  productos: Producto[];
+  // productos: Producto[];
   
-  id_categoria: number;
-  id_subcategoria: number;
+  // id_categoria: number;
+  // id_subcategoria: number;
 
-  busqueda: string;
+  // busqueda: string;
 
-  constructor(private productosService: ProductosService, private router:Router, private categoriasService: CategoriasService){
+  // constructor(private productosService: ProductosService, private router:Router, private categoriasService: CategoriasService){
 
-    this.categorias = [];
-    // this.subcategoriasPorCategoria = {};
+  //   this.categorias = [];
+  //   // this.subcategoriasPorCategoria = {};
 
-    this.productos = [];
+  //   this.productos = [];
 
-    this.id_categoria = -1;
-    this.id_subcategoria = -1;
+  //   this.id_categoria = -1;
+  //   this.id_subcategoria = -1;
     
-    this.busqueda = "";
-  }
+  //   this.busqueda = "";
+  // }
 
-  ngOnInit(): void {
-    this.cargarCategoriasActivas();
-  }
+  // ngOnInit(): void {
+  //   this.cargarCategoriasActivas();
+  // }
   
-  getProductos(): void {
-    this.productosService.getProductosActivos().subscribe({
-      next: (data: Producto[]) => {
-        this.productos = data;
-        this.productosService.productos = this.productos;
+  // getProductos(): void {
+  //   this.productosService.getProductosActivos().subscribe({
+  //     next: (data: Producto[]) => {
+  //       this.productos = data;
+  //       this.productosService.productos = this.productos;
 
-        console.log("Lista de Productos");
-        console.log(this.productos);
+  //       console.log("Lista de Productos");
+  //       console.log(this.productos);
 
-        this.router.navigate(['productos/shop']);
-      },
-      error: (error) => {
-        console.error('Error al obtener los productos:', error);
-      }
-    });
-  }  
+  //       this.router.navigate(['productos/shop']);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error al obtener los productos:', error);
+  //     }
+  //   });
+  // }  
 
-  getBuscarProductosActivos(): void{
-    this.productosService.getBuscarProductosActivos(this.busqueda).subscribe({
-      next: (data: Producto[]) => {
-        this.productos = data;
-        this.productosService.productos = this.productos;
+  // getBuscarProductosActivos(): void{
+  //   this.productosService.getBuscarProductosActivos(this.busqueda).subscribe({
+  //     next: (data: Producto[]) => {
+  //       this.productos = data;
+  //       this.productosService.productos = this.productos;
 
-        console.log("Lista de Productos");
-        console.log(this.productos);
+  //       console.log("Lista de Productos");
+  //       console.log(this.productos);
 
-        this.router.navigate(['productos/shop']);
-      },
-      error: (error) => {
-        console.error('Error al obtener los productos:', error);
-      }
-    });
-  }
+  //       this.router.navigate(['productos/shop']);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error al obtener los productos:', error);
+  //     }
+  //   });
+  // }
 
-  cargarCategoriasActivas(): void {
-    this.categoriasService.getCategoriasActivas().subscribe((categorias: Categoria[]) => {
-      this.categorias = categorias.map(categoria => ({ ...categoria, subcategorias: [] }));
-      this.categorias.forEach(categoria => {
-        this.categoriasService.getSubcategoriasActivasPorCategoria(categoria.id).subscribe((subcategorias: Subcategoria[]) => {
-          categoria.subcategorias = subcategorias;
-        });
-      });
-    });
-  }
-
-  // cargarCategoriasActivas() {
-  //   this.categoriasService.getCategoriasActivas().subscribe(
-  //     (data) => {
-  //       this.categorias = data;
-  //       // Por cada categoría, cargar las subcategorías activas
-  //       this.categorias.forEach(categoria => {
-  //         this.cargarSubcategoriasActivasPorCategoria(categoria.id);
+  // cargarCategoriasActivas(): void {
+  //   this.categoriasService.getCategoriasActivas().subscribe((categorias: Categoria[]) => {
+  //     this.categorias = categorias.map(categoria => ({ ...categoria, subcategorias: [] }));
+  //     this.categorias.forEach(categoria => {
+  //       this.categoriasService.getSubcategoriasActivasPorCategoria(categoria.id).subscribe((subcategorias: Subcategoria[]) => {
+  //         categoria.subcategorias = subcategorias;
   //       });
-  //     },
-  //     (error) => {
-  //       console.error('Error al cargar las categorías activas', error);
-  //     }
-  //   );
+  //     });
+  //   });
+    
+  //   this.categoriasService.id_categoria = this.id_categoria;
+  //   this.categoriasService.id_subcategoria = this.id_subcategoria;
+
+  //   console.log("Categoria: " + this.categoriasService.id_categoria);
+  //   console.log("Subcategoria: " + this.categoriasService.id_subcategoria);
   // }
 
-  // cargarSubcategoriasActivasPorCategoria(categoriaId: number) {
-  //   this.categoriasService.getSubcategoriasActivasPorCategoria(categoriaId).subscribe(
-  //     (data) => {
-  //       this.subcategoriasPorCategoria[categoriaId] = data;
+  // // cargarCategoriasActivas() {
+  // //   this.categoriasService.getCategoriasActivas().subscribe(
+  // //     (data) => {
+  // //       this.categorias = data;
+  // //       // Por cada categoría, cargar las subcategorías activas
+  // //       this.categorias.forEach(categoria => {
+  // //         this.cargarSubcategoriasActivasPorCategoria(categoria.id);
+  // //       });
+  // //     },
+  // //     (error) => {
+  // //       console.error('Error al cargar las categorías activas', error);
+  // //     }
+  // //   );
+  // // }
+
+  // // cargarSubcategoriasActivasPorCategoria(categoriaId: number) {
+  // //   this.categoriasService.getSubcategoriasActivasPorCategoria(categoriaId).subscribe(
+  // //     (data) => {
+  // //       this.subcategoriasPorCategoria[categoriaId] = data;
+  // //     },
+  // //     (error) => {
+  // //       console.error(`Error al cargar las subcategorías activas para la categoría ${categoriaId}`, error);
+  // //     }
+  // //   );
+  // // }
+
+  // getProductsByCategory(categoriaId: number, categoriaNombre: string): void {
+  //   this.productosService.getProductsByCategory(categoriaId).subscribe({
+  //     next: (data: Producto[]) => {
+  //       this.productos = data;
+  //       this.productosService.productos = this.productos;
+  //       console.log(`Productos por categoría (${categoriaNombre}):`, this.productos);
+
+  //       this.categoriasService.id_categoria = categoriaId;
+  //       console.log("Categoria: " + categoriaId);
+
+  //       this.router.navigate(['productos/shop']);
   //     },
-  //     (error) => {
-  //       console.error(`Error al cargar las subcategorías activas para la categoría ${categoriaId}`, error);
+  //     error: (error) => {
+  //       console.error('Error al obtener productos por categoría:', error);
   //     }
-  //   );
+  //   });
   // }
 
-  getProductsByCategory(categoriaId: number, categoriaNombre: string): void {
-    this.productosService.getProductsByCategory(categoriaId).subscribe({
-      next: (data: Producto[]) => {
-        this.productos = data;
-        this.productosService.productos = this.productos;
-        console.log(`Productos por categoría (${categoriaNombre}):`, this.productos);
-
-        this.router.navigate(['productos/shop']);
-      },
-      error: (error) => {
-        console.error('Error al obtener productos por categoría:', error);
-      }
-    });
-  }
-
-  getProductsBySubcategory(categoriaNombre: string, subcategoriaId: number, subcategoriaNombre: string): void {
-    this.productosService.getProductsBySubcategory(subcategoriaId).subscribe({
-      next: (data: Producto[]) => {
-        this.productos = data;
-        this.productosService.productos = this.productos;
-        console.log(`Productos por subcategoría (${categoriaNombre} > ${subcategoriaNombre}):`, this.productos);
-
-        this.router.navigate(['productos/shop']);
-      },
-      error: (error) => {
-        console.error('Error al obtener productos por subcategoría:', error);
-      }
-    });
-  }
-
-  // getProductsBySubcategory2(subcategoriaId: number): void {
+  // getProductsBySubcategory(categoriaId: number, categoriaNombre: string, subcategoriaId: number, subcategoriaNombre: string): void {
   //   this.productosService.getProductsBySubcategory(subcategoriaId).subscribe({
   //     next: (data: Producto[]) => {
   //       this.productos = data;
   //       this.productosService.productos = this.productos;
-  //       console.log("Productos por subcategoría:", this.productos);
+  //       console.log(`Productos por subcategoría (${categoriaNombre} > ${subcategoriaNombre}):`, this.productos);
+
+  //       this.categoriasService.id_categoria = categoriaId;
+  //       this.categoriasService.id_subcategoria = subcategoriaId;
+
+  //       console.log("Categoria: " + categoriaId);
+  //       console.log("Subcategoria: " + subcategoriaId);
+
+  //       this.router.navigate(['productos/shop']);
   //     },
   //     error: (error) => {
   //       console.error('Error al obtener productos por subcategoría:', error);
   //     }
   //   });
   // }
-  
-  // getProductsByCategory(): void {
-  //   if (this.id_categoria !== null) {
-  //     this.productosService.getProductsByCategory(this.id_categoria).subscribe(data => {
-  //       this.productos = data;
-  //       this.productosService.productos = this.productos;
-  //     });
-  //   }
-  // }
 
-  // getProductsBySubcategory(): void {
-  //   if (this.id_subcategoria !== null) {
-  //     this.productosService.getProductsBySubcategory(this.id_subcategoria).subscribe(data => {
-  //       this.productos = data;
-  //       this.productosService.productos = this.productos;
-  //     });
-  //   }
-  // }
+  // // getProductsBySubcategory2(subcategoriaId: number): void {
+  // //   this.productosService.getProductsBySubcategory(subcategoriaId).subscribe({
+  // //     next: (data: Producto[]) => {
+  // //       this.productos = data;
+  // //       this.productosService.productos = this.productos;
+  // //       console.log("Productos por subcategoría:", this.productos);
+  // //     },
+  // //     error: (error) => {
+  // //       console.error('Error al obtener productos por subcategoría:', error);
+  // //     }
+  // //   });
+  // // }
+  
+  // // getProductsByCategory(): void {
+  // //   if (this.id_categoria !== null) {
+  // //     this.productosService.getProductsByCategory(this.id_categoria).subscribe(data => {
+  // //       this.productos = data;
+  // //       this.productosService.productos = this.productos;
+  // //     });
+  // //   }
+  // // }
+
+  // // getProductsBySubcategory(): void {
+  // //   if (this.id_subcategoria !== null) {
+  // //     this.productosService.getProductsBySubcategory(this.id_subcategoria).subscribe(data => {
+  // //       this.productos = data;
+  // //       this.productosService.productos = this.productos;
+  // //     });
+  // //   }
+  // // }
 }

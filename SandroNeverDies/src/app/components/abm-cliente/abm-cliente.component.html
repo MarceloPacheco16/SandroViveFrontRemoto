@@ -1,0 +1,242 @@
+<!-- <p>abm-cliente works!</p> -->
+ 
+<app-navigation></app-navigation>
+
+<div>
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Home</a>
+                    <span class="breadcrumb-item active">ABM</span>
+                    <span class="breadcrumb-item active">Productos</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Contact Start -->
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">ABM de Productos</span></h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                    
+                    <ng-container *ngIf="registrar == true; else actualizar">
+                        <form action="">
+                            <h3>Formulario de Registro</h3>
+                            <div class="form-group">
+                                <input type="text" [(ngModel)]="nuevoProducto.nombre" name="nuevoProducto.nombre" placeholder="Nombre" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.descripcion" name="nuevoProducto.descripcion"  placeholder="Descripcion" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.talle" name="nuevoProducto.talle"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.color" name="nuevoProducto.color"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.categoria" name="nuevoProducto.categoria"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.subcategoria" name="nuevoProducto.subcategoria"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.precio" name="nuevoProducto.precio"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.cantidad" name="nuevoProducto.cantidad"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.cantidad_disponible" name="nuevoProducto.cantidad_disponible"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.cantidad_limite" name="nuevoProducto.cantidad_limite"  placeholder="Apellido" class="form-control">
+                                <!-- <input type="text" [(ngModel)]="nuevoProducto.imagen" name="nuevoProducto.imagen"  placeholder="Apellido" class="form-control"> -->
+
+                                <label for="imagen">Imagen:</label>
+                                <input type="file" (change)="onFileChange($event)" class="form-control">
+                                <!-- <input type="file" id="imagen" (change)="onFileChange($event)"> -->
+                                <input type="text" [(ngModel)]="nuevoProducto.observaciones" name="nuevoProducto.observaciones"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="nuevoProducto.activo" name="nuevoProducto.activo"  placeholder="Apellido" class="form-control">
+                            </div>
+                            
+                            
+                            <!-- <div class="form-group">
+                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
+                                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
+                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
+                                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
+                                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
+                                </select>
+                            </div> -->
+                
+                            <button (click)="registrarProducto()" type="button">
+                                    Registrar <i class="zmdi zmdi-arrow-right"></i>
+                            </button>
+                        </form>
+                    </ng-container>
+                    <ng-template #actualizar>
+                        <form action="">
+                            <h3>Formulario de Modificacion</h3>
+                            <div class="form-group">
+                                <input type="text" [(ngModel)]="actualizarProducto.nombre" name="actualizarProducto.nombre" placeholder="Nombre" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.descripcion" name="actualizarProducto.descripcion"  placeholder="Descripcion" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.talle" name="actualizarProducto.talle"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.color" name="actualizarProducto.color"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.categoria" name="actualizarProducto.categoria"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.subcategoria" name="actualizarProducto.subcategoria"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.precio" name="actualizarProducto.precio"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.cantidad" name="actualizarProducto.cantidad"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.cantidad_disponible" name="actualizarProducto.cantidad_disponible"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.cantidad_limite" name="actualizarProducto.cantidad_limite"  placeholder="Apellido" class="form-control">
+                                <!-- <input type="text" [(ngModel)]="actualizarProducto.imagen" name="actualizarProducto.imagen"  placeholder="Apellido" class="form-control"> -->
+    
+                                <label for="imagen">Imagen:</label>
+                                <input type="file" id="imagen" (change)="onFileChange($event)">
+                                <input type="text" [(ngModel)]="actualizarProducto.observaciones" name="actualizarProducto.observaciones"  placeholder="Apellido" class="form-control">
+                                <input type="text" [(ngModel)]="actualizarProducto.activo" name="actualizarProducto.activo"  placeholder="Apellido" class="form-control">
+                            </div>
+                            
+                            
+                            <!-- <div class="form-group">
+                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
+                                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
+                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
+                                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
+                                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
+                                </select>
+                            </div> -->
+                
+                            <button (click)="registrarProducto()" type="button">
+                                    Actualizar <i class="zmdi zmdi-arrow-right"></i>
+                            </button>
+                        </form>
+                    </ng-template>
+
+                    
+
+                    <table class="abm" border="1" style="width: 1350; margin-top: 20px;">
+                        <thead>
+                          <tr>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Talle</th>
+                            <th>Color</th>
+                            <th>Categoria</th>
+                            <th>Subcategoria</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Disponible</th>
+                            <th>Limite</th>
+                            <th>Imagen</th>
+                            <th>Observacion</th>
+                            <th>Activo</th>
+                            <th>Eliminar</th>
+                            <!-- Agrega más encabezados según sea necesario -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let producto of productos" (click)="onSelect(producto)">
+                            <!-- <tr *ngFor="let producto of productos"> -->
+                              <td style="text-align: center;">{{ producto.nombre }}</td>
+                              <td style="text-align: center;">{{ producto.descripcion }}</td>
+                              <td style="text-align: center;">{{ producto.talle }}</td>
+                              <td style="text-align: center;">{{ producto.color }}</td>
+                              <td style="text-align: center;">{{ producto.categoria }}</td>
+                              <td style="text-align: center;">{{ producto.subcategoria }}</td>
+                              <td style="text-align: center;">{{ producto.precio }}</td>
+                              <td style="text-align: center;">{{ producto.cantidad }}</td>
+                              <td style="text-align: center;">{{ producto.cantidad_disponible }}</td>
+                              <td style="text-align: center;">{{ producto.cantidad_limite }}</td>
+                              <td>
+                                <img [src]="producto.imagen" alt="{{ producto.imagen }}" class="producto-imagen">
+                              </td>
+                              <td style="text-align: center;">{{ producto.observaciones }}</td>
+                              <td style="text-align: center;">{{ producto.activo }}</td>
+                              <td style="text-align: center;">
+                                <button (click)="deleteProducto(producto.id)"><span style="color:red">X</span></button>
+                              </td>
+                              <!-- Agrega más celdas según sea necesario -->
+                            </tr>
+                        </tbody>
+                    </table>
+            
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
+                <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
+                        <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Your Email Address">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary">Sign Up</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
+                        <div class="d-flex">
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-secondary">
+                    &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
+                    by
+                    <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="assets/media/payments.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+</div>

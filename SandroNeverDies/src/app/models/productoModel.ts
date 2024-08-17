@@ -10,7 +10,7 @@ export interface Producto {
     cantidad: number;
     cantidad_disponible: number;
     cantidad_limite: number;
-    imagen: string;
+    imagen?: File | string; // Puede ser un archivo o una URL de imagen
     observaciones: string;
     activo: number;
   }

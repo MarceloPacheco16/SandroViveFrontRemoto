@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Router, RouteReuseStrategy, RouterModule, Routes } from '@angular/router';
 import { NavigationComponent } from "./components/navigation/navigation.component";
 import { LoginComponent } from "./components/login/login.component";
 import { UsuarioRegistroComponent } from "./components/usuario-registro/usuario-registro.component";
@@ -9,6 +9,9 @@ import { DetailComponent } from "./components/detail/detail.component";
 import { CartComponent } from "./components/cart/cart.component";
 import { CheckoutComponent } from "./components/checkout/checkout.component";
 import { ContactComponent } from "./components/contact/contact.component";
+import { AbmClienteComponent } from "./components/abm-cliente/abm-cliente.component";
+import { AbmCategoriaComponent } from "./components/abm-categoria/abm-categoria.component";
+import { CustomRouteReuseStrategy } from './custom-route-reuse-strategy'; // Asegúrate de ajustar la ruta según tu estructura de archivos
 // ContactComponent
 const routes: Routes = [
 	{
@@ -37,9 +40,9 @@ const routes: Routes = [
 		component: ShopComponent
 	},
 	{
-		path: 'productos/detail',
+		path: 'productos/detail/:id_producto',
 		component: DetailComponent
-	},
+	  },
 	{
 		path: 'productos/cart',
 		component: CartComponent
@@ -52,10 +55,21 @@ const routes: Routes = [
 		path: 'usuarios/contact',
 		component: ContactComponent
 	},
+	{
+		path: 'abm/cliente',
+		component: AbmClienteComponent
+	},
+	{
+		path: 'abm/categoria',
+		component: AbmCategoriaComponent
+	},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+  exports: [RouterModule],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
+  ]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {	}
