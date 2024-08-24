@@ -11,6 +11,7 @@ import { CheckoutComponent } from "./components/checkout/checkout.component";
 import { ContactComponent } from "./components/contact/contact.component";
 import { AbmClienteComponent } from "./components/abm-cliente/abm-cliente.component";
 import { AbmCategoriaComponent } from "./components/abm-categoria/abm-categoria.component";
+import { AbmSubcategoriaComponent } from "./components/abm-subcategoria/abm-subcategoria.component";
 import { CustomRouteReuseStrategy } from './custom-route-reuse-strategy'; // Asegúrate de ajustar la ruta según tu estructura de archivos
 // ContactComponent
 const routes: Routes = [
@@ -62,6 +63,10 @@ const routes: Routes = [
 	{
 		path: 'abm/categoria',
 		component: AbmCategoriaComponent
+	},
+	{
+		path: 'abm/subcategoria',
+		component: AbmSubcategoriaComponent
 	},
 ];
 

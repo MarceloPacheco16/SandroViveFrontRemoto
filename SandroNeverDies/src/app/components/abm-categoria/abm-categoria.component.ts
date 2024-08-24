@@ -100,10 +100,11 @@ export class AbmCategoriaComponent {
     //POST CATEGORIA
     this.categoriasService.postCategoria(this.categoriaNueva).subscribe({
       next: () => {
-        console.log('Categoria registrado con éxito');
+        console.log('Categoria Registrada con éxito');
+        this.Refresh();
       },
       error: (error: any) => {
-        console.error('Error al registrar Categoria:', error);
+        console.error('Error al Registrar Categoria:', error);
         // Maneja el error según sea necesario (por ejemplo, muestra un mensaje al usuario)
       }
     });
@@ -119,7 +120,11 @@ export class AbmCategoriaComponent {
     //   activo: 1  
     // };
     this.registrar = false;
-    this.categoriaActualizar = categoria;
+    
+    // Clonar la categoría seleccionada para evitar la modificación directa
+    this.categoriaActualizar = { ...categoria };
+    // this.categoriaActualizar = categoria;
+
     // this.nuevoUsuario = {...this.nuevoUsuario, id: cliente.usuario || '', email: cliente.usuario ? cliente.usuario + '@example.com' : ''};
   }
 
@@ -127,15 +132,40 @@ export class AbmCategoriaComponent {
     //POST USUARIO
     this.categoriasService.putCategoria(this.categoriaActualizar).subscribe({
       next: () => {
-        console.log('Usuario registrado con éxito');
+        console.log('Categoria Actualizada con éxito');
+        this.Refresh();
       },
       error: (error: any) => {
-        console.error('Error al registrar usuario:', error);
+        console.error('Error al Registrar Categoria:', error);
         // Maneja el error según sea necesario (por ejemplo, muestra un mensaje al usuario)
       }
     });
   }
   
+  Refresh(): void{
+    console.log("Recargar Datos...");
+    
+    this.categorias = [];
+    this.subcategorias = [];
+
+    this.categoriaNueva = {
+      id: 0,   
+      nombre: '',
+      descripcion: '',
+      activo: 1,  // Valor predeterminado para 'activo'
+      subcategorias: [] // Añade esta propiedad para anidar subcategorías
+    };
+    this.categoriaActualizar = {
+      id: 0,   
+      nombre: '',
+      descripcion: '',
+      activo: 1,  // Valor predeterminado para 'activo'
+      subcategorias: [] // Añade esta propiedad para anidar subcategorías
+    };
+
+    this.obtenerCategorias();
+    this.obtenerSubcategorias();
+  }
   // onSelect(producto: Producto): void {
     
   //   // let usuarioVacio = {   

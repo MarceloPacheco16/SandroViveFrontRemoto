@@ -1,0 +1,212 @@
+<!-- <p>abm-subcategoria works!</p> -->
+ 
+<app-navigation></app-navigation>
+
+<div>
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Home</a>
+                    <span class="breadcrumb-item active">ABM</span>
+                    <span class="breadcrumb-item active">Subcategorias</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Contact Start -->
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">ABM de Subcategorias</span></h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                    
+                    <ng-container *ngIf="registrar == true; else actualizar">
+                        <form action="">
+                            <h3>Formulario de Registro</h3>
+                            <div class="form-group">
+                                <input type="text" [(ngModel)]="SubcategoriaNueva.nombre" name="SubcategoriaNueva.nombre" placeholder="Nombre" class="form-control" style="margin-bottom: 15px;">
+                                <input type="text" [(ngModel)]="SubcategoriaNueva.descripcion" name="SubcategoriaNueva.descripcion"  placeholder="Descripcion" class="form-control" style="margin-bottom: 15px;">
+                                <!-- <input type="text" [(ngModel)]="categoriaNueva.subcategoria" name="categoriaNueva.subcategoria"  placeholder="Subcategoria" class="form-control"> -->
+                                <div class="form-group">
+                                    <!-- <select id="categoriaSelect" [(ngModel)]="categoriaSeleccionada" name="categoria" (change)="onCategoriaChange()" class="form-control"> -->
+                                    <select id="categoriaSelect" [(ngModel)]="categoriaSeleccionada" name="categoria" class="form-control">
+                                        <option [ngValue]="-1" disabled>Seleccione una Categoria</option>
+                                        <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{ categoria.nombre }}</option>
+                                    </select>
+                                </div>
+                                <input type="text" [(ngModel)]="SubcategoriaNueva.activo" name="SubcategoriaNueva.activo"  placeholder="Activo" class="form-control">
+                            </div>
+                            
+                            <!-- <div class="form-group">
+                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
+                                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
+                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
+                                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
+                                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
+                                </select>
+                            </div> -->
+                
+                            <button (click)="registrarSubcategoria()" type="button">
+                                    Registrar <i class="zmdi zmdi-arrow-right"></i>
+                            </button>
+                        </form>
+                    </ng-container>
+                    <ng-template #actualizar>
+                        <form action="">
+                            <h3>Formulario de Modificacion</h3>
+                            <div class="form-group">
+                                <input type="text" [(ngModel)]="SubcategoriaActualizar.nombre" name="SubcategoriaActualizar.nombre" placeholder="Nombre" class="form-control">
+                                <input type="text" [(ngModel)]="SubcategoriaActualizar.descripcion" name="SubcategoriaActualizar.descripcion"  placeholder="Descripcion" class="form-control">
+                                <div class="form-group">
+                                    <!-- <select id="categoriaSelect" [(ngModel)]="categoriaSeleccionada" name="categoria" (change)="onCategoriaChange()" class="form-control"> -->
+                                    <select id="categoriaSelect" [(ngModel)]="categoriaSeleccionada" name="categoria" class="form-control">
+                                        <option [ngValue]="-1" disabled>Seleccione una Categoria</option>
+                                        <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{ categoria.nombre }}</option>
+                                    </select>
+                                </div>
+                                <input type="text" [(ngModel)]="SubcategoriaActualizar.activo" name="SubcategoriaActualizar.activo"  placeholder="Activo" class="form-control">
+                            </div>
+                            
+                            
+                            <!-- <div class="form-group">
+                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
+                                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
+                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
+                                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
+                                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
+                                </select>
+                            </div> -->
+                
+                            <button (click)="actualizarSubcategoria()" type="button">
+                                    Actualizar <i class="zmdi zmdi-arrow-right"></i>
+                            </button>
+                        </form>
+                    </ng-template>
+
+                    
+                    <!-- <td style="text-align: center;">
+                                <ul>
+                                  <li *ngFor="let subcategoria of categoria.subcategorias">
+                                    {{ subcategoria.nombre }}
+                                  </li>
+                                </ul>
+                    </td> -->
+                              
+                    <table class="abm" border="1" style="width: 1350; margin-top: 20px;">
+                        <thead>
+                          <tr>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Categoria</th>
+                            <th>Activo</th>
+                            <!-- Agrega más encabezados según sea necesario -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let subcategoria of subcategorias" (click)="onSelect(subcategoria)">
+                            <!-- <tr *ngFor="let categoria of categorias"> -->
+                            <!-- <tr *ngFor="let producto of productos"> -->
+                              <td style="text-align: center;">{{ subcategoria.nombre }}</td>
+                              <td style="text-align: center;">{{ subcategoria.descripcion }}</td>
+                              <td style="text-align: center;">{{ subcategoria.categoria }}</td>
+                              <td style="text-align: center;">{{ subcategoria.activo }}</td>
+                              <!-- Agrega más celdas según sea necesario -->
+                            </tr>
+                        </tbody>
+                    </table>            
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
+                <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
+                        <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Your Email Address">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary">Sign Up</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
+                        <div class="d-flex">
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-secondary">
+                    &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
+                    by
+                    <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="assets/media/payments.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+</div>

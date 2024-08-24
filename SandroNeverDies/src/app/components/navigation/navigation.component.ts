@@ -5,6 +5,7 @@ import { Producto } from 'src/app/models/productoModel';
 import { Subcategoria } from 'src/app/models/subcategoriaModel';
 import { CategoriasService } from 'src/app/services/categorias.service';
 import { ProductosService } from 'src/app/services/productos.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-navigation',
@@ -12,8 +13,8 @@ import { ProductosService } from 'src/app/services/productos.service';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent {
-  
-  // constructor(private router:Router) { 
+
+  // constructor(private router:Router) {
   //   // this.usuariosService.setToken();
   //   console.log("En Inicio...");
   // }
@@ -22,7 +23,7 @@ export class NavigationComponent {
   //   console.log("Ir a Login...");
   //   this.router.navigate(['usuarios/login']);
   // }
-  
+
   // registrar(){
   //   console.log("Ir a Registrar...");
   //   this.router.navigate(['usuarios/usuario-registro']);
@@ -30,15 +31,15 @@ export class NavigationComponent {
 
   categorias: Categoria[];
   // subcategoriasPorCategoria: { [key: number]: Subcategoria[] };
-  
+
   productos: Producto[];
-  
+
   id_categoria: number;
   id_subcategoria: number;
 
   busqueda: string;
 
-  constructor(private productosService: ProductosService, private router:Router, private categoriasService: CategoriasService){
+  constructor(private productosService: ProductosService, private router:Router, private categoriasService: CategoriasService, private sharedService : SharedService){
 
     this.categorias = [];
     // this.subcategoriasPorCategoria = {};
@@ -47,14 +48,14 @@ export class NavigationComponent {
 
     this.id_categoria = -1;
     this.id_subcategoria = -1;
-    
+
     this.busqueda = "";
   }
 
   ngOnInit(): void {
     this.cargarCategoriasActivas();
   }
-  
+
   getProductos(): void {
     this.productosService.getProductosActivos().subscribe({
       next: (data: Producto[]) => {
@@ -64,13 +65,25 @@ export class NavigationComponent {
         console.log("Lista de Productos");
         console.log(this.productos);
 
-        this.router.navigate(['productos/shop']);
+        console.log(this.router.url);
+        if (this.router.url === '/productos/shop') {
+          console.log("MISMO FORMULARIO");
+
+          // this.sharedService.triggerAction();
+          // this.router.navigateByUrl('/productos', { skipLocationChange: true }).then(() => {
+          //   this.router.navigate(['/productos/shop']);
+          // });
+        } else {
+          console.log("OTRO FORMULARIO");
+          this.router.navigate(['/productos/shop']);
+        }
+        // this.router.navigate(['productos/shop']);
       },
       error: (error) => {
         console.error('Error al obtener los productos:', error);
       }
     });
-  }  
+  }
 
   getBuscarProductosActivos(): void{
     this.productosService.getBuscarProductosActivos(this.busqueda).subscribe({
@@ -81,7 +94,19 @@ export class NavigationComponent {
         console.log("Lista de Productos");
         console.log(this.productos);
 
-        this.router.navigate(['productos/shop']);
+        console.log(this.router.url);
+        if (this.router.url === '/productos/shop') {
+          console.log("MISMO FORMULARIO");
+          this.sharedService.filtrarPorNombre(this.busqueda);
+          // this.sharedService.triggerAction();
+          // this.router.navigateByUrl('/productos', { skipLocationChange: true }).then(() => {
+          //   this.router.navigate(['/productos/shop']);
+          // });
+        } else {
+          console.log("OTRO FORMULARIO");
+          this.router.navigate(['/productos/shop']);
+        }
+        // this.router.navigate(['productos/shop']);
       },
       error: (error) => {
         console.error('Error al obtener los productos:', error);
@@ -95,13 +120,13 @@ export class NavigationComponent {
       this.categorias.forEach(categoria => {
         this.categoriasService.getSubcategoriasActivasPorCategoria(categoria.id).subscribe((subcategorias: Subcategoria[]) => {
           categoria.subcategorias = subcategorias;
-          
-          console.log("Categorias:");
-          console.log(this.categorias);
         });
       });
+
+      console.log("Categorias:");
+      console.log(this.categorias);
     });
-    
+
     this.categoriasService.id_categoria = this.id_categoria;
     this.categoriasService.id_subcategoria = this.id_subcategoria;
 
@@ -147,10 +172,14 @@ export class NavigationComponent {
 
         console.log(this.router.url);
         if (this.router.url === '/productos/shop') {
-          this.router.navigateByUrl('/productos', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['/productos/shop']);
-          });
+          console.log("MISMO FORMULARIO");
+
+          this.sharedService.filtrarPorCategoriaYSubcategoria();
+          // this.router.navigateByUrl('/productos', { skipLocationChange: true }).then(() => {
+          //   this.router.navigate(['/productos/shop']);
+          // });
         } else {
+          console.log("OTRO FORMULARIO");
           this.router.navigate(['/productos/shop']);
         }
         // this.router.navigate(['productos/shop']);
@@ -176,10 +205,15 @@ export class NavigationComponent {
 
         console.log(this.router.url);
         if (this.router.url === '/productos/shop') {
-          this.router.navigateByUrl('/productos', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['/productos/shop']);
-          });
+          console.log("MISMO FORMULARIO");
+          
+          this.sharedService.filtrarPorCategoriaYSubcategoria();
+          // this.router.navigateByUrl('/productos', { skipLocationChange: true }).then(() => {
+          //   this.router.navigate(['/productos/shop']);
+          // });
+          
         } else {
+          console.log("OTRO FORMULARIO");
           this.router.navigate(['/productos/shop']);
         }
         // this.router.navigate(['productos/shop']);
@@ -202,7 +236,7 @@ export class NavigationComponent {
   //     }
   //   });
   // }
-  
+
   // getProductsByCategory(): void {
   //   if (this.id_categoria !== null) {
   //     this.productosService.getProductsByCategory(this.id_categoria).subscribe(data => {

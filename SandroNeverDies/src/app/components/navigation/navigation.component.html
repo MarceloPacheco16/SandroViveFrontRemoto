@@ -107,7 +107,7 @@
                 <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categorias</h6>
                 <i class="fa fa-angle-down text-dark"></i>
             </a>
-            <!-- <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
+            <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
             id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                 <div class="navbar-nav w-100" *ngIf="categorias.length > 0">
                     <div *ngFor="let categoria of categorias">
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-            </nav> -->
+            </nav>
 
 
 
@@ -255,7 +255,7 @@
                             </div>
                         </div> -->
 
-                        <a routerLink="../../usuarios/inicio" class="nav-item nav-link">Inicio</a>
+                        <a routerLink="/usuarios/inicio" class="nav-item nav-link">Inicio</a>
                         <!-- <a routerLink="../../usuarios/inicio" class="nav-item nav-link active">Inicio</a> -->
                         <div class="nav-item dropdown">
                             <!-- <a routerLink="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Productos<i
@@ -267,6 +267,7 @@
                                 <a routerLink="cart(baja de producto).html" class="dropdown-item">baja de producto</a> -->
                                 <a routerLink="cart(Alta de producto).html" class="dropdown-item">ABM de Productos</a>
                                 <a routerLink="../../abm/categoria" class="dropdown-item">ABM de Categorias</a>
+                                <a routerLink="../../abm/subcategoria" class="dropdown-item">ABM de Subcategorias</a>
                                 <!-- <a routerLink="cart(baja de producto).html" class="dropdown-item">ABM de Categorias</a> -->
                                 <a routerLink="cart(baja de producto).html" class="dropdown-item">ABM de Empleados</a>
                                 <!-- <a routerLink="cart(baja de producto).html" class="dropdown-item">ABM de Clientes</a> -->
@@ -286,7 +287,7 @@
                         </div> -->
                         <!-- <a routerLink="../../productos/shop" class="nav-item nav-link">Productos</a> -->
                         <a (click)="getProductos()" class="nav-item nav-link" style="cursor: pointer">Productos</a>
-                        <a routerLink="../../productos/cart" class="nav-item nav-link">Carrito de compra</a>
+                        <a routerLink="/productos/cart" class="nav-item nav-link">Carrito de compra</a>
                         
                         <!-- Modificado CARRITO DE COMPRA ahora en Menu no Submenu  y ORDEN DE COMPRA solo accesible desde la busqueda de Productos-->
                         <!-- <div class="nav-item dropdown">
@@ -301,7 +302,7 @@
                             </div>
                         </div> -->
                         <!-- <a routerLink="checkout.html" class="nav-item nav-link">Detalles de Envio</a> -->
-                        <a routerLink="../../usuarios/contact" class="nav-item nav-link">Contacto</a>
+                        <a routerLink="/usuarios/contact" class="nav-item nav-link">Contacto</a>
                         <a routerLink="../../usuarios/contact" class="nav-item nav-link">Devoluciones</a>
 
                         <!-- Modificacion de Menu VENTAS a INFORMES -->

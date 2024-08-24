@@ -17,6 +17,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AbmClienteComponent } from './components/abm-cliente/abm-cliente.component';
 import { AbmCategoriaComponent } from './components/abm-categoria/abm-categoria.component';
+import { AbmSubcategoriaComponent } from './components/abm-subcategoria/abm-subcategoria.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AbmCategoriaComponent } from './components/abm-categoria/abm-categoria.
     CheckoutComponent,
     ContactComponent,
     AbmClienteComponent,
-    AbmCategoriaComponent
+    AbmCategoriaComponent,
+    AbmSubcategoriaComponent
   ],
   imports: [
     BrowserModule,

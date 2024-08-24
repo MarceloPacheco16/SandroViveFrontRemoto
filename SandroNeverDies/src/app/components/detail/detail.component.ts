@@ -47,4 +47,12 @@ export class DetailComponent {
       this.producto = producto;
     });
   }
+  
+  normalizeImageUrl(imageUrl: File | null): string {
+    if(imageUrl != null){
+      return this.productosService.normalizeImageUrl(imageUrl.toString());
+    }else{
+      return "";
+    }
+  }
 }

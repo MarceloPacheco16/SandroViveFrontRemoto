@@ -44,6 +44,16 @@ export class ProductosService {
   }
 
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+  normalizeImageUrl(imageUrl: string): string {
+    if (imageUrl.startsWith('/media/')) {
+      return 'http://127.0.0.1:8000' + imageUrl;
+    } else if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    } else {
+      return 'http://127.0.0.1:8000/media/' + imageUrl;
+    }
+  }
   
   // Modifica el método para enviar FormData
   registrarProducto(formData: FormData): Observable<any> {

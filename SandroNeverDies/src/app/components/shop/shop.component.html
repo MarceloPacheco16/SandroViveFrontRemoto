@@ -326,7 +326,9 @@
                     <div class="col-lg-4 col-md-6 col-sm-6 pb-1" *ngFor="let product of paginatedProducts">
                         <div class="product-item bg-light mb-4" (click)="seleccionarProducto(product)"> <!-- Ir a Detalles del Producto Seleccionado -->
                             <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" [src]="product.imagen" alt="{{ product.nombre }}">
+                                <!-- normalizeImageUrl(product.imagen) -->
+                                <img class="img-fluid w-100" [src]="normalizeImageUrl(product.imagen)" alt="{{ product.imagen }}">
+                                <!-- <img class="img-fluid w-100" [src]="'http://127.0.0.1:8000' + product.imagen" alt="{{ product.imagen }}"> -->
                             </div>
                             <div class="text-center py-4">
                                 <!-- <a class="h6 text-decoration-none text-truncate" href="">{{ product.nombre }}</a> -->

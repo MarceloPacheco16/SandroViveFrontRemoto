@@ -95,7 +95,7 @@ export class AbmClienteComponent {
       cantidad: 0,
       cantidad_disponible: 0,
       cantidad_limite: 0,
-      imagen: '',
+      imagen: null,
       observaciones: '',
       activo: 0
     }
@@ -111,7 +111,7 @@ export class AbmClienteComponent {
       cantidad: 0,
       cantidad_disponible: 0,
       cantidad_limite: 0,
-      imagen: '',
+      imagen: null,
       observaciones: '',
       activo: 0
     }

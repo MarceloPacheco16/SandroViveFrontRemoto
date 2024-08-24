@@ -56,17 +56,27 @@ export class CategoriasService {
     //   return this.http.post<any>(this.API_URI + this.FORMAT_JSON, nuevoCliente, { headers: this.headers });
     // }
 
-    // Método para obtener todas las categorías activas
+    // Método para obtener todas las Subcategorías
     getSubcategorias(): Observable<Subcategoria[]> {
       return this.http.get<Subcategoria[]>(`${this.API_Subcategoria}`);
     }
 
-    // Método para obtener todas las categorías activas
+    postSubcategoria(SubcategoriaNueva: Subcategoria): Observable<Subcategoria[]> {
+      console.log(SubcategoriaNueva);
+      return this.http.post<Subcategoria[]>(`${this.API_Subcategoria}`, SubcategoriaNueva);
+    }
+    
+    putSubcategoria(SubcategoriaActual: Subcategoria): Observable<Subcategoria[]> {
+      console.log(SubcategoriaActual);
+      return this.http.put<Subcategoria[]>(`${this.API_Subcategoria}/${SubcategoriaActual.id}`, SubcategoriaActual);
+    }
+
+    // Método para obtener todas las Categorías activas
     getCategoriasActivas(): Observable<Categoria[]> {
       return this.http.get<Categoria[]>(`${this.API_Categoria_Mod}/activas/`);
     }
   
-    // Método para obtener todas las subcategorías activas por categoría
+    // Método para obtener todas las Subcategorías activas por Categoría
     getSubcategoriasActivasPorCategoria(categoriaId: number): Observable<Subcategoria[]> {
       return this.http.get<Subcategoria[]>(`${this.API_Categoria_Mod}/${categoriaId}/subcategorias/activas/`);
     }
