@@ -4,7 +4,9 @@ import { Categoria } from 'src/app/models/categoriaModel';
 import { Producto } from 'src/app/models/productoModel';
 import { Subcategoria } from 'src/app/models/subcategoriaModel';
 import { CategoriasService } from 'src/app/services/categorias.service';
+import { ClientesService } from 'src/app/services/clientes.service';
 import { ProductosService } from 'src/app/services/productos.service';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-inicio',
@@ -23,6 +25,19 @@ export class InicioComponent {
 
   // busqueda: string;
 
+  cliente: number;
+  usuario: number;
+  // cliente: Cliente;
+
+  constructor(private usuarioService: UsuariosService, private clientesService: ClientesService){
+    
+    this.cliente = Number.parseInt(this.clientesService.getClienteId() ?? '-1');
+    this.usuario = Number.parseInt(this.usuarioService.getUsuarioId() ?? '-1');
+
+    console.log("Login:");
+    console.log("ID Cliente: " + this.cliente);
+    console.log("ID Usuario:" + this.usuario);
+  }
   // constructor(private productosService: ProductosService, private router:Router, private categoriasService: CategoriasService){
 
   //   this.categorias = [];

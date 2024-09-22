@@ -18,7 +18,7 @@
     <!-- Breadcrumb End -->
 
 
-    <!-- Contact Start -->
+    <!-- Product Start -->
     <div class="container-fluid">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">ABM de Productos</span></h2>
         <div class="row px-xl-5">
@@ -30,38 +30,49 @@
                         <form action="">
                             <h3>Formulario de Registro</h3>
                             <div class="form-group">
-                                <input type="text" [(ngModel)]="nuevoProducto.nombre" name="nuevoProducto.nombre" placeholder="Nombre" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.descripcion" name="nuevoProducto.descripcion"  placeholder="Descripcion" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.talle" name="nuevoProducto.talle"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.color" name="nuevoProducto.color"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.categoria" name="nuevoProducto.categoria"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.subcategoria" name="nuevoProducto.subcategoria"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.precio" name="nuevoProducto.precio"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.cantidad" name="nuevoProducto.cantidad"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.cantidad_disponible" name="nuevoProducto.cantidad_disponible"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.cantidad_limite" name="nuevoProducto.cantidad_limite"  placeholder="Apellido" class="form-control">
-                                <!-- <input type="text" [(ngModel)]="nuevoProducto.imagen" name="nuevoProducto.imagen"  placeholder="Apellido" class="form-control"> -->
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" [(ngModel)]="nuevoProducto.nombre" name="nuevoProducto.nombre" placeholder="Nombre" class="form-control">
+                                <label for="descripcion">Descripcion:</label>
+                                <input type="text" id="descripcion" [(ngModel)]="nuevoProducto.descripcion" name="nuevoProducto.descripcion"  placeholder="Descripcion" class="form-control">
+                                <label for="talle">Talle:</label>
+                                <input type="text" id="talle" [(ngModel)]="nuevoProducto.talle" name="nuevoProducto.talle"  placeholder="Talle" class="form-control">
+                                <label for="color">Color:</label>
+                                <input type="text" id="color" [(ngModel)]="nuevoProducto.color" name="nuevoProducto.color"  placeholder="Color" class="form-control">
+                                
+                                <div class="form-group">
+                                    <label for="categoria">Categoria:</label>
+                                    <select id="categoriaSelect" [(ngModel)]="categoriaSeleccionada" name="categoria" (change)="onCategoriaChange()" class="form-control">
+                                        <option [ngValue]="-1" disabled>Seleccione una Categoria</option>
+                                        <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{ categoria.nombre }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subcategoria">Subcategoria:</label>
+                                    <select id="subcategoriaSelect" [(ngModel)]="subcategoriaSeleccionada" name="subcategoria" (change)="onSubcategoriaChange()" [disabled]="subcategorias.length == 0" class="form-control">
+                                        <option [ngValue]="-1" disabled>Seleccione una Subcategoria</option>
+                                        <option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id">{{ subcategoria.nombre }}</option>
+                                    </select>
+                                </div>
+
+                                <label for="precio">Precio:</label>
+                                <input type="text" id="precio" [(ngModel)]="nuevoProducto.precio" name="nuevoProducto.precio"  placeholder="Precio" class="form-control">
+                                <label for="cantidad">Cantidad:</label>
+                                <!-- <input type="text" id="cantidad" [(ngModel)]="nuevoProducto.cantidad" name="nuevoProducto.cantidad" (change)="IgualarCantidad()"  placeholder="Stock" class="form-control"> -->
+                                <input type="text" id="cantidad" [(ngModel)]="nuevoProducto.cantidad" name="nuevoProducto.cantidad"  placeholder="Stock" class="form-control">
+                                <label for="cantidad_d">Cantidad Disponible:</label>
+                                <input type="text" id="cantidad_d" [(ngModel)]="nuevoProducto.cantidad_disponible" name="nuevoProducto.cantidad_disponible"  placeholder="Stock Disponible" class="form-control" disabled>
+                                <label for="cantidad_l">Cantidad Limite:</label>
+                                <input type="text" id="cantidad_l" [(ngModel)]="nuevoProducto.cantidad_limite" name="nuevoProducto.cantidad_limite"  placeholder="Stock Limite" class="form-control">
 
                                 <label for="imagen">Imagen:</label>
-                                <input type="file" (change)="onFileChange($event)" class="form-control">
-                                <!-- <input type="file" id="imagen" (change)="onFileChange($event)"> -->
-                                <input type="text" [(ngModel)]="nuevoProducto.observaciones" name="nuevoProducto.observaciones"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="nuevoProducto.activo" name="nuevoProducto.activo"  placeholder="Apellido" class="form-control">
+                                <input type="file" (change)="onFileChange($event)" class="form-control-file">
+                                
+                                <label for="observaciones">Observaciones:</label>
+                                <input type="text" id="observaciones" [(ngModel)]="nuevoProducto.observaciones" name="nuevoProducto.observaciones"  placeholder="Apellido" class="form-control">
+                                <label for="activo">Activo:</label>
+                                <input type="text" id="activo" [(ngModel)]="nuevoProducto.activo" name="nuevoProducto.activo"  placeholder="Apellido" class="form-control">
                             </div>
                             
-                            
-                            <!-- <div class="form-group">
-                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
-                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
-                                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
-                                </select>
-                            </div> -->
                 
                             <button (click)="registrarProducto()" type="button">
                                     Registrar <i class="zmdi zmdi-arrow-right"></i>
@@ -72,39 +83,50 @@
                         <form action="">
                             <h3>Formulario de Modificacion</h3>
                             <div class="form-group">
-                                <input type="text" [(ngModel)]="actualizarProducto.nombre" name="actualizarProducto.nombre" placeholder="Nombre" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.descripcion" name="actualizarProducto.descripcion"  placeholder="Descripcion" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.talle" name="actualizarProducto.talle"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.color" name="actualizarProducto.color"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.categoria" name="actualizarProducto.categoria"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.subcategoria" name="actualizarProducto.subcategoria"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.precio" name="actualizarProducto.precio"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.cantidad" name="actualizarProducto.cantidad"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.cantidad_disponible" name="actualizarProducto.cantidad_disponible"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.cantidad_limite" name="actualizarProducto.cantidad_limite"  placeholder="Apellido" class="form-control">
-                                <!-- <input type="text" [(ngModel)]="actualizarProducto.imagen" name="actualizarProducto.imagen"  placeholder="Apellido" class="form-control"> -->
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" [(ngModel)]="actualizarProducto.nombre" name="actualizarProducto.nombre" placeholder="Nombre" class="form-control">
+                                <label for="descripcion">Descripcion:</label>
+                                <input type="text" id="descripcion" [(ngModel)]="actualizarProducto.descripcion" name="actualizarProducto.descripcion"  placeholder="Descripcion" class="form-control">
+                                <label for="talle">Talle:</label>
+                                <input type="text" id="talle" [(ngModel)]="actualizarProducto.talle" name="actualizarProducto.talle"  placeholder="Apellido" class="form-control">
+                                <label for="color">Color:</label>
+                                <input type="text" id="color" [(ngModel)]="actualizarProducto.color" name="actualizarProducto.color"  placeholder="Apellido" class="form-control">
+                                
+                                <div class="form-group">
+                                    <label for="categoria">Categoria:</label>
+                                    <select id="categoriaSelect" [(ngModel)]="categoriaSeleccionada" name="categoria" (change)="onCategoriaChange()" class="form-control">
+                                        <option [ngValue]="-1" disabled>Seleccione una Categoria</option>
+                                        <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{ categoria.nombre }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subcategoria">Subcategoria:</label>
+                                    <select id="subcategoriaSelect" [(ngModel)]="subcategoriaSeleccionada" name="subcategoria" (change)="onSubcategoriaChange()" [disabled]="subcategorias.length == 0" class="form-control">
+                                        <option [ngValue]="-1" disabled>Seleccione una Subcategoria</option>
+                                        <option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id">{{ subcategoria.nombre }}</option>
+                                    </select>
+                                </div>
+                                
+                                <label for="precio">Precio:</label>
+                                <input type="text" id="precio" [(ngModel)]="actualizarProducto.precio" name="actualizarProducto.precio"  placeholder="Apellido" class="form-control">
+                                <label for="cantidad">Cantidad:</label>
+                                <input type="text" id="cantidad" [(ngModel)]="actualizarProducto.cantidad" name="actualizarProducto.cantidad"  placeholder="Apellido" class="form-control">
+                                <label for="cantidad_d">Cantidad Disponible:</label>
+                                <input type="text" id="cantidad_d" [(ngModel)]="actualizarProducto.cantidad_disponible" name="actualizarProducto.cantidad_disponible"  placeholder="Apellido" class="form-control">
+                                <label for="cantidad_l">Cantidad Limite:</label>
+                                <input type="text" id="cantidad_l" [(ngModel)]="actualizarProducto.cantidad_limite" name="actualizarProducto.cantidad_limite"  placeholder="Apellido" class="form-control">
     
                                 <label for="imagen">Imagen:</label>
-                                <input type="file" id="imagen" (change)="onFileChange($event)">
-                                <input type="text" [(ngModel)]="actualizarProducto.observaciones" name="actualizarProducto.observaciones"  placeholder="Apellido" class="form-control">
-                                <input type="text" [(ngModel)]="actualizarProducto.activo" name="actualizarProducto.activo"  placeholder="Apellido" class="form-control">
+                                <input type="file" id="imagen" (change)="onFileChange($event)" class="form-control-file">
+                                <div>
+                                    <label for="observaciones">Observaciones:</label>
+                                    <input type="text"id="observaciones" [(ngModel)]="actualizarProducto.observaciones" name="actualizarProducto.observaciones"  placeholder="Apellido" class="form-control">
+                                </div>
+                                <label for="activo">Activo:</label>
+                                <input type="text" id="activo" [(ngModel)]="actualizarProducto.activo" name="actualizarProducto.activo"  placeholder="Apellido" class="form-control">
                             </div>
-                            
-                            
-                            <!-- <div class="form-group">
-                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
-                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
-                                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
-                                </select>
-                            </div> -->
                 
-                            <button (click)="registrarProducto()" type="button">
+                            <button (click)="modificarProducto()" type="button">
                                     Actualizar <i class="zmdi zmdi-arrow-right"></i>
                             </button>
                         </form>
@@ -128,7 +150,7 @@
                             <th>Imagen</th>
                             <th>Observacion</th>
                             <th>Activo</th>
-                            <th>Eliminar</th>
+                            <!-- <th>Eliminar</th> -->
                             <!-- Agrega más encabezados según sea necesario -->
                           </tr>
                         </thead>
@@ -146,13 +168,13 @@
                               <td style="text-align: center;">{{ producto.cantidad_disponible }}</td>
                               <td style="text-align: center;">{{ producto.cantidad_limite }}</td>
                               <td>
-                                <img [src]="producto.imagen" alt="{{ producto.imagen }}" class="producto-imagen">
+                                <img [src]="producto.imagen" alt="{{ producto.imagen }}" class="producto-imagen" style="max-height: 150px; object-fit: cover;">
                               </td>
                               <td style="text-align: center;">{{ producto.observaciones }}</td>
                               <td style="text-align: center;">{{ producto.activo }}</td>
-                              <td style="text-align: center;">
+                              <!-- <td style="text-align: center;">
                                 <button (click)="deleteProducto(producto.id)"><span style="color:red">X</span></button>
-                              </td>
+                              </td> -->
                               <!-- Agrega más celdas según sea necesario -->
                             </tr>
                         </tbody>
@@ -162,7 +184,7 @@
             </div>
         </div>
     </div>
-    <!-- Contact End -->
+    <!-- Product End -->
 
 
     <!-- Footer Start -->

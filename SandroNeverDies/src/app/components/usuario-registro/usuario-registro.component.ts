@@ -16,8 +16,8 @@ import { Provincia } from 'src/app/models/provinciaModel';
 export class UsuarioRegistroComponent {
   
   usuarios: Usuario[];
-  nuevoUsuario: Usuario = {};
-  nuevoCliente: Cliente = {};
+  nuevoUsuario: Usuario;
+  nuevoCliente: Cliente;
   private subscription: Subscription | undefined;
 
   provincias: any[];

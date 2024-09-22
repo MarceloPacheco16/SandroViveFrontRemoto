@@ -5,6 +5,8 @@ import { Usuario } from 'src/app/models/usuarioModel';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { Cliente } from 'src/app/models/clienteModel';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { EmpleadosService } from 'src/app/services/empleados.service';
+import { Empleado } from 'src/app/models/empleadoModel';
 
 @Component({
   selector: 'app-login',
@@ -15,22 +17,32 @@ export class LoginComponent {
 
   usuarios: Usuario[];
   clientes: Cliente[];
+  empleados: Empleado[];
   usuario: Usuario;
 
   errorEmail:number = 0;
   errorPassword:number = 0;
   errorLogin:number = 0;
 
-  constructor(private router:Router, private usuariosService:UsuariosService, private clienteService:ClientesService) { 
+  constructor(private router:Router, private usuariosService:UsuariosService, private clienteService:ClientesService, private empleadosService:EmpleadosService) { 
     // this.usuariosService.setToken();
     console.log("En Login...");
 
     this.usuarios = [];
     this.clientes = [];
-    this.usuario = {};
+    this.empleados = [];
+
+    this.usuario = {
+      id: "-1"
+      // email: "",
+      // contrasenia: "",
+      // cant_intentos = "",
+      // activo: 1
+    };
 
     this.getUsuarios();
     this.getClientes();
+    this.getEmpleados();
   }
 
 
@@ -54,6 +66,16 @@ export class LoginComponent {
     );
   }
 
+  getEmpleados(): void {
+    this.empleadosService.getEmpleados().subscribe(
+      (data: Empleado[]) => {
+        this.empleados = data;
+        console.log("Lista de Empleados");
+        console.log(this.empleados);
+      }
+    );
+  }
+
   login() {
     if (this.validarCampos()) {
       // console.log(this.usuario.email);
@@ -67,6 +89,39 @@ export class LoginComponent {
                 this.errorLogin = 2;
               } else {
                 console.log("Inicio de sesión exitoso", response);
+                
+                this.usuario.id = response.id;
+                // console.log("id_usuario: " + this.usuario.id);
+                let id_cliente = -1;
+                let id_empleado = -1;
+
+                for(let i = 0; i < this.clientes.length; i++){
+                  // console.log("id_usuario de cliente " + this.clientes[i].id + ": " + this.clientes[i].usuario);
+                  if(this.usuario.id == this.clientes[i].usuario){
+                    id_cliente = Number.parseInt(this.clientes[i].id.toString());
+                    break;
+                  }
+                }
+                
+                for(let i = 0; i < this.empleados.length; i++){
+                  console.log("id_usuario de empleado " + this.empleados[i].id + ": " + this.clientes[i].usuario);
+                  if(this.usuario.id == this.empleados[i].usuario){
+                    id_empleado = Number.parseInt(this.empleados[i].id.toString());
+                    break;
+                  }
+                }
+                // this.clienteService.id_cliente = id_cliente;
+                // this.usuariosService.id_usuario = Number.parseInt(this.usuario.id);
+
+                // Guardar en localStorage o sessionStorage
+                localStorage.setItem('usuarioId', this.usuario.id);
+                localStorage.setItem('clienteId', id_cliente.toString());
+                localStorage.setItem('empleadoId', id_empleado.toString());
+
+                // console.log("Persona Logueada:");
+                // console.log("ID Cliente: " + this.clienteService.id_cliente);
+                // console.log("ID Usuario:" + this.usuariosService.id_usuario);
+
                 this.router.navigate(['usuarios/inicio']);
               }
             } else {

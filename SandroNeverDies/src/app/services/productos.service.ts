@@ -59,6 +59,18 @@ export class ProductosService {
   registrarProducto(formData: FormData): Observable<any> {
     return this.http.post(this.API_URI, formData);
   }
+  
+  // Modifica el método para enviar FormData
+  actualizarProducto(formData: FormData, idProducto: Number): Observable<any> {
+    // const id = formData.get('id'); // Extrae el ID del FormData
+    // console.log("ID Producto: " + id);
+    // if (!id) {
+    //   throw new Error('ID is required to update a product');
+    // }
+    return this.http.put(`${this.API_URI}/${idProducto}`, formData);
+    
+    // return this.http.put<Subcategoria[]>(`${this.API_Subcategoria}/${SubcategoriaActual.id}`, SubcategoriaActual);
+  }
 
   deleteProducto(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URI}/${id}`, { headers: this.headers });

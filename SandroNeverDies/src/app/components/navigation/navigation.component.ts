@@ -123,15 +123,17 @@ export class NavigationComponent {
         });
       });
 
-      console.log("Categorias:");
-      console.log(this.categorias);
+      // //LISTA DE CATEGORIAS
+      // console.log("Categorias:");
+      // console.log(this.categorias);
     });
 
     this.categoriasService.id_categoria = this.id_categoria;
     this.categoriasService.id_subcategoria = this.id_subcategoria;
 
-    console.log("Categoria: " + this.categoriasService.id_categoria);
-    console.log("Subcategoria: " + this.categoriasService.id_subcategoria);
+    // // CATEGORIA Y SUBGATEGORIA SELECCIONADA
+    // console.log("Categoria: " + this.categoriasService.id_categoria);
+    // console.log("Subcategoria: " + this.categoriasService.id_subcategoria);
   }
 
   // cargarCategoriasActivas() {
@@ -254,4 +256,25 @@ export class NavigationComponent {
   //     });
   //   }
   // }
+  // empleadoId
+  logIn(): void{
+    localStorage.removeItem('usuarioId');
+    localStorage.removeItem('clienteId');
+    localStorage.removeItem('empleadoId');
+    this.router.navigate(['/usuarios/login']);
+  }
+
+  signUp(): void{
+    localStorage.removeItem('usuarioId');
+    localStorage.removeItem('clienteId');
+    localStorage.removeItem('empleadoId');
+    this.router.navigate(['/usuarios/usuario-registro']);
+  }
+
+  logOut(): void{
+    localStorage.removeItem('usuarioId');
+    localStorage.removeItem('clienteId');
+    localStorage.removeItem('empleadoId');
+    this.router.navigate(['/usuarios/login']);
+  }
 }

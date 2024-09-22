@@ -14,9 +14,11 @@ export class UsuariosService{
   AUTH_API = 'http://localhost:8000/verificar-credenciales/';
   FORMAT_JSON = "?format=json";
 	
+  id_usuario: number;
+
 	constructor(private http: HttpClient, private encryptionService: EncryptionService/*private http: HttpClient*/)
   { 
-
+    this.id_usuario = -1;
   }
 
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
@@ -29,24 +31,42 @@ export class UsuariosService{
     return this.http.post<any>(this.API_URI + this.FORMAT_JSON, nuevoUsuario, { headers: this.headers });
   }
 
+  getUsuario(id: number): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.API_URI}/${id}`);
+  }
+
+  putUsuario(id: number, usuario: Usuario): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.API_URI}/${id}`, usuario);
+  }
+
+  // En el servicio correspondiente
+  getUsuarioId(): string | null {
+    return localStorage.getItem('usuarioId');
+    // return sessionStorage.getItem('userId'); // Si usas sessionStorage
+  }
+
+  verificarContraseniaActual(id: number, contrasenia: string): Observable<any> {
+    return this.http.post<any>(`${this.API_URI}/${id}/verificar-contrasenia/`, { contrasenia: contrasenia });
+  }
+
   // // Método para obtener la clave pública desde el servidor
   // private getPublicKey(): Observable<any> {
   //   return this.http.get<any>('http://localhost:8000/get-public-key/');
   // }
 
-    // Método para iniciar sesión con email y contraseña
-    login(email: string, contrasenia: string): Observable<any> {
-      // Usar el servicio de encriptación para cifrar el email y la contraseña
-      const encryptedEmail = this.encryptionService.encrypt(email);
-      const encryptedPassword = this.encryptionService.encrypt(contrasenia);
-      // const encryptedEmail = this.encryptionService.encryptData(email, publicKey.public_key);
-      // const encryptedPassword = this.encryptionService.encryptData(contrasenia, publicKey.public_key);
+  // Método para iniciar sesión con email y contraseña
+  login(email: string, contrasenia: string): Observable<any> {
+    // Usar el servicio de encriptación para cifrar el email y la contraseña
+    const encryptedEmail = this.encryptionService.encrypt(email);
+    const encryptedPassword = this.encryptionService.encrypt(contrasenia);
+    // const encryptedEmail = this.encryptionService.encryptData(email, publicKey.public_key);
+    // const encryptedPassword = this.encryptionService.encryptData(contrasenia, publicKey.public_key);
 
-      // Construir la URL con los parámetros cifrados
-      const url = `${this.AUTH_API}?email=${encodeURIComponent(encryptedEmail)}&contrasenia=${encodeURIComponent(encryptedPassword)}`;
-      // Hacer la solicitud GET al servidor con los datos cifrados
-      return this.http.get<any>(url);
-    }
+    // Construir la URL con los parámetros cifrados
+    const url = `${this.AUTH_API}?email=${encodeURIComponent(encryptedEmail)}&contrasenia=${encodeURIComponent(encryptedPassword)}`;
+    // Hacer la solicitud GET al servidor con los datos cifrados
+    return this.http.get<any>(url);
+  }
   // // Método para iniciar sesión con email y contraseña encriptados
   // login(email: string, contrasenia: string): Observable<any> {
   //   // Encriptar el email y la contraseña utilizando el servicio de encriptación
@@ -101,18 +121,4 @@ export class UsuariosService{
   // login(usuario: Usuario): Observable<any> {
   //   return this.http.post<any>(`${this.API_URI}/login/`, usuario, { headers: this.headers });
   // }
-
-  //---------------------------------------------------------------------------
-
-	listarUsuarios(){
-		//para expandir/especializar las variables usamos ` y no ' o "
-		//Las variables salen pintadas de otro color diferente del de texto
-		//return this.http.get(`${this.API_URI}/list`);
-		//si no funciona usar 
-		//return this.http.get(this.API_URI+'/list');
-	}
-	
-	buscarUsuario(id:string){
-		//return this.http.get(`${this.API_URI}/find/${id}`);
-	}
 }

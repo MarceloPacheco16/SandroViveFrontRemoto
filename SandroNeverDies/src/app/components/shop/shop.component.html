@@ -327,7 +327,9 @@
                         <div class="product-item bg-light mb-4" (click)="seleccionarProducto(product)"> <!-- Ir a Detalles del Producto Seleccionado -->
                             <div class="product-img position-relative overflow-hidden">
                                 <!-- normalizeImageUrl(product.imagen) -->
-                                <img class="img-fluid w-100" [src]="normalizeImageUrl(product.imagen)" alt="{{ product.imagen }}">
+
+                                <!--  La Imagen tiene una altura máxima de 300 píxeles, manteniendo sus proporciones y rellenando el contenedor, recortando si es necesario -->
+                                <img class="img-fluid w-100" [src]="normalizeImageUrl(product.imagen)" alt="{{ product.imagen }}" style="max-height: 350px; object-fit: cover;">
                                 <!-- <img class="img-fluid w-100" [src]="'http://127.0.0.1:8000' + product.imagen" alt="{{ product.imagen }}"> -->
                             </div>
                             <div class="text-center py-4">

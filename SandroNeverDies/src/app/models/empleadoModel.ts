@@ -1,5 +1,5 @@
 export interface Empleado{
-	id?: string;
+	id: string;
 	nombre?: string;
 	apellido?: string;
     rol?: string;

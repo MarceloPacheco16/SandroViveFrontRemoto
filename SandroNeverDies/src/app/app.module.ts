@@ -15,9 +15,10 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ContactComponent } from './components/contact/contact.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import { AbmClienteComponent } from './components/abm-cliente/abm-cliente.component';
+import { AbmProductoComponent } from './components/abm-producto/abm-producto.component';
 import { AbmCategoriaComponent } from './components/abm-categoria/abm-categoria.component';
 import { AbmSubcategoriaComponent } from './components/abm-subcategoria/abm-subcategoria.component';
+import { UsuarioEditarComponent } from './components/usuario-editar/usuario-editar.component';
 
 @NgModule({
   declarations: [
@@ -31,9 +32,10 @@ import { AbmSubcategoriaComponent } from './components/abm-subcategoria/abm-subc
     CartComponent,
     CheckoutComponent,
     ContactComponent,
-    AbmClienteComponent,
+    AbmProductoComponent,
     AbmCategoriaComponent,
-    AbmSubcategoriaComponent
+    AbmSubcategoriaComponent,
+    UsuarioEditarComponent
   ],
   imports: [
     BrowserModule,

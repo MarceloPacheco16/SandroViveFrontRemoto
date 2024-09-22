@@ -79,7 +79,7 @@ export class ShopComponent implements OnInit{
     });
 
     this.sharedService.filtroPorNombre$.subscribe(nombreProducto => {
-      
+
       if(this.categorias.length > 0){
         this.cargarCategoriasActivas();
       }
@@ -250,16 +250,30 @@ export class ShopComponent implements OnInit{
 
   seleccionarProducto(producto: Producto): void {
     this.router.navigate(['/productos/detail', producto.id]);
+
+    // console.log("Productos Paginados:");
+    // console.log(producto);
+
+    // let ProductoID = 
+
+    // this.router.navigate(['/productos/detail', producto.id]);
   }
 
   getPaginatedProducts(): void {
     const startIndex = this.currentPage * this.pageSize;
+    console.log("Start Index:");
+    console.log(startIndex);
     const endIndex = startIndex + this.pageSize;
+    console.log("End Index:");
+    console.log(endIndex);
     this.paginatedProducts = this.productos.slice(startIndex, endIndex);
+    // console.log("Productos Paginados:");
+    // console.log(this.paginatedProducts);
   }
 
   changePage(pageNumber: number): void {
     this.currentPage = pageNumber;
+    console.log(this.currentPage);
     this.getPaginatedProducts();
   }
 

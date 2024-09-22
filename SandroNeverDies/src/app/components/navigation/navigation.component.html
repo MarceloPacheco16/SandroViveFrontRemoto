@@ -53,10 +53,13 @@
                     <button type="button" class="btn btn-sm btn-light dropdown-toggle"
                         data-toggle="dropdown">LOGIN</button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <button routerLink="../../usuarios/login" class="dropdown-item" type="button">Log In</button>
-                        <button routerLink="../../usuarios/usuario-registro" class="dropdown-item" type="button">Sign Up</button>
-                        <button class="dropdown-item" type="button">Edit Profile</button>
-                        <button routerLink="../../usuarios/login" class="dropdown-item" type="button">Log Out</button>
+                        <!-- <button routerLink="/usuarios/login" class="dropdown-item" type="button">Log In</button> -->
+                        <button (click)="logIn()" class="dropdown-item" type="button">Log In</button>
+                        <!-- <button routerLink="/usuarios/usuario-registro" class="dropdown-item" type="button">Sign Up</button> -->
+                        <button (click)="signUp()" class="dropdown-item" type="button">Sign Up</button>
+                        <button routerLink="/usuario/editar" class="dropdown-item" type="button">Edit Profile</button>
+                        <!-- <button routerLink="/usuarios/login" class="dropdown-item" type="button">Log Out</button> -->
+                        <button (click)="logOut()" class="dropdown-item" type="button">Log Out</button>
                     </div>
                 </div>
 
@@ -265,13 +268,13 @@
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0 ">
                                 <!-- <a routerLink="cart(Alta de producto).html" class="dropdown-item">alta de producto</a>
                                 <a routerLink="cart(baja de producto).html" class="dropdown-item">baja de producto</a> -->
-                                <a routerLink="cart(Alta de producto).html" class="dropdown-item">ABM de Productos</a>
-                                <a routerLink="../../abm/categoria" class="dropdown-item">ABM de Categorias</a>
-                                <a routerLink="../../abm/subcategoria" class="dropdown-item">ABM de Subcategorias</a>
+                                <a routerLink="/abm/producto" class="dropdown-item">ABM de Productos</a>
+                                <a routerLink="/abm/categoria" class="dropdown-item">ABM de Categorias</a>
+                                <a routerLink="/abm/subcategoria" class="dropdown-item">ABM de Subcategorias</a>
                                 <!-- <a routerLink="cart(baja de producto).html" class="dropdown-item">ABM de Categorias</a> -->
-                                <a routerLink="cart(baja de producto).html" class="dropdown-item">ABM de Empleados</a>
-                                <!-- <a routerLink="cart(baja de producto).html" class="dropdown-item">ABM de Clientes</a> -->
-                                <a routerLink="../../abm/cliente" class="dropdown-item">ABM de Clientes</a>
+                                <!-- <a routerLink="cart(baja de producto).html" class="dropdown-item">ABM de Empleados</a>
+                                <a routerLink="cart(baja de producto).html" class="dropdown-item">ABM de Clientes</a> -->
+                                <!-- <a routerLink="../../abm/cliente" class="dropdown-item">ABM de Clientes</a> -->
                             </div>
                         </div>
 

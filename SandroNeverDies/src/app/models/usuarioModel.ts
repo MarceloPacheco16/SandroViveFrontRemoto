@@ -1,5 +1,5 @@
 export interface Usuario{
-	id?: string;
+	id: string;
 	email?: string;
 	contrasenia?: string;
 	cant_intentos?: string;
