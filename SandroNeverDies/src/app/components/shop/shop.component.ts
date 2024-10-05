@@ -3,9 +3,11 @@ import { Router } from '@angular/router';
 import { Categoria } from 'src/app/models/categoriaModel';
 import { Producto } from 'src/app/models/productoModel';
 import { Subcategoria } from 'src/app/models/subcategoriaModel';
+import { Talle } from 'src/app/models/talleModel';
 import { CategoriasService } from 'src/app/services/categorias.service';
 import { ProductosService } from 'src/app/services/productos.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { TallesService } from 'src/app/services/talles.service';
 
 @Component({
   selector: 'app-shop',
@@ -20,6 +22,8 @@ export class ShopComponent implements OnInit{
   productos: Producto[];
   categorias: Categoria[];
   subcategorias: Subcategoria[];
+
+  talles: Talle[];
 
   filtros: any = {
     nombre: '',
@@ -36,13 +40,16 @@ export class ShopComponent implements OnInit{
   pageSize = 6; // Tamaño de la página
   currentPage = 0; // Página actual
 
-  constructor(private productosService: ProductosService, private categoriasService:CategoriasService, private router:Router, private sharedService : SharedService){
+  constructor(private productosService: ProductosService, private categoriasService:CategoriasService, private router:Router, private sharedService : SharedService,
+    private tallesService: TallesService){
 
     this.categoriaSeleccionada = this.categoriasService.id_categoria;
     this.subcategoriaSeleccionada = this.categoriasService.id_subcategoria;
 
     this.categorias = [];
     this.subcategorias = [];
+
+    this.talles = [];
 
     this.productos = [];
     this.paginatedProducts = [];
@@ -53,6 +60,7 @@ export class ShopComponent implements OnInit{
   ngOnInit(): void {
     // this.CargarProductos();
     this.cargarCategoriasActivas();
+    this.loadTalles();
 
     this.sharedService.filtroPorCategoriaYSubcategoria$.subscribe(() => {
       
@@ -102,9 +110,21 @@ export class ShopComponent implements OnInit{
 
       this.filtrarProductos();
     });
-    // this.cargarCategoriasActivas();
-  }
 
+    // this.cargarCategoriasActivas();
+    // this.filtrarProductos();
+  }
+  
+  loadTalles() {
+    this.tallesService.getTalles().subscribe(
+      (data: Talle[]) => {
+        this.talles = data;
+      },
+      (error) => {
+        console.error('Error al cargar los talles:', error);
+      }
+    );
+  }
   // buscarCategoriasActivas(): void{
   //   const categoriaSeleccionada = this.categorias.find(c => c.id === this.categoriaSeleccionada);
   //     if (categoriaSeleccionada) {

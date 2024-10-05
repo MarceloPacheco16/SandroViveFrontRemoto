@@ -30,6 +30,11 @@ export class PedidosService {
     return this.http.put<any>(`${this.API_URI}/${modificarPedido.id}`, modificarPedido);
   }
   
+  // getPedido(clienteId: number):  Observable<Pedido> {
+  //   // pedido/cliente/<int:cliente_id>/detalle
+  //   return this.http.get<Pedido>(`${this.API_URI}/${modificarPedido.id}`);
+  // }
+
   // // Método para obtener todas las Subcategorías activas por Categoría
   // getSubcategoriasActivasPorCategoria(categoriaId: number): Observable<Subcategoria[]> {
   //   return this.http.get<Subcategoria[]>(`${this.API_Categoria_Mod}/${categoriaId}/subcategorias/activas/`);

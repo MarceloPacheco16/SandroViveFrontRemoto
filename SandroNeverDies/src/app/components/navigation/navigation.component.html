@@ -40,6 +40,10 @@
     <div class="row bg-secondary py-1 px-xl-5">
         <div class="col-lg-6 d-none d-lg-block">
             <div class="d-inline-flex align-items-center h-100">
+                <p *ngIf="nombreUsuario == '' else ConUsuario" style="margin-bottom: 0;"><strong>Sin Usuario</strong></p>
+                <ng-template #ConUsuario>
+                    <p style="margin-bottom: 0;"><strong>Nombre Usuario: </strong> {{nombreUsuario}}  |   <strong>Mail Usuario: </strong> {{mailUsuario}}</p>
+                </ng-template>
                 <!-- Ya existe un Menu -->
                 <!-- <a class="text-body mr-3" href="">Acerca De</a>
                 <a class="text-body mr-3" href="">Contacto</a>
@@ -327,10 +331,12 @@
                             <span class="badge text-secondary border border-secondary rounded-circle"
                                 style="padding-bottom: 2px;">0</span>
                         </a>
-                        <a href="" class="btn px-0 ml-3">
+                        <a routerLink="/productos/cart" class="btn px-0 ml-3">
                             <i class="fas fa-shopping-cart text-primary"></i>
+                            <!-- <span class="badge text-secondary border border-secondary rounded-circle"
+                                style="padding-bottom: 2px;">0</span> -->
                             <span class="badge text-secondary border border-secondary rounded-circle"
-                                style="padding-bottom: 2px;">0</span>
+                                style="padding-bottom: 2px;">{{ cantProductosCarrito }}</span>
                         </a>
                     </div>
                 </div>

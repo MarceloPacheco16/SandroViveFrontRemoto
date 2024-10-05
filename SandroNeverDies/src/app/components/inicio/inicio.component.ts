@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Cliente } from 'src/app/models/clienteModel';
+import { Empleado } from 'src/app/models/empleadoModel';
 import { Categoria } from 'src/app/models/categoriaModel';
 import { Producto } from 'src/app/models/productoModel';
 import { Subcategoria } from 'src/app/models/subcategoriaModel';
 import { CategoriasService } from 'src/app/services/categorias.service';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { EmpleadosService } from 'src/app/services/empleados.service';
 import { ProductosService } from 'src/app/services/productos.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
@@ -27,17 +30,26 @@ export class InicioComponent {
 
   cliente: number;
   usuario: number;
+  empleado: number;
   // cliente: Cliente;
 
-  constructor(private usuarioService: UsuariosService, private clientesService: ClientesService){
+  nombreUsuario: string;
+
+  constructor(private usuarioService: UsuariosService, private clientesService: ClientesService, private empleadosService: EmpleadosService){
     
     this.cliente = Number.parseInt(this.clientesService.getClienteId() ?? '-1');
     this.usuario = Number.parseInt(this.usuarioService.getUsuarioId() ?? '-1');
+    this.empleado = Number.parseInt(this.empleadosService.getEmpleadoId() ?? '-1');
 
     console.log("Login:");
     console.log("ID Cliente: " + this.cliente);
     console.log("ID Usuario:" + this.usuario);
+    console.log("ID Empleado: " + this.empleado);
+
+    this.nombreUsuario = "";
   }
+
+
   // constructor(private productosService: ProductosService, private router:Router, private categoriasService: CategoriasService){
 
   //   this.categorias = [];

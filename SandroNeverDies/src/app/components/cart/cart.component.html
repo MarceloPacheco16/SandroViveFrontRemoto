@@ -21,151 +21,82 @@
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-lg-8 table-responsive mb-5">
-                <!-- <table class="table table-light table-borderless table-hover text-center mb-0">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Products</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Remove</th>
-                        </tr>
-                    </thead>
-                    <tbody class="align-middle">
-                        <tr>
-                            <td class="align-middle"><img src="assets/media/mujer1.jpg" alt="" style="width: 50px;"> Remera mujer logo circular</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
+
+                <!-- Si hay un Cliente Logueado Mostramos su Carrito de Compras -->
+                <div *ngIf="id_cliente != -1; else SinCliente">
+                    <!-- SI EL CARRITO TIENE PRODUCTOS MOSTRAMOS UNA TABLA CON LOS PRODUCTOS QUE CONTIENE EL CARRITO -->
+                    <table *ngIf="productosCarrito.length > 0; else emptyCart" class="table table-light table-borderless table-hover text-center mb-0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Productos</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            <!-- Iterar sobre productosCarrito para mostrar cada producto en el carrito -->
+                            <tr *ngFor="let producto of productosCarrito">
+                                <td class="align-left">
+                                    <!-- [src]="normalizeImageUrl(producto.imagen)" alt="product.imagen" -->
+                                    <!-- <img [src]="producto.producto_imagen" alt="{{ producto.producto_nombre }}" style="width: 50px;"> -->
+                                    <img [src]="normalizeImageUrl(producto.producto_imagen)" alt="{{ producto.producto_nombre }}" style="max-height: 100px; object-fit: cover;">
+                                    <!-- <img class="img-fluid w-100" [src]="normalizeImageUrl(product.imagen)" alt="{{ product.imagen }}" style="max-height: 350px; object-fit: cover;"> -->
+                                    {{ producto.producto_nombre }}
+                                </td>
+                                <td class="align-middle">{{ producto.producto_precio | currency }}</td>
+                                <td class="align-middle">
+                                    <div class="input-group quantity mx-auto" style="width: 100px;">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-primary btn-minus" (click)="decreaseQuantity(producto)">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" (focus)="guardarValorAnterior(producto)"
+                                            (change)="modificarCantidad(producto)" [(ngModel)]="producto.cantidad">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-primary btn-plus" (click)="increaseQuantity(producto)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="assets/media/mujer1 (1).jpg" alt="" style="width: 50px;"> Remera mujer logo circular</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="assets/media/hoferta.jpg" alt="" style="width: 50px;"> Product Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="assets/media/mujer2.jpg" alt="" style="width: 50px;"> Remera mujer Logo </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        
-                    </tbody>
-                </table> -->
-                <table class="table table-light table-borderless table-hover text-center mb-0">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Productos</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Total</th>
-                            <th>Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody class="align-middle">
-                        <!-- Iterar sobre productosCarrito para mostrar cada producto en el carrito -->
-                        <tr *ngFor="let producto of productosCarrito">
-                            <td class="align-left">
-                                <!-- [src]="normalizeImageUrl(producto.imagen)" alt="product.imagen" -->
-                                <!-- <img [src]="producto.producto_imagen" alt="{{ producto.producto_nombre }}" style="width: 50px;"> -->
-                                <img [src]="normalizeImageUrl(producto.producto_imagen)" alt="{{ producto.producto_nombre }}" style="max-height: 100px; object-fit: cover;">
-                                <!-- <img class="img-fluid w-100" [src]="normalizeImageUrl(product.imagen)" alt="{{ product.imagen }}" style="max-height: 350px; object-fit: cover;"> -->
-                                {{ producto.producto_nombre }}
-                            </td>
-                            <td class="align-middle">{{ producto.producto_precio | currency }}</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" (click)="decreaseQuantity(producto)">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" 
-                                        (change)="modificarCantidad(producto)" [(ngModel)]="producto.cantidad">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus" (click)="increaseQuantity(producto)">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">{{ producto.sub_total | currency }}</td>
-                            <td class="align-middle">
-                                <button class="btn btn-sm btn-danger" (click)="removeProduct(producto)">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                                <td class="align-middle">{{ producto.sub_total | currency }}</td>
+                                <td class="align-middle">
+                                    <button class="btn btn-sm btn-danger" (click)="removeProduct(producto)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- SI EL CARRITO TIENE PRODUCTOS MOSTRAMOS UNA TABLA CON LOS PRODUCTOS QUE CONTIENE EL CARRITO -->
+
+                    <!-- Mostrar un Mensaje cuando el Carrito está Vacío -->
+                    <ng-template #emptyCart>
+                        <!-- <div class="alert alert-info" role="alert" style="border: 1px solid #ff0055; padding: 20px; text-align: center;">
+                            <strong>¡Tu carrito está vacío!</strong> Agrega productos para continuar.
+                        </div> -->
+                        <div style="padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center; ">
+                            <p><strong>¡Tu carrito está vacío!</strong> Agrega productos para continuar.</p>                        
+                        </div>
+                    </ng-template>
+                    <!-- Mostrar un Mensaje cuando el Carrito está Vacío -->
+                </div>
+                <!-- Si hay un Cliente Logueado Mostramos su Carrito de Compras -->
+
+                <!-- Mostrar un Mensaje cuando no hay un Cliente Logueado -->
+                <ng-template #SinCliente>
+                    <div style="padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center; ">
+                        <p><strong>¡No hay un Cliente Logueado!</strong> Sin Cliente no existe un Carrito para Mostrar</p>                        
+                    </div>
+                </ng-template>
+                <!-- Mostrar un Mensaje cuando el Carrito está Vacío -->
+
+                
             </div>
+
             <div class="col-lg-4">
                 <!-- <form class="mb-30" action="">
                     <div class="input-group">
@@ -190,7 +121,8 @@
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Total</h5>
-                            <h5>$160</h5>
+                            <h5>${{pedido.total}}</h5>
+                            <!-- <h5>$160</h5> -->
                         </div>
                         <button routerLink="../../productos/checkout" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
                         <!-- <button (click)="ActualizarEstadoPedido()" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button> -->
@@ -201,79 +133,7 @@
     </div>
     <!-- Cart End -->
 
-
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
-        <div class="row px-xl-5 pt-5">
-            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
-            </div>
-            <div class="col-lg-8 col-md-12">
-                <div class="row">
-                    <div class="col-md-4 mb-5">
-                        <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-5">
-                        <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-5">
-                        <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-                        <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-                        <form action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Your Email Address">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary">Sign Up</button>
-                                </div>
-                            </div>
-                        </form>
-                        <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-                        <div class="d-flex">
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
-            <div class="col-md-6 px-xl-0">
-                <p class="mb-md-0 text-center text-md-left text-secondary">
-                    &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
-                    by
-                    <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
-                </p>
-            </div>
-            <div class="col-md-6 px-xl-0 text-center text-md-right">
-                <img class="img-fluid" src="assets/media/payments.png" alt="">
-            </div>
-        </div>
-    </div>
+    <app-footer></app-footer>
     <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <!-- <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a> -->
 </div>

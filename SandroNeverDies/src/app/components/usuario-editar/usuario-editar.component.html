@@ -18,198 +18,132 @@
     <!-- Breadcrumb End -->
 
 
-    <!-- Contact Start -->
+    <!-- Perfil Start -->
     <div class="container-fluid">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Edicion de Perfil</span></h2>
-        <div class="row px-xl-5">
-            <div class="col-lg-7 mb-5">
-                <div class="contact-form bg-light p-30">
-                    <div id="success"></div>
+        
+        <!-- Mostrar un Mensaje cuando no hay un Usuario Logueado -->
+        <div *ngIf="id_cliente == -1 && id_empleado == -1; else ConUsuario">
+            <div style="padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center; ">
+                <p><strong>¡No hay un Usuario Logueado!</strong> Sin Usuario no hay Datos para Editar</p>                        
+            </div>
+        </div>
+        <!-- Mostrar un Mensaje cuando no hay un Usuario Logueado -->
+
+        <!-- Si hay un Usuario Logueado el Formulario con sus Datos para Editar -->
+        <ng-template #ConUsuario>
+            <div class="row px-xl-5">
+                <div class="col-lg-7 mb-5">
+                    <div class="contact-form bg-light p-30">
+                        <div id="success"></div>
+                        
+                        <!-- Formulario para Edicion de Perfil de un Cliente Logueado -->
+                        <ng-container *ngIf="esCliente == true; else empleado">
+                            <form action="">
+                                <h3>Formulario de Edicion de Perfil Cliente</h3>
+                                <div class="form-group">
+                                    <label>Nombre:</label>
+                                    <input type="text" [(ngModel)]="modificarCliente.nombre" name="modificarCliente.nombre" placeholder="Nombre" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Apellido:</label>
+                                    <input type="text" [(ngModel)]="modificarCliente.apellido" name="modificarCliente.apellido"  placeholder="Apellido" class="form-control">
+                                </div>
+                                
+                                <div class="form-wrapper">
+                                    <label>Email:</label>
+                                    <input type="text" [(ngModel)]="modificarUsuario.email" name="modificarUsuario.email" placeholder="Email" class="form-control">
+                                    <!-- <i class="zmdi zmdi-email"></i> -->
+                                </div>
+                                <div style="background-color: whitesmoke;">
+                                    <div [ngSwitch]="errorEmail">
+                                        <!-- <h5 *ngIf="errorNombre > 0" style="color: red;"><u>Error en el Nombre</u></h5> -->
+                                        <div *ngSwitchCase="1" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Deben completar el campo Email</p></div>
+                                        <div *ngSwitchCase="2" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email muy largo, debe tener menos de 50 caracteres</p></div>
+                                        <div *ngSwitchCase="3" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email debe tener un formato correcto</p></div>
+                                        <div *ngSwitchCase="4" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email ya Existe en la Base de Datos</p></div>
+                                    </div>     
+                                </div>   
                     
-                    <ng-container *ngIf="esCliente == true; else empleado">
-                        <form action="">
-                            <h3>Formulario de Edicion de Perfil Cliente</h3>
-                            <div class="form-group">
-                                <label>Nombre:</label>
-                                <input type="text" [(ngModel)]="modificarCliente.nombre" name="modificarCliente.nombre" placeholder="Nombre" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Apellido:</label>
-                                <input type="text" [(ngModel)]="modificarCliente.apellido" name="modificarCliente.apellido"  placeholder="Apellido" class="form-control">
-                            </div>
-                            
-                            <div class="form-wrapper">
-                                <label>Email:</label>
-                                <input type="text" [(ngModel)]="modificarUsuario.email" name="modificarUsuario.email" placeholder="Email" class="form-control">
-                                <!-- <i class="zmdi zmdi-email"></i> -->
-                            </div>
-                            <div style="background-color: whitesmoke;">
-                                <div [ngSwitch]="errorEmail">
-                                    <!-- <h5 *ngIf="errorNombre > 0" style="color: red;"><u>Error en el Nombre</u></h5> -->
-                                    <div *ngSwitchCase="1" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Deben completar el campo Email</p></div>
-                                    <div *ngSwitchCase="2" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email muy largo, debe tener menos de 50 caracteres</p></div>
-                                    <div *ngSwitchCase="3" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email debe tener un formato correcto</p></div>
-                                    <div *ngSwitchCase="4" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email ya Existe en la Base de Datos</p></div>
-                                </div>     
-                            </div>   
-                
-                            <div class="form-wrapper">
-                                <label>Telefono:</label>
-                                <input type="text" [(ngModel)]="modificarCliente.telefono" name="modificarCliente.telefono"  placeholder="Telefono" class="form-control">
-                                <!-- <i class="fa-solid fa-phone"></i> -->
-                                <!-- <i class="zmdi zmdi-phone"></i> -->
-                            </div>
-                            <!-- CSS de select modificado a .custom-select -->
-                            <!-- <input type="text" [(ngModel)]="modificarCliente.provincia" name="modificarCliente.provincia"  placeholder="Provincia" class="form-control"> -->
-                            <!-- <div class="form-group">
-                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
-                                    <option value="-1" disabled selected>Seleccione una Provincia</option>
-                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
-                                </select>
-                            </div> -->
-                            <div class="form-group">
-                                <label>Provincia:</label>
-                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
-                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Localidad:</label>
+                                <div class="form-wrapper">
+                                    <label>Telefono:</label>
+                                    <input type="text" [(ngModel)]="modificarCliente.telefono" name="modificarCliente.telefono"  placeholder="Telefono" class="form-control">
+                                    <!-- <i class="fa-solid fa-phone"></i> -->
+                                    <!-- <i class="zmdi zmdi-phone"></i> -->
+                                </div>
                                 <!-- CSS de select modificado a .custom-select -->
-                                <!-- <input type="text" [(ngModel)]="modificarCliente.localidad" name="modificarCliente.localidad"  placeholder="Localidad" class="form-control"> -->
-                                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" (change)="onLocalidadChange()" [disabled]="localidades.length == 0" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
-                                    <option *ngFor="let localidad of localidades" [ngValue]="localidad">{{ localidad.descripcion }}</option>
-                                </select>
-                            </div>
-                
-                            <div class="form-wrapper">
-                                <label>Domicilio:</label>
-                                <input type="text" [(ngModel)]="modificarCliente.domicilio" name="modificarCliente.domicilio"  placeholder="Domicilio" class="form-control">
-                                <!-- <i class="fa-solid fa-location-dot"></i> -->
-                                <!-- <i class="zmdi zmdi-pin"></i> -->
-                            </div>
-                
-                            <div class="form-wrapper">
-                                <label>Codigo Postal:</label>
-                                <input type="text" [(ngModel)]="modificarCliente.codigo_postal" name="modificarCliente.codigo_postal"  placeholder="Codigo Postal" class="form-control">
-                                <!-- <i class="fa-solid fa-location-dot"></i> -->
-                                <!-- <i class="zmdi zmdi-pin"></i> -->
-                            </div>
-                            
-                            <div class="form-wrapper">
-                                <label>Actual Contraseña:</label>
-                                <input type="password" [(ngModel)]="actual_contrasenia" name="actual_contrasenia" placeholder="Actual Contraseña" class="form-control">
-                                <!-- <i class="zmdi zmdi-lock"></i> -->
-                            </div>
-                            <div style="background-color: whitesmoke;">
-                                <div [ngSwitch]="errorActualPassword">
-                                    <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
-                                    <div *ngSwitchCase="1"><p style="color: red;">Debe colocar la contraseña actual para modificar la contraseña</p></div>
-                                    <div *ngSwitchCase="2"><p style="color: red;">Contraseña no coincide con la actual contraseña</p></div>
-                                </div>     
-                            </div>
-                            <div class="form-wrapper">
-                                <label>Nueva Contraseña:</label>
-                                <input type="password" [(ngModel)]="modificarUsuario.contrasenia" name="modificarUsuario.contrasenia" placeholder="Nueva Contraseña" class="form-control">
-                                <!-- <i class="zmdi zmdi-lock"></i> -->
-                            </div>
-                            <div class="form-wrapper">
-                                <label>Confirmar Nueva Contraseña:</label>
-                                <input type="password" [(ngModel)]="conf_contrasenia" name="conf_contrasenia" placeholder="Confirme Nueva Contraseña" class="form-control">
-                                <!-- <i class="zmdi zmdi-lock"></i> -->
-                            </div>
-                            <div style="background-color: whitesmoke;">
-                                <div [ngSwitch]="errorPassword">
-                                    <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
-                                    <div *ngSwitchCase="1"><p style="color: red;">Deben completar el campo Contraseña</p></div>
-                                    <div *ngSwitchCase="2"><p style="color: red;">Contraseña debe tener 8 caracteres</p></div>
-                                    <div *ngSwitchCase="3"><p style="color: red;">Contraseña debe tener 8 caracteres y al menos uno de estos: Mayuscula - Minuscula - Numero - Caracter Especial</p></div>
-                                </div>     
-                            </div>
-                            <div style="background-color: whitesmoke;">
-                                <p [hidden]="distinta_contrasenia == false" style="color: red;">Contraseña no coincide con la nueva contraseña</p>
-                            </div>
-
-                            <!-- <button (click)="registrarCliente()" type="button"> -->
-                            <button style="margin-top: 20px;" (click)="actualizarUsuario()" type="button">
-                                <!-- <a href="../../online-shop-website-template/index.html" style=" color: white;">
-                                    Registrar <i class="zmdi zmdi-arrow-right"></i>
-                                </a> -->
-                                    Actualizar <i class="zmdi zmdi-arrow-right"></i>
-                            </button>
-                        </form>
-                    </ng-container>
-                    <ng-template #empleado>
-                        <form action="">
-                            <h3>Formulario de Edicion de Perfil Empleado</h3>
-                            <div class="form-group">
-                                <label>Nombre:</label>
-                                <input type="text" [(ngModel)]="modificarEmpleado.nombre" name="modificarEmpleado.nombre" placeholder="Nombre" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Apellido:</label>
-                                <input type="text" [(ngModel)]="modificarEmpleado.apellido" name="modificarEmpleado.apellido"  placeholder="Apellido" class="form-control">
-                            </div>
-                            
-                            <div class="form-wrapper">
-                                <label>Email:</label>
-                                <input type="text" [(ngModel)]="modificarUsuario.email" name="modificarUsuario.email" placeholder="Email" class="form-control">
-                                <!-- <i class="zmdi zmdi-email"></i> -->
-                            </div>
-                            <div style="background-color: whitesmoke;">
-                                <div [ngSwitch]="errorEmail">
-                                    <!-- <h5 *ngIf="errorNombre > 0" style="color: red;"><u>Error en el Nombre</u></h5> -->
-                                    <div *ngSwitchCase="1" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Deben completar el campo Email</p></div>
-                                    <div *ngSwitchCase="2" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email muy largo, debe tener menos de 50 caracteres</p></div>
-                                    <div *ngSwitchCase="3" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email debe tener un formato correcto</p></div>
-                                    <div *ngSwitchCase="4" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email ya Existe en la Base de Datos</p></div>
-                                </div>     
-                            </div>   
-                
-                            <div class="form-wrapper">
-                                <label>Rol:</label>
-                                <input type="text" [(ngModel)]="modificarEmpleado.rol" name="modificarEmpleado.rol"  placeholder="Rol" class="form-control">
-                                <!-- <i class="fa-solid fa-phone"></i> -->
-                                <!-- <i class="zmdi zmdi-phone"></i> -->
-                            </div>
-                            
-                            <div class="form-wrapper">
-                                <label>Actual Contraseña:</label>
-                                <input type="password" [(ngModel)]="actual_contrasenia" name="actual_contrasenia" placeholder="Actual Contraseña" class="form-control">
-                                <!-- <i class="zmdi zmdi-lock"></i> -->
-                            </div>
-                            <div style="background-color: whitesmoke;">
-                                <div [ngSwitch]="errorActualPassword">
-                                    <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
-                                    <div *ngSwitchCase="1"><p style="color: red;">Debe colocar la contraseña actual para modificar la contraseña</p></div>
-                                    <div *ngSwitchCase="2"><p style="color: red;">Contraseña no coincide con la actual contraseña</p></div>
-                                </div>     
-                            </div>
-                            <div class="form-wrapper">
-                                <label>Nueva Contraseña:</label>
-                                <input type="password" [(ngModel)]="modificarUsuario.contrasenia" name="modificarUsuario.contrasenia" placeholder="Nueva Contraseña" class="form-control">
-                                <!-- <i class="zmdi zmdi-lock"></i> -->
-                            </div>
-                            <div class="form-wrapper">
-                                <label>Confirmar Nueva Contraseña:</label>
-                                <input type="password" [(ngModel)]="conf_contrasenia" name="conf_contrasenia" placeholder="Confirme Nueva Contraseña" class="form-control">
-                                <!-- <i class="zmdi zmdi-lock"></i> -->
-                            </div>
-                            <div style="background-color: whitesmoke;">
-                                <div [ngSwitch]="errorPassword">
-                                    <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
-                                    <div *ngSwitchCase="1"><p style="color: red;">Deben completar el campo Contraseña</p></div>
-                                    <div *ngSwitchCase="2"><p style="color: red;">Contraseña debe tener 8 caracteres</p></div>
-                                    <div *ngSwitchCase="3"><p style="color: red;">Contraseña debe tener 8 caracteres y al menos uno de estos: Mayuscula - Minuscula - Numero - Caracter Especial</p></div>
-                                </div>     
-                            </div>
-                            <div style="background-color: whitesmoke;">
-                                <p [hidden]="distinta_contrasenia == false" style="color: red;">Contraseña no coincide con la nueva contraseña</p>
-                            </div>
-
-                            <div>
+                                <!-- <input type="text" [(ngModel)]="modificarCliente.provincia" name="modificarCliente.provincia"  placeholder="Provincia" class="form-control"> -->
+                                <!-- <div class="form-group">
+                                    <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
+                                        <option value="-1" disabled selected>Seleccione una Provincia</option>
+                                        <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
+                                    </select>
+                                </div> -->
+                                <div class="form-group">
+                                    <label>Provincia:</label>
+                                    <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
+                                        <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
+                                        <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Localidad:</label>
+                                    <!-- CSS de select modificado a .custom-select -->
+                                    <!-- <input type="text" [(ngModel)]="modificarCliente.localidad" name="modificarCliente.localidad"  placeholder="Localidad" class="form-control"> -->
+                                    <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" (change)="onLocalidadChange()" [disabled]="localidades.length == 0" class="form-control">
+                                        <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
+                                        <option *ngFor="let localidad of localidades" [ngValue]="localidad">{{ localidad.descripcion }}</option>
+                                    </select>
+                                </div>
+                    
+                                <div class="form-wrapper">
+                                    <label>Domicilio:</label>
+                                    <input type="text" [(ngModel)]="modificarCliente.domicilio" name="modificarCliente.domicilio"  placeholder="Domicilio" class="form-control">
+                                    <!-- <i class="fa-solid fa-location-dot"></i> -->
+                                    <!-- <i class="zmdi zmdi-pin"></i> -->
+                                </div>
+                    
+                                <div class="form-wrapper">
+                                    <label>Codigo Postal:</label>
+                                    <input type="text" [(ngModel)]="modificarCliente.codigo_postal" name="modificarCliente.codigo_postal"  placeholder="Codigo Postal" class="form-control">
+                                    <!-- <i class="fa-solid fa-location-dot"></i> -->
+                                    <!-- <i class="zmdi zmdi-pin"></i> -->
+                                </div>
+                                
+                                <div class="form-wrapper">
+                                    <label>Actual Contraseña:</label>
+                                    <input type="password" [(ngModel)]="actual_contrasenia" name="actual_contrasenia" placeholder="Actual Contraseña" class="form-control">
+                                    <!-- <i class="zmdi zmdi-lock"></i> -->
+                                </div>
+                                <div style="background-color: whitesmoke;">
+                                    <div [ngSwitch]="errorActualPassword">
+                                        <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
+                                        <div *ngSwitchCase="1"><p style="color: red;">Debe colocar la contraseña actual para modificar la contraseña</p></div>
+                                        <div *ngSwitchCase="2"><p style="color: red;">Contraseña no coincide con la actual contraseña</p></div>
+                                    </div>     
+                                </div>
+                                <div class="form-wrapper">
+                                    <label>Nueva Contraseña:</label>
+                                    <input type="password" [(ngModel)]="modificarUsuario.contrasenia" name="modificarUsuario.contrasenia" placeholder="Nueva Contraseña" class="form-control">
+                                    <!-- <i class="zmdi zmdi-lock"></i> -->
+                                </div>
+                                <div class="form-wrapper">
+                                    <label>Confirmar Nueva Contraseña:</label>
+                                    <input type="password" [(ngModel)]="conf_contrasenia" name="conf_contrasenia" placeholder="Confirme Nueva Contraseña" class="form-control">
+                                    <!-- <i class="zmdi zmdi-lock"></i> -->
+                                </div>
+                                <div style="background-color: whitesmoke;">
+                                    <div [ngSwitch]="errorPassword">
+                                        <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
+                                        <div *ngSwitchCase="1"><p style="color: red;">Deben completar el campo Contraseña</p></div>
+                                        <div *ngSwitchCase="2"><p style="color: red;">Contraseña debe tener 8 caracteres</p></div>
+                                        <div *ngSwitchCase="3"><p style="color: red;">Contraseña debe tener 8 caracteres y al menos uno de estos: Mayuscula - Minuscula - Numero - Caracter Especial</p></div>
+                                    </div>     
+                                </div>
+                                <div style="background-color: whitesmoke;">
+                                    <p [hidden]="distinta_contrasenia == false" style="color: red;">Contraseña no coincide con la nueva contraseña</p>
+                                </div>
+    
                                 <!-- <button (click)="registrarCliente()" type="button"> -->
                                 <button style="margin-top: 20px;" (click)="actualizarUsuario()" type="button">
                                     <!-- <a href="../../online-shop-website-template/index.html" style=" color: white;">
@@ -217,88 +151,100 @@
                                     </a> -->
                                         Actualizar <i class="zmdi zmdi-arrow-right"></i>
                                 </button>
-                            </div>
-                        </form>
-                    </ng-template>
+                            </form>
+                        </ng-container>
+                        <!-- Formulario para Edicion de Perfil de un Cliente Logueado -->
+                        
+                        <!-- Formulario para Edicion de Perfil de un Empleado Logueado -->
+                        <ng-template #empleado>
+                            <form action="">
+                                <h3>Formulario de Edicion de Perfil Empleado</h3>
+                                <div class="form-group">
+                                    <label>Nombre:</label>
+                                    <input type="text" [(ngModel)]="modificarEmpleado.nombre" name="modificarEmpleado.nombre" placeholder="Nombre" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Apellido:</label>
+                                    <input type="text" [(ngModel)]="modificarEmpleado.apellido" name="modificarEmpleado.apellido"  placeholder="Apellido" class="form-control">
+                                </div>
+                                
+                                <div class="form-wrapper">
+                                    <label>Email:</label>
+                                    <input type="text" [(ngModel)]="modificarUsuario.email" name="modificarUsuario.email" placeholder="Email" class="form-control">
+                                    <!-- <i class="zmdi zmdi-email"></i> -->
+                                </div>
+                                <div style="background-color: whitesmoke;">
+                                    <div [ngSwitch]="errorEmail">
+                                        <!-- <h5 *ngIf="errorNombre > 0" style="color: red;"><u>Error en el Nombre</u></h5> -->
+                                        <div *ngSwitchCase="1" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Deben completar el campo Email</p></div>
+                                        <div *ngSwitchCase="2" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email muy largo, debe tener menos de 50 caracteres</p></div>
+                                        <div *ngSwitchCase="3" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email debe tener un formato correcto</p></div>
+                                        <div *ngSwitchCase="4" style="margin-top: -10px; margin-bottom: 10px;"><p style="color: red;">Email ya Existe en la Base de Datos</p></div>
+                                    </div>     
+                                </div>   
+                    
+                                <div class="form-wrapper">
+                                    <label>Rol:</label>
+                                    <input type="text" [(ngModel)]="modificarEmpleado.rol" name="modificarEmpleado.rol"  placeholder="Rol" class="form-control">
+                                    <!-- <i class="fa-solid fa-phone"></i> -->
+                                    <!-- <i class="zmdi zmdi-phone"></i> -->
+                                </div>
+                                
+                                <div class="form-wrapper">
+                                    <label>Actual Contraseña:</label>
+                                    <input type="password" [(ngModel)]="actual_contrasenia" name="actual_contrasenia" placeholder="Actual Contraseña" class="form-control">
+                                    <!-- <i class="zmdi zmdi-lock"></i> -->
+                                </div>
+                                <div style="background-color: whitesmoke;">
+                                    <div [ngSwitch]="errorActualPassword">
+                                        <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
+                                        <div *ngSwitchCase="1"><p style="color: red;">Debe colocar la contraseña actual para modificar la contraseña</p></div>
+                                        <div *ngSwitchCase="2"><p style="color: red;">Contraseña no coincide con la actual contraseña</p></div>
+                                    </div>     
+                                </div>
+                                <div class="form-wrapper">
+                                    <label>Nueva Contraseña:</label>
+                                    <input type="password" [(ngModel)]="modificarUsuario.contrasenia" name="modificarUsuario.contrasenia" placeholder="Nueva Contraseña" class="form-control">
+                                    <!-- <i class="zmdi zmdi-lock"></i> -->
+                                </div>
+                                <div class="form-wrapper">
+                                    <label>Confirmar Nueva Contraseña:</label>
+                                    <input type="password" [(ngModel)]="conf_contrasenia" name="conf_contrasenia" placeholder="Confirme Nueva Contraseña" class="form-control">
+                                    <!-- <i class="zmdi zmdi-lock"></i> -->
+                                </div>
+                                <div style="background-color: whitesmoke;">
+                                    <div [ngSwitch]="errorPassword">
+                                        <!-- <h5 *ngIf="errorPassword > 0" style="color: red;"><u>Error en la Contraseña</u></h5> -->
+                                        <div *ngSwitchCase="1"><p style="color: red;">Deben completar el campo Contraseña</p></div>
+                                        <div *ngSwitchCase="2"><p style="color: red;">Contraseña debe tener 8 caracteres</p></div>
+                                        <div *ngSwitchCase="3"><p style="color: red;">Contraseña debe tener 8 caracteres y al menos uno de estos: Mayuscula - Minuscula - Numero - Caracter Especial</p></div>
+                                    </div>     
+                                </div>
+                                <div style="background-color: whitesmoke;">
+                                    <p [hidden]="distinta_contrasenia == false" style="color: red;">Contraseña no coincide con la nueva contraseña</p>
+                                </div>
+    
+                                <div>
+                                    <!-- <button (click)="registrarCliente()" type="button"> -->
+                                    <button style="margin-top: 20px;" (click)="actualizarUsuario()" type="button">
+                                        <!-- <a href="../../online-shop-website-template/index.html" style=" color: white;">
+                                            Registrar <i class="zmdi zmdi-arrow-right"></i>
+                                        </a> -->
+                                            Actualizar <i class="zmdi zmdi-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </ng-template>
+                        <!-- Formulario para Edicion de Perfil de un Empleado Logueado -->
+                    </div>
                 </div>
             </div>
-        </div>
+        </ng-template>
+        <!-- Si hay un Usuario Logueado el Formulario con sus Datos para Editar -->        
     </div>
-    <!-- Contact End -->
-
+    <!-- Perfil End -->
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
-        <div class="row px-xl-5 pt-5">
-            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
-            </div>
-            <div class="col-lg-8 col-md-12">
-                <div class="row">
-                    <div class="col-md-4 mb-5">
-                        <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-5">
-                        <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-5">
-                        <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-                        <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-                        <form action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Your Email Address">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary">Sign Up</button>
-                                </div>
-                            </div>
-                        </form>
-                        <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-                        <div class="d-flex">
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
-            <div class="col-md-6 px-xl-0">
-                <p class="mb-md-0 text-center text-md-left text-secondary">
-                    &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
-                    by
-                    <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
-                </p>
-            </div>
-            <div class="col-md-6 px-xl-0 text-center text-md-right">
-                <img class="img-fluid" src="assets/media/payments.png" alt="">
-            </div>
-        </div>
-    </div>
+    <app-footer></app-footer>
     <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 </div>

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Pedido } from 'src/app/models/pedidoModel';
+import { PedidoProducto } from 'src/app/models/pedidoProductoModel';
 import { Producto } from 'src/app/models/productoModel';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { ProductosService } from 'src/app/services/productos.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-detail',
@@ -15,15 +17,24 @@ export class DetailComponent {
 
   id_producto: number;
   id_cliente: number;
+  
+  sin_cliente: Boolean = false;
+
   // producto: Producto | null = null;
   producto: Producto;
   pedido: Pedido;
 
   cantidadElegida: number;
 
-  constructor(private route: ActivatedRoute, private productosService: ProductosService, private pedidosService: PedidosService, private clientesService: ClientesService) {
+
+  constructor(private route: ActivatedRoute, private productosService: ProductosService, private pedidosService: PedidosService, private clientesService: ClientesService,
+    private sharedService : SharedService) 
+  {
     this.id_producto = -1;
     this.id_cliente = Number.parseInt(this.clientesService.getClienteId() ?? '-1');
+
+    this.sin_cliente = false;
+    console.log("Sin Cliente: ", this.sin_cliente);
 
     this.pedido = {      
       id: -1,
@@ -98,28 +109,48 @@ export class DetailComponent {
 
   cargarProductoAlCarrito(): void{
     console.log("ID Cliente:" + this.id_cliente);
-    console.log("ID Producto:" + this.id_producto);
-    console.log("Cantidad:" + this.cantidadElegida);
 
-    this.pedidosService.getCargarProductoACarrito(this.id_cliente, this.id_producto, this.cantidadElegida).subscribe({
-      next: (response) => {
-        if (response) {
-          console.log("Producto Cargado al Carrito");
-          // this.pedidosService.putPedido(response).subscribe({
-          //   next: (response) => {
-              
-          //   }
-          // });
-        } 
-        else {
-          console.log("NO se pudo Cargar el Producto al Carrito");          
-          // this.pedidosService.postPedido(this.pedido).subscribe({
-          //   next: (response) => {
-              
-          //   }
-          // });
+    if(this.id_cliente == -1){
+      this.sin_cliente = true;
+      console.log("NO se pudo Cargar Carrito, Sin Cliente: ", this.sin_cliente);
+    }else{
+      console.log("ID Producto:" + this.id_producto);
+      console.log("Cantidad:" + this.cantidadElegida);
+  
+      this.pedidosService.getCargarProductoACarrito(this.id_cliente, this.id_producto, this.cantidadElegida).subscribe({
+        next: (response: Pedido) => {
+          if (response) {
+            console.log("Producto Cargado al Carrito");
+
+            this.pedidosService.getProductosCarrito(this.id_cliente).subscribe({
+              next: (response: PedidoProducto[]) => {
+                
+                let productosCarrito: PedidoProducto[] = response; 
+                // console.log("Productos del Pedido:");
+                // console.log(this.productosCarrito);
+
+                let nuevaCantidad = productosCarrito.length;
+                console.log("Productos en Carrito: " + nuevaCantidad);
+                this.sharedService.actualizarCantProductosCarrito(nuevaCantidad);
+              }
+            });
+
+            // this.pedidosService.putPedido(response).subscribe({
+            //   next: (response) => {
+                
+            //   }
+            // });
+          } 
+          else {
+            console.log("NO se pudo Cargar el Producto al Carrito");          
+            // this.pedidosService.postPedido(this.pedido).subscribe({
+            //   next: (response) => {
+                
+            //   }
+            // });
+          }
         }
-      }
-    });
+      });
+    }    
   }
 }

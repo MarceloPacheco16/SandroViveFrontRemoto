@@ -4,6 +4,7 @@ import { PedidoProducto } from 'src/app/models/pedidoProductoModel';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { ProductosService } from 'src/app/services/productos.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +17,9 @@ export class CartComponent {
   pedido: Pedido;
   productosCarrito : PedidoProducto[];
 
-  constructor(private clientesService: ClientesService, private pedidosService: PedidosService, private productosService: ProductosService){
+  cantidadAnterior: number;
+
+  constructor(private clientesService: ClientesService, private pedidosService: PedidosService, private productosService: ProductosService, private sharedService: SharedService){
     this.id_cliente = Number.parseInt(this.clientesService.getClienteId() ?? '-1');
     
     this.pedido = {      
@@ -31,55 +34,82 @@ export class CartComponent {
     }
 
     this.productosCarrito = [];
+
+    this.cantidadAnterior = 0;
   }
 
   ngOnInit(): void {
-    
-    // this.pedidosService.getPedidoCarritoPorCliente(this.id_cliente).subscribe({
-    //   next: (response) => {
-    //     this.pedido = response;        
-    //     console.log("Pedido Carrito:");
-    //     console.log(this.pedido);
+    this.DatosCarrito();
 
-    //     this.pedidosService.getProductosPorPedido(this.pedido.id).subscribe({
-    //       next: (response) => {
-    //         this.productosPedido = response; 
-    //         console.log("Productos del Pedido:");
-    //         console.log(this.productosPedido);
-    //       }
-    //     });
+    // this.pedidosService.getProductosCarrito(this.id_cliente).subscribe({
+    //   next: (response) => {
+    //     this.productosCarrito = response; 
+    //     console.log("Productos del Pedido:");
+    //     console.log(this.productosCarrito);
     //   }
     // });
+  }
 
-    // getProductosCarrito
-
-    this.pedidosService.getProductosCarrito(this.id_cliente).subscribe({
+  DatosCarrito(): void{    
+    this.pedidosService.getPedidoCarritoPorCliente(this.id_cliente).subscribe({
       next: (response) => {
-        this.productosCarrito = response; 
-        console.log("Productos del Pedido:");
-        console.log(this.productosCarrito);
+        this.pedido = response;        
+        console.log("Pedido Carrito:");
+        console.log(this.pedido);
+
+        this.pedidosService.getProductosCarrito(this.id_cliente).subscribe({
+          next: (response) => {
+            this.productosCarrito = response; 
+            console.log("Productos del Pedido:");
+            console.log(this.productosCarrito);
+          }
+        });
       }
     });
   }
 
   increaseQuantity(producto: PedidoProducto) {
-    producto.cantidad++;
+    let nuevaCantidad: number = Number(producto.cantidad) + 1;
 
-    //BUSCAMOS EL PRODUCTO
-    this.productosService.getBuscarProductosActivosPorID(producto.id).subscribe({
+    // Verificar el stock disponible del producto en el servidor
+    this.productosService.getBuscarProductosActivosPorID(producto.producto_id).subscribe({
       next: (response) => {
         console.log("Producto: ", response.nombre);
         console.log("Disponible Actual: ", response.cantidad_disponible);
 
-        let disp_actual = response.cantidad_disponible - producto.cantidad;
+        let disp_actual = response.cantidad_disponible - nuevaCantidad;
         console.log("Disponible Nuevo: ", disp_actual);
-        if(disp_actual > 0){
+
+        // Comprobar si hay suficiente cantidad disponible
+        if(disp_actual >= 0){
+          // Actualizar la cantidad en el carrito
+          producto.cantidad = nuevaCantidad;
           producto.sub_total = producto.cantidad * producto.producto_precio;
 
-          //ACTUALIZAMOS EL PRODUCTO DEL PEDIDO SI EL DISPONIBLE SERA MAYOR A 0
+          // Actualizar el producto del pedido en el backend
           this.pedidosService.putPedidoProducto(producto).subscribe({
             next: (response) => {
               console.log("Cantidad de producto modificada:", producto.cantidad);
+              
+              //CALCULAMOS EL TOTAL DEL PEDIDO
+              let total: number = 0;
+              for(let i = 0; i < this.productosCarrito.length; i++){
+                total += Number.parseFloat(this.productosCarrito[i].sub_total.toString());
+              }
+
+              this.pedido.total = total;
+              console.log("Pedido:");
+              console.log(this.pedido);
+              
+              //ACTUALIZAMOS EL TOTAL DEL PEDIDO
+              this.pedidosService.putPedido(this.pedido).subscribe({
+                next: (response) => {
+                  // console.log("Cantidad de producto modificada:", producto.cantidad);
+                },
+                error: (error) => {
+                  console.error("Error al actualizar el pedido:", error);
+                }
+              });
             },
             error: (error) => {
               console.error("Error al actualizar el producto:", error);
@@ -94,20 +124,63 @@ export class CartComponent {
 
   decreaseQuantity(producto: PedidoProducto) {
     if (producto.cantidad > 1) {
-      producto.cantidad--;
-      producto.sub_total = producto.cantidad * producto.producto_precio;
-      
-      //ACTUALIZAMOS EL PRODUCTO DEL PEDIDO
-      this.pedidosService.putPedidoProducto(producto).subscribe({
+      let nuevaCantidad: number = Number(producto.cantidad) - 1;
+      // producto.sub_total = producto.cantidad * producto.producto_precio;
+
+      //BUSCAMOS EL PRODUCTO
+      this.productosService.getBuscarProductosActivosPorID(producto.producto_id).subscribe({
         next: (response) => {
-          console.log("Producto '", producto.producto_nombre, "'");
-          console.log("Cantidad '", producto.cantidad, "'");
-        },
-        error: (error) => {
-          console.error("Error al eliminar el producto:", error);
+          console.log("Producto: ", response.nombre);
+          console.log("Disponible Actual: ", response.cantidad_disponible);
+
+          let disp_actual = response.cantidad_disponible - nuevaCantidad;
+          console.log("Disponible Nuevo: ", disp_actual);
+
+          //SI EL DISPONIBLE RESULTANTE SERA MAYOR A 0
+          if(disp_actual >= 0){
+            // Actualizar la cantidad en el carrito
+            producto.cantidad = nuevaCantidad;
+            producto.sub_total = producto.cantidad * producto.producto_precio;
+
+            // Actualizar el producto del pedido en el backend
+            this.pedidosService.putPedidoProducto(producto).subscribe({
+              next: (response) => {
+                console.log("Cantidad de producto modificada:", producto.cantidad);
+                
+                //CALCULAMOS EL TOTAL DEL PEDIDO
+                let total: number = 0;
+                for(let i = 0; i < this.productosCarrito.length; i++){
+                  total += Number.parseFloat(this.productosCarrito[i].sub_total.toString());
+                }
+
+                this.pedido.total = total;
+                
+                //ACTUALIZAMOS EL TOTAL DEL PEDIDO
+                this.pedidosService.putPedido(this.pedido).subscribe({
+                  next: (response) => {
+                    // console.log("Cantidad de producto modificada:", producto.cantidad);
+                  },
+                  error: (error) => {
+                    console.error("Error al actualizar el producto:", error);
+                  }
+                });
+              },
+              error: (error) => {
+                console.error("Error al actualizar el producto:", error);
+              }
+            });
+          }else{
+            console.log("Ingrese una cantidad válida mayor que 0");
+          }
         }
       });
     }
+  }
+
+  // Guardar el valor anterior cuando el input recibe el foco
+  guardarValorAnterior(producto: PedidoProducto) {
+    this.cantidadAnterior = producto.cantidad;
+    console.log("cantidad Anterior: " + this.cantidadAnterior);
   }
 
   modificarCantidad(producto: PedidoProducto) {
@@ -119,7 +192,7 @@ export class CartComponent {
       console.error("Cantidad inválida");
       
       // Puedes restablecer la cantidad al valor anterior o a 1
-      producto.cantidad = 1;
+      producto.cantidad = this.cantidadAnterior;
       producto.sub_total = producto.cantidad * producto.producto_precio;
       
       // Si deseas notificar al usuario, puedes mostrar un mensaje de error
@@ -128,7 +201,7 @@ export class CartComponent {
     }
 
     //BUSCAMOS EL PRODUCTO
-    this.productosService.getBuscarProductosActivosPorID(producto.id).subscribe({
+    this.productosService.getBuscarProductosActivosPorID(producto.producto_id).subscribe({
       next: (response) => {
         console.log("Producto: ", response.nombre);
         console.log("Disponible Actual: ", response.cantidad_disponible);
@@ -140,6 +213,24 @@ export class CartComponent {
           this.pedidosService.putPedidoProducto(producto).subscribe({
             next: (response) => {
               console.log("Cantidad de producto modificada:", producto.cantidad);
+
+              //CALCULAMOS EL TOTAL DEL PEDIDO
+              let total: number = 0;
+              for(let i = 0; i < this.productosCarrito.length; i++){
+                total += Number.parseFloat(this.productosCarrito[i].sub_total.toString());
+              }
+
+              this.pedido.total = total;
+              
+              //ACTUALIZAMOS EL TOTAL DEL PEDIDO
+              this.pedidosService.putPedido(this.pedido).subscribe({
+                next: (response) => {
+                  // console.log("Cantidad de producto modificada:", producto.cantidad);
+                },
+                error: (error) => {
+                  console.error("Error al actualizar el producto:", error);
+                }
+              });
             },
             error: (error) => {
               console.error("Error al actualizar el producto:", error);
@@ -147,6 +238,7 @@ export class CartComponent {
           });
         }else{
           console.log("Ingrese una cantidad válida mayor que 0");
+          producto.cantidad = this.cantidadAnterior;
         }
       }
     });
@@ -159,6 +251,10 @@ export class CartComponent {
         // Actualizar la lista localmente para reflejar el cambio
         this.productosCarrito = this.productosCarrito.filter(p => p.id !== productoPedido.id);
         console.log("Producto eliminado del carrito.");
+        
+        let nuevaCantidad = this.productosCarrito.length;
+        console.log("Productos en Carrito: " + nuevaCantidad);
+        this.sharedService.actualizarCantProductosCarrito(nuevaCantidad);
       },
       error: (error) => {
         console.error("Error al eliminar el producto:", error);

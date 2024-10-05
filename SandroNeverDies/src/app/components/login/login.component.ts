@@ -33,8 +33,8 @@ export class LoginComponent {
     this.empleados = [];
 
     this.usuario = {
-      id: "-1"
-      // email: "",
+      id: "-1",
+      email: "",
       // contrasenia: "",
       // cant_intentos = "",
       // activo: 1

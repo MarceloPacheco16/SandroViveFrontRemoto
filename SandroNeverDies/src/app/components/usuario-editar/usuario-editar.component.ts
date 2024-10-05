@@ -94,6 +94,7 @@ export class UsuarioEditarComponent {
       nombre: '',
       apellido: '',
       rol: '',
+      usuario: '',
       activo: 1
     }
 
@@ -225,6 +226,7 @@ export class UsuarioEditarComponent {
               nombre: data.nombre,
               apellido: data.apellido,  // Mantén vacía la contraseña a menos que el usuario la cambie
               rol: data.rol,
+              usuario: data.usuario,
               activo: data.activo
             };
     
@@ -402,6 +404,7 @@ export class UsuarioEditarComponent {
       nombre: '',
       apellido: '',
       rol: '',
+      usuario: '',
       activo: 1
     }
 

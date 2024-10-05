@@ -1,11 +1,19 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Categoria } from 'src/app/models/categoriaModel';
+import { Cliente } from 'src/app/models/clienteModel';
+import { Empleado } from 'src/app/models/empleadoModel';
 import { Producto } from 'src/app/models/productoModel';
+import { PedidoProducto } from 'src/app/models/pedidoProductoModel';
 import { Subcategoria } from 'src/app/models/subcategoriaModel';
+import { Usuario } from 'src/app/models/usuarioModel';
 import { CategoriasService } from 'src/app/services/categorias.service';
+import { ClientesService } from 'src/app/services/clientes.service';
+import { EmpleadosService } from 'src/app/services/empleados.service';
 import { ProductosService } from 'src/app/services/productos.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { UsuariosService } from 'src/app/services/usuarios.service';
+import { PedidosService } from 'src/app/services/pedidos.service';
 
 @Component({
   selector: 'app-navigation',
@@ -28,6 +36,12 @@ export class NavigationComponent {
   //   console.log("Ir a Registrar...");
   //   this.router.navigate(['usuarios/usuario-registro']);
   // }
+  id_cliente: number;
+  id_usuario: number;
+  id_empleado: number;
+
+  nombreUsuario: string;
+  mailUsuario: string;
 
   categorias: Categoria[];
   // subcategoriasPorCategoria: { [key: number]: Subcategoria[] };
@@ -39,7 +53,19 @@ export class NavigationComponent {
 
   busqueda: string;
 
-  constructor(private productosService: ProductosService, private router:Router, private categoriasService: CategoriasService, private sharedService : SharedService){
+  productosCarrito: PedidoProducto[];
+  cantProductosCarrito: number;
+
+  constructor(private productosService: ProductosService, private router:Router, private categoriasService: CategoriasService, private sharedService : SharedService,
+    private usuariosService:UsuariosService, private clientesService:ClientesService, private empleadosService:EmpleadosService, private pedidosService: PedidosService)
+  {
+
+    this.id_cliente = Number.parseInt(this.clientesService.getClienteId() ?? '-1');
+    this.id_usuario = Number.parseInt(this.usuariosService.getUsuarioId() ?? '-1');
+    this.id_empleado = Number.parseInt(this.empleadosService.getEmpleadoId() ?? '-1');
+
+    this.nombreUsuario = "";
+    this.mailUsuario = "";
 
     this.categorias = [];
     // this.subcategoriasPorCategoria = {};
@@ -50,10 +76,19 @@ export class NavigationComponent {
     this.id_subcategoria = -1;
 
     this.busqueda = "";
+
+    this.productosCarrito = [];
+    this.cantProductosCarrito = 0;
   }
 
   ngOnInit(): void {
     this.cargarCategoriasActivas();
+    this.DatosUsuario();
+    this.CarritoDelCliente();
+    
+    this.sharedService.currentCantProductosCarrito.subscribe(cantidad => {
+      this.cantProductosCarrito = cantidad;
+    });
   }
 
   getProductos(): void {
@@ -257,6 +292,71 @@ export class NavigationComponent {
   //   }
   // }
   // empleadoId
+  
+  DatosUsuario(): void{
+    //BUSCAMOS EL MAIL DEL USUARIO
+    if(this.id_usuario != -1){
+      this.usuariosService.getUsuario(this.id_usuario).subscribe({
+        next: (data: Usuario) => {
+          this.mailUsuario = data.email;
+          
+          // console.log("mail usuario: " + this.mailUsuario);
+
+          //BUSCAMOS EL NOMBRE DEL CLIENTE SI ES EL CASO
+          if(this.id_cliente != -1 && this.id_empleado == -1){
+            this.clientesService.getCliente(this.id_cliente).subscribe({
+              next: (data: Cliente) => {
+                
+                let nombre_split = data.nombre.split(" ");
+                let apellido_split = data.apellido.split(" ");
+      
+                this.nombreUsuario = nombre_split[0] + " " + apellido_split[0];
+        
+                // console.log("nombre usuario cliente: " + this.nombreUsuario);  
+              },
+              error: (error) => {
+                console.error('Error al obtener Datos del Usuario (nombre):', error);
+              }
+            });
+          }
+          
+          //BUSCAMOS EL NOMBRE DEL EMPLEADO SI ES EL CASO
+          if(this.id_empleado != -1 && this.id_cliente == -1){
+            this.empleadosService.getEmpleado(this.id_empleado).subscribe({
+              next: (data: Empleado) => {
+      
+                let nombre_split = data.nombre.split(" ");
+                let apellido_split = data.apellido.split(" ");
+      
+                this.nombreUsuario = nombre_split[0] + " " + apellido_split[0];
+        
+                // console.log("nombre usuario empleado: " + this.nombreUsuario);
+              },
+              error: (error) => {
+                console.error('Error al obtener Datos del Usuario (nombre):', error);
+              }
+            });
+          }
+        },
+        error: (error) => {
+          console.error('Error al obtener Datos del Usuario (mail):', error);
+        }
+      });
+    }    
+  }
+
+  CarritoDelCliente(): void{
+    this.pedidosService.getProductosCarrito(this.id_cliente).subscribe({
+      next: (response) => {
+        this.productosCarrito = response; 
+        // console.log("Productos del Carrito:");
+        // console.log(this.productosCarrito);
+
+        this.cantProductosCarrito = this.productosCarrito.length;
+      }
+    });
+  }
+  
   logIn(): void{
     localStorage.removeItem('usuarioId');
     localStorage.removeItem('clienteId');

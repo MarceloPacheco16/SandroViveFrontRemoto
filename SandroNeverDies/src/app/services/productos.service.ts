@@ -90,6 +90,10 @@ export class ProductosService {
   getProductos(): Observable<Producto[]> {
     return this.http.get<Producto[]>(this.API_URI + this.FORMAT_JSON, { headers: this.headers });
   }
+  
+  getProducto(): Observable<Producto> {
+    return this.http.get<Producto>(this.API_URI + this.FORMAT_JSON, { headers: this.headers });
+  }
 
   getBuscarProductosActivos(busqueda: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.API_BuscarProductosActivos}?busqueda=${busqueda}`);

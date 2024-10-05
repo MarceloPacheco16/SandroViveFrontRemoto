@@ -19,6 +19,7 @@ import { AbmProductoComponent } from './components/abm-producto/abm-producto.com
 import { AbmCategoriaComponent } from './components/abm-categoria/abm-categoria.component';
 import { AbmSubcategoriaComponent } from './components/abm-subcategoria/abm-subcategoria.component';
 import { UsuarioEditarComponent } from './components/usuario-editar/usuario-editar.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { UsuarioEditarComponent } from './components/usuario-editar/usuario-edit
     AbmProductoComponent,
     AbmCategoriaComponent,
     AbmSubcategoriaComponent,
-    UsuarioEditarComponent
+    UsuarioEditarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

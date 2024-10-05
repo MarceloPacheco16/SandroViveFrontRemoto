@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +10,17 @@ export class SharedService {
   private filterByNameSource = new Subject<string>();
 
 
-  constructor() { }
-
   // Observable que pueden suscribirse los componentes
   action$ = this.actionSource.asObservable();
 
   filtroPorCategoriaYSubcategoria$ = this.filterByCategorySubcategorySource.asObservable();
   filtroPorNombre$ = this.filterByNameSource.asObservable();
-
+  
+  private cantProductosCarrito = new BehaviorSubject<number>(0);
+  currentCantProductosCarrito = this.cantProductosCarrito.asObservable();
+  
+  constructor() { }
+  
   // Método para activar la acción
   triggerAction() {
     this.actionSource.next();
@@ -29,5 +32,10 @@ export class SharedService {
 
   filtrarPorNombre(nombreProducto: string) {
     this.filterByNameSource.next(nombreProducto);
+  }
+  
+  // Método para actualizar la cantidad de productos
+  actualizarCantProductosCarrito(cant: number): void {
+    this.cantProductosCarrito.next(cant);
   }
 }
