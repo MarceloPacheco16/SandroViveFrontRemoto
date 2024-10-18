@@ -17,9 +17,6 @@ export class PedidosService {
     
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
   
-  // postClientes(nuevoCliente: Cliente): Observable<any> {
-  //   return this.http.post<any>(this.API_URI + this.FORMAT_JSON, nuevoCliente, { headers: this.headers });
-  // }
   // Modifica el método para enviar FormData
   postPedido(nuevoPedido: Pedido): Observable<any> {
     return this.http.post<any>(this.API_URI, nuevoPedido, { headers: this.headers });
@@ -30,6 +27,10 @@ export class PedidosService {
     return this.http.put<any>(`${this.API_URI}/${modificarPedido.id}`, modificarPedido);
   }
   
+  // Modifica el método para enviar FormData
+  deletePedido(idEliminarPedido: Number): Observable<any> {
+    return this.http.delete<any>(`${this.API_URI}/${idEliminarPedido}`);
+  }
   // getPedido(clienteId: number):  Observable<Pedido> {
   //   // pedido/cliente/<int:cliente_id>/detalle
   //   return this.http.get<Pedido>(`${this.API_URI}/${modificarPedido.id}`);

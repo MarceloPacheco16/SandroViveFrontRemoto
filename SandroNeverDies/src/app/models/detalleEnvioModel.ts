@@ -1,11 +1,11 @@
 export interface DetalleEnvio {
-    id: number;
+    id?: number;
     pedido: number;
     domicilio: string;
     localidad: string;
     provincia: string;
-    fecha_creacion: Date;
-    // comentario: string;
+    fecha_creacion: Date | null;
+    comentario: string;
     observaciones: string;
   }
 

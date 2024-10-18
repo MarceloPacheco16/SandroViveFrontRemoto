@@ -12,11 +12,11 @@ export class DetalleEnviosService {
 
   constructor(private http: HttpClient) { }
 
-  // private headers = new HttpHeaders({'Content-Type': 'application/json'});
+  private headers = new HttpHeaders({'Content-Type': 'application/json'});
   
   postDetalleEnvio(nuevoDetalleEnvio: DetalleEnvio): Observable<any> {
-    // return this.http.post<any>(this.API_URI, nuevoDetalleEnvio, { headers: this.headers });
-    return this.http.post<any>(this.API_URI, nuevoDetalleEnvio);
+    return this.http.post<any>(this.API_URI, nuevoDetalleEnvio, { headers: this.headers });
+    // return this.http.post<any>(this.API_URI, nuevoDetalleEnvio);
   }
   
   getDetalleEnvio(idDetalleEnvio: number): Observable<DetalleEnvio> {

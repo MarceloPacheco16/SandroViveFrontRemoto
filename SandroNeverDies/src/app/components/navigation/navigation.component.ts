@@ -84,7 +84,10 @@ export class NavigationComponent {
   ngOnInit(): void {
     this.cargarCategoriasActivas();
     this.DatosUsuario();
-    this.CarritoDelCliente();
+    
+    if(this.id_cliente != -1){
+      this.CarritoDelCliente();
+    }
     
     this.sharedService.currentCantProductosCarrito.subscribe(cantidad => {
       this.cantProductosCarrito = cantidad;
@@ -352,7 +355,25 @@ export class NavigationComponent {
         // console.log("Productos del Carrito:");
         // console.log(this.productosCarrito);
 
-        this.cantProductosCarrito = this.productosCarrito.length;
+        let totalUnidades : number = 0;
+        for(let i = 0; i < this.productosCarrito.length; i++){
+          totalUnidades += this.productosCarrito[i].cantidad;
+        }
+        
+        // // console.log("Productos en Carrito: " + totalUnidades);
+        // // this.sharedService.actualizarCantProductosCarrito(totalUnidades);
+
+        // this.cantProductosCarrito = this.productosCarrito.length;
+        this.cantProductosCarrito = totalUnidades;
+      },
+      error: (error) => {
+        if (error.status === 404) {
+          console.log("No se encontró un Pedido en Estado Carrito");
+          // Aquí puedes manejar el caso de un carrito vacío, por ejemplo mostrar un mensaje
+        }else{
+          console.error('Error al Obtener Datos del Pedido del Cliente:', error);
+        }
+        
       }
     });
   }

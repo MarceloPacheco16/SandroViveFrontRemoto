@@ -7,6 +7,7 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { UbicacionesService } from 'src/app/services/ubicaciones.service';
 import { Provincia } from 'src/app/models/provinciaModel';
+import { Localidad } from 'src/app/models/localidadModel';
 
 @Component({
   selector: 'app-usuario-registro',
@@ -20,11 +21,11 @@ export class UsuarioRegistroComponent {
   nuevoCliente: Cliente;
   private subscription: Subscription | undefined;
 
-  provincias: any[];
-  localidades: any[];
+  provincias: Provincia[];
+  localidades: Localidad[];
   // provinciaSeleccionada: Provincia;
-  provinciaSeleccionada: any;
-  localidadSeleccionada: any;
+  provinciaSeleccionada: Provincia | null;
+  localidadSeleccionada: Localidad | null;
 
   errorEmail: number = 0;
   errorPassword: number = 0;
@@ -64,10 +65,13 @@ export class UsuarioRegistroComponent {
     this.localidades = [];
 
     
-    this.provinciaSeleccionada = -1;
-    this.localidadSeleccionada = -1;
+    this.provinciaSeleccionada = null;
+    this.localidadSeleccionada = null;
   }
   
+  ngOnInit(): void {
+    this.getProvincias();
+  }
   
   //METODO PARA REGISTRAR A UN USUARIO Y LUEGO IR A REGISTRAR AL CLIENTE
   registrarUsuario(): void {
@@ -82,16 +86,50 @@ export class UsuarioRegistroComponent {
       this.distinta_contrasenia = false;
     }
 
+    if(this.provinciaSeleccionada == null){
+      console.error('Seleccione una Provincia');
+      return;
+    }
+    if(this.localidadSeleccionada == null){
+      console.error('Seleccione una Localidad');
+      return;
+    }
+    // console.log('Provincia');
+    // console.log(this.provinciaSeleccionada);
+    // console.log('Localidad');
+    // console.log(this.localidadSeleccionada);
+
+    console.log('Cliente:')
+    console.log(this.nuevoCliente);
+
     console.log("Contraseña Confirmada");
+
     //POST USUARIO
     this.usuariosService.postUsuario(this.nuevoUsuario).subscribe({
-      next: () => {
+      next: (responseUsuario) => {
         console.log('Usuario registrado con éxito');
+        console.log(responseUsuario);
+
+        // Asigna el ID del usuario recién creado al cliente
+        this.nuevoCliente.usuario = responseUsuario.id;
+        console.log("ID usuario de Cliente: " + this.nuevoCliente.usuario);
+        this.nuevoCliente.activo = 1;
 
         //POST CLIENTE
-        this.registrarCliente();
+        this.clientesService.postClientes(this.nuevoCliente).subscribe({
+          next: (responseCliente) => {
+            console.log('Cliente registrado con éxito');
+            console.log(responseCliente);
 
-        this.router.navigate(['usuarios/login']);
+            // Redirige a login una vez completado
+            this.router.navigate(['usuarios/login']);
+          },
+          error: (error) => {
+            console.error('Error al registrar cliente:', error);
+          }
+        });
+
+        // this.router.navigate(['usuarios/login']);
       },
       error: (error) => {
         console.error('Error al registrar usuario:', error);
@@ -100,45 +138,45 @@ export class UsuarioRegistroComponent {
     });
   }
 
-  //METODO PARA REGISTRAR AL CLIENTE DEL RESPECTIVO USUARIO
-  registrarCliente(): void {
+  // //METODO PARA REGISTRAR AL CLIENTE DEL RESPECTIVO USUARIO
+  // registrarCliente(): void {
 
-    // this.nuevoCliente.provincia = this.nuevoCliente.provincia?.toString().trim();
-    // this.nuevoCliente.localidad = this.nuevoCliente.localidad?.toString().trim();
+  //   // this.nuevoCliente.provincia = this.nuevoCliente.provincia?.toString().trim();
+  //   // this.nuevoCliente.localidad = this.nuevoCliente.localidad?.toString().trim();
 
-    this.usuariosService.getUsuarios().subscribe({
-      next: (data: Usuario[]) => {
-        this.usuarios = data;
+  //   this.usuariosService.getUsuarios().subscribe({
+  //     next: (data: Usuario[]) => {
+  //       this.usuarios = data;
 
-        let ultimoID = this.usuarios.length - 1;
-        if (ultimoID < 0) {
-          ultimoID = 0;
-        }
-        // console.log("ultimoID : " + ultimoID);
+  //       let ultimoID = this.usuarios.length - 1;
+  //       if (ultimoID < 0) {
+  //         ultimoID = 0;
+  //       }
+  //       // console.log("ultimoID : " + ultimoID);
   
-        // console.log("ID usuario: " + this.usuarios[ultimoID].id);
+  //       // console.log("ID usuario: " + this.usuarios[ultimoID].id);
   
-        // POST CLIENTE
-        this.nuevoCliente.usuario = this.usuarios[ultimoID].id;
-        console.log("ID usuario de Cliente: " + this.nuevoCliente.usuario);
-        this.nuevoCliente.activo = 1;
+  //       // POST CLIENTE
+  //       this.nuevoCliente.usuario = this.usuarios[ultimoID].id;
+  //       console.log("ID usuario de Cliente: " + this.nuevoCliente.usuario);
+  //       this.nuevoCliente.activo = 1;
   
-        this.clientesService.postClientes(this.nuevoCliente).subscribe({
-          next: () => {
-            console.log('Cliente registrado con éxito');
-            this.router.navigate(['usuarios/login']);
-          },
-          error: (error) => {
-            console.error('Error al registrar cliente:', error);
-            // Maneja el error según sea necesario (por ejemplo, muestra un mensaje al cliente)
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Error al obtener usuarios:', error);
-      }
-    });
-  }
+  //       this.clientesService.postClientes(this.nuevoCliente).subscribe({
+  //         next: () => {
+  //           console.log('Cliente registrado con éxito');
+  //           this.router.navigate(['usuarios/login']);
+  //         },
+  //         error: (error) => {
+  //           console.error('Error al registrar cliente:', error);
+  //           // Maneja el error según sea necesario (por ejemplo, muestra un mensaje al cliente)
+  //         }
+  //       });
+  //     },
+  //     error: (error) => {
+  //       console.error('Error al obtener usuarios:', error);
+  //     }
+  //   });
+  // }
 
   getProvincias(): void {
     this.ubicacionesService.getProvincias()
@@ -148,15 +186,38 @@ export class UsuarioRegistroComponent {
   }
 
   onProvinciaChange(): void {
+    console.log('Provincia Seleccionada:')
+    console.log(this.provinciaSeleccionada);
     // console.log(this.provinciaSeleccionada.id);
-    if (this.provinciaSeleccionada.id !== -1) {
+    if (this.provinciaSeleccionada !== null) {
       this.ubicacionesService.getLocalidadesPorProvincia(this.provinciaSeleccionada.id).subscribe(data => {
         this.localidades = data;
-        this.nuevoCliente.provincia = this.provinciaSeleccionada.descripcion; // Actualizar el nombre de la provincia en nuevoCliente
+        
+        this.localidadSeleccionada = null;
+        // console.log('localidadSeleccionada:')
+        // console.log(this.localidadSeleccionada);
+        
+        // Asegúrate de que provinciaSeleccionada no sea null
+        if (this.provinciaSeleccionada) {
+            this.nuevoCliente.provincia = this.provinciaSeleccionada.descripcion; // Actualizar el nombre de la Provincia en nuevoCliente
+        }
+      }, error => {
+        console.error('Error al obtener localidades:', error);
+        this.localidades = [];
       });
     } else {
       this.localidades = []; // Limpiar localidades si no se ha seleccionado ninguna provincia
       this.nuevoCliente.provincia = ''; // También se puede establecer en null o undefined según el requerimiento
+      this.localidadSeleccionada = null; // Reiniciar localidad seleccionada
+    }
+  }
+
+  onLocalidadChange(): void {
+    console.log('Localidad seleccionada:', this.localidadSeleccionada);
+
+    // Asegúrate de que localidadSeleccionada no sea null
+    if (this.localidadSeleccionada !== null) {
+      this.nuevoCliente.localidad = this.localidadSeleccionada.descripcion; // Actualizar el nombre de la Localidad en nuevoCliente
     }
   }
 
@@ -241,7 +302,4 @@ export class UsuarioRegistroComponent {
     return 0;
   }
 
-  ngOnInit(): void {
-    this.getProvincias();
-  }
 }

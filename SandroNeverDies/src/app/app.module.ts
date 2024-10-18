@@ -20,6 +20,7 @@ import { AbmCategoriaComponent } from './components/abm-categoria/abm-categoria.
 import { AbmSubcategoriaComponent } from './components/abm-subcategoria/abm-subcategoria.component';
 import { UsuarioEditarComponent } from './components/usuario-editar/usuario-editar.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { VentasPorInformeComponent } from './components/informes/ventas-por-informe/ventas-por-informe.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { FooterComponent } from './components/footer/footer.component';
     AbmCategoriaComponent,
     AbmSubcategoriaComponent,
     UsuarioEditarComponent,
-    FooterComponent
+    FooterComponent,
+    VentasPorInformeComponent
   ],
   imports: [
     BrowserModule,

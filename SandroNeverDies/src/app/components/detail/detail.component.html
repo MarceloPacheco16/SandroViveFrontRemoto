@@ -127,6 +127,12 @@
                             <p><strong>¡No hay un Cliente Logueado!</strong> Sin Cliente no hay Carrito para Cargar</p>                        
                         </div>
                     </div>
+                    <!-- Mostrar un Mensaje cuando se Cargaron Nuevos Productos -->
+                    <div [hidden]="totalCargados == 0">
+                        <div style="padding-top: 10px; border: 1px solid green; background-color: #aeffa3; border-radius: 5px; text-align: center; ">
+                            <p>¡Has Agregado {{totalCargados}} Producto(s) al Carrito!</p>                        
+                        </div>
+                    </div>
                     
                     <!-- <div style="background-color: whitesmoke;">
                         <p [hidden]="distinta_contrasenia == false" style="color: red;">Las contraseñas deben coincidir</p>

@@ -25,6 +25,7 @@ export class DetailComponent {
   pedido: Pedido;
 
   cantidadElegida: number;
+  totalCargados: number;
 
 
   constructor(private route: ActivatedRoute, private productosService: ProductosService, private pedidosService: PedidosService, private clientesService: ClientesService,
@@ -65,6 +66,7 @@ export class DetailComponent {
     };
 
     this.cantidadElegida = 1;
+    this.totalCargados = 0;
   }
 
   ngOnInit(): void {
@@ -94,28 +96,28 @@ export class DetailComponent {
     // console.log("Disponible: " + this.producto.cantidad_disponible);
     if(this.cantidadElegida > 1){
       this.cantidadElegida--;
-      console.log("Cantidad: " +this.cantidadElegida);
+      // console.log("Cantidad: " +this.cantidadElegida);
     }
   }
 
   Sumar() {
     if(this.cantidadElegida < this.producto.cantidad_disponible){
       this.cantidadElegida++;
-      console.log("Cantidad: " +this.cantidadElegida);
+      // console.log("Cantidad: " +this.cantidadElegida);
     }else{      
       console.log("Disponible: " + this.producto.cantidad_disponible);
     }
   }
 
   cargarProductoAlCarrito(): void{
-    console.log("ID Cliente:" + this.id_cliente);
+    // console.log("ID Cliente:" + this.id_cliente);
 
     if(this.id_cliente == -1){
       this.sin_cliente = true;
       console.log("NO se pudo Cargar Carrito, Sin Cliente: ", this.sin_cliente);
     }else{
-      console.log("ID Producto:" + this.id_producto);
-      console.log("Cantidad:" + this.cantidadElegida);
+      // console.log("ID Producto:" + this.id_producto);
+      // console.log("Cantidad:" + this.cantidadElegida);
   
       this.pedidosService.getCargarProductoACarrito(this.id_cliente, this.id_producto, this.cantidadElegida).subscribe({
         next: (response: Pedido) => {
@@ -129,9 +131,26 @@ export class DetailComponent {
                 // console.log("Productos del Pedido:");
                 // console.log(this.productosCarrito);
 
-                let nuevaCantidad = productosCarrito.length;
-                console.log("Productos en Carrito: " + nuevaCantidad);
-                this.sharedService.actualizarCantProductosCarrito(nuevaCantidad);
+                // let totalUnidades : number = 0;
+                // for(let i = 0; i < productosCarrito.length; i++){
+                //   // // console.log("id_usuario de cliente " + this.clientes[i].id + ": " + this.clientes[i].usuario);
+                //   // if(this.usuario.id == this.clientes[i].usuario){
+                //   //   id_cliente = Number.parseInt(this.clientes[i].id.toString());
+                //   //   break;
+                //   // }
+                //   if(){
+                    
+                //   totalUnidades += productosCarrito[i].cantidad;
+                //   }
+                // }
+
+                // let nuevaCantidad = productosCarrito.length;
+                this.totalCargados += this.cantidadElegida;
+
+                // console.log("Productos en Carrito: " + nuevaCantidad);
+                // this.sharedService.actualizarCantProductosCarrito(nuevaCantidad);
+                console.log("Productos en Carrito: " + this.totalCargados);
+                this.sharedService.actualizarCantProductosCarrito(this.totalCargados);
               }
             });
 

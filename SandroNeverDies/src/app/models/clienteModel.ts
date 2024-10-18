@@ -7,6 +7,7 @@ export interface Cliente{
 	localidad: string;
 	provincia: string;
 	codigo_postal: string;
+	descuento?: number;
 	usuario: string;
 	activo: number;
 }

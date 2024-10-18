@@ -61,16 +61,16 @@
             </div> -->
             <div class="form-group">
                 <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
-                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
+                    <option [ngValue]="null" disabled selected>Seleccione una Provincia</option>
                     <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
                 </select>
             </div>
             <div class="form-group">
                 <!-- CSS de select modificado a .custom-select -->
                 <!-- <input type="text" [(ngModel)]="nuevoCliente.localidad" name="nuevoCliente.localidad"  placeholder="Localidad" class="form-control"> -->
-                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
-                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
-                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
+                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control" (change)="onLocalidadChange()">
+                    <option [ngValue]="null" disabled selected>Seleccione una Localidad</option>
+                    <option *ngFor="let localidad of localidades" [ngValue]="localidad">{{ localidad.descripcion }}</option>
                 </select>
             </div>
 

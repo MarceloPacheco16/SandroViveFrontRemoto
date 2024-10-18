@@ -75,7 +75,7 @@
 
                         <div class="col-md-12 form-group">
                             <label>Mas Informacion</label>
-                            <textarea class="form-control" type="text" rows="5" placeholder="Mas Informacion"></textarea>
+                            <textarea class="form-control" type="text" rows="5" [(ngModel)]="detalleEnvio.comentario" name="detalleEnvio.comentario" placeholder="Mas Informacion"></textarea>
                         </div>
 
 
@@ -171,6 +171,7 @@
                     </div>
                 </div> -->
             </div>
+                        
             <div class="col-lg-4">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Orden de Compra</span></h5>
                 <div class="bg-light p-30 mb-5">
@@ -178,7 +179,7 @@
                         <h6 class="mb-3">Productos</h6>
                         <div *ngFor="let producto of productosCarrito" class="d-flex justify-content-between">
                             <p>{{ producto.producto_nombre }}</p>
-                            <p>${{ producto.sub_total }}</p>
+                            <p>$ {{ producto.sub_total | number:'1.2-2'}}</p>
                         </div>
                         <!-- <div class="d-flex justify-content-between">
                             <p>Remera mujer</p>
@@ -196,17 +197,29 @@
                     <div class="border-bottom pt-3 pb-2">
                         <div class="d-flex justify-content-between mb-3">
                             <h6>Subtotal</h6>
-                            <h6>$150</h6>
+                            <h6>$ {{pedido.total | number:'1.2-2'}}</h6>
+                            <!-- <h6>Subtotal</h6>
+                            <h6>$150</h6> -->
                         </div>
-                        <div class="d-flex justify-content-between">
+                        <!-- <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Envio</h6>
                             <h6 class="font-weight-medium">$10</h6>
+                        </div> -->
+                        <div class="d-flex justify-content-between" *ngIf="descuento > 0">
+                            <h6 class="font-weight-medium">Descuento ({{descuento}}%)</h6>
+                            <h6 class="font-weight-medium">$ {{subtotal_descuento | number:'1.2-2'}}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">IVA (21%)</h6>
+                            <h6 class="font-weight-medium">$ {{iva | number:'1.2-2'}}</h6>
                         </div>
                     </div>
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Total</h5>
-                            <h5>{{pedido.total}}</h5>
+                            <h5>$ {{totalFinal | number:'1.2-2'}}</h5>
+                            <!-- <h5>Total</h5>
+                            <h5>{{pedido.total}}</h5> -->
                             <!-- <h5>$160</h5> -->
                         </div>
                     </div>
@@ -215,7 +228,17 @@
                     <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Metodos de Pago</span></h5>
                     <div class="bg-light p-30">
                         <div class="form-group">
-                            <div class="custom-control custom-radio">
+
+                            <!-- <div *ngFor="let talle of talles; let i = index" class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                                <input type="radio" class="custom-control-input" id="size-{{i}}" name="size" [(ngModel)]="filtros.talle" [value]="talle.nombre">
+                                <label class="custom-control-label" for="size-{{i}}">{{talle.nombre}}</label>
+                            </div> -->
+
+                            <div *ngFor="let metodopago of metodoPagos; let i = index" class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="metodo" id="metodo-{{i}}" [(ngModel)]="factura.metodo_pago" [value]="metodopago.metodo">
+                                <label class="custom-control-label" for="metodo-{{i}}">{{metodopago.metodo}}</label>
+                            </div>
+                            <!-- <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" name="payment" id="paypal">
                                 <label class="custom-control-label" for="paypal">Efectivo</label>
                             </div>
@@ -224,7 +247,7 @@
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" name="payment" id="directcheck">
                                 <label class="custom-control-label" for="directcheck">Mercado Pago</label>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- <div class="form-group mb-4">
                             <div class="custom-control custom-radio">
@@ -232,7 +255,9 @@
                                 <label class="custom-control-label" for="banktransfer">Trtanferencia Bancaria</label>
                             </div>
                         </div> -->
-                        <button routerLink="/usuarios/contact" class="btn btn-block btn-primary font-weight-bold py-3">Confirmar Compra</button>
+
+                        <!-- <button routerLink="/usuarios/contact" class="btn btn-block btn-primary font-weight-bold py-3">Confirmar Compra</button> -->
+                        <button (click)="ConfirmarCompra()" class="btn btn-block btn-primary font-weight-bold py-3">Confirmar Compra</button>
                     </div>
                 </div>
             </div>

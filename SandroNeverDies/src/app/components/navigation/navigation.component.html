@@ -38,11 +38,17 @@
 <!-- Topbar Start -->
 <div class="container-fluid">
     <div class="row bg-secondary py-1 px-xl-5">
-        <div class="col-lg-6 d-none d-lg-block">
+        <div class="col-lg-10 d-none d-lg-block">
             <div class="d-inline-flex align-items-center h-100">
                 <p *ngIf="nombreUsuario == '' else ConUsuario" style="margin-bottom: 0;"><strong>Sin Usuario</strong></p>
                 <ng-template #ConUsuario>
-                    <p style="margin-bottom: 0;"><strong>Nombre Usuario: </strong> {{nombreUsuario}}  |   <strong>Mail Usuario: </strong> {{mailUsuario}}</p>
+                    <p style="margin-bottom: 0;">
+                        <strong>Nombre Usuario: </strong> {{nombreUsuario}}  |   
+                        <strong>Mail Usuario: </strong> {{mailUsuario}}  |
+                        <span [hidden]="id_cliente == -1 && id_empleado != -1">(<strong >Cliente</strong>)</span>
+                        <span [hidden]="id_cliente != -1 && id_empleado == -1">(<strong >Empleado</strong>)</span>
+                        <!-- <strong [hidden]="id_cliente == -1 || id_empleado != -1">Empleado</strong>) -->
+                    </p>
                 </ng-template>
                 <!-- Ya existe un Menu -->
                 <!-- <a class="text-body mr-3" href="">Acerca De</a>
@@ -51,19 +57,19 @@
                 <a class="text-body mr-3" href="">Preguntas Frecuentes</a> -->
             </div>
         </div>
-        <div class="col-lg-6 text-center text-lg-right">
+        <div class="col-lg-2 text-center text-lg-right">
             <div class="d-inline-flex align-items-center">
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-light dropdown-toggle"
                         data-toggle="dropdown">LOGIN</button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <!-- <button routerLink="/usuarios/login" class="dropdown-item" type="button">Log In</button> -->
-                        <button (click)="logIn()" class="dropdown-item" type="button">Log In</button>
+                        <button (click)="logIn()" class="dropdown-item" type="button" [hidden]="id_cliente != -1 || id_empleado != -1">Log In</button>
                         <!-- <button routerLink="/usuarios/usuario-registro" class="dropdown-item" type="button">Sign Up</button> -->
                         <button (click)="signUp()" class="dropdown-item" type="button">Sign Up</button>
-                        <button routerLink="/usuario/editar" class="dropdown-item" type="button">Edit Profile</button>
+                        <button routerLink="/usuario/editar" class="dropdown-item" type="button" [hidden]="id_cliente == -1 && id_empleado == -1">Edit Profile</button>
                         <!-- <button routerLink="/usuarios/login" class="dropdown-item" type="button">Log Out</button> -->
-                        <button (click)="logOut()" class="dropdown-item" type="button">Log Out</button>
+                        <button (click)="logOut()" class="dropdown-item" type="button" [hidden]="id_cliente == -1 && id_empleado == -1">Log Out</button>
                     </div>
                 </div>
 
@@ -264,7 +270,7 @@
 
                         <a routerLink="/usuarios/inicio" class="nav-item nav-link">Inicio</a>
                         <!-- <a routerLink="../../usuarios/inicio" class="nav-item nav-link active">Inicio</a> -->
-                        <div class="nav-item dropdown">
+                        <div class="nav-item dropdown" [hidden]="id_empleado == -1">
                             <!-- <a routerLink="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Productos<i
                                     class="fa fa-angle-down mt-1"></i></a> -->
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">ABM<i
@@ -294,7 +300,7 @@
                         </div> -->
                         <!-- <a routerLink="../../productos/shop" class="nav-item nav-link">Productos</a> -->
                         <a (click)="getProductos()" class="nav-item nav-link" style="cursor: pointer">Productos</a>
-                        <a routerLink="/productos/cart" class="nav-item nav-link">Carrito de compra</a>
+                        <a routerLink="/productos/cart" class="nav-item nav-link" [hidden]="id_cliente == -1">Carrito de compra</a>
                         
                         <!-- Modificado CARRITO DE COMPRA ahora en Menu no Submenu  y ORDEN DE COMPRA solo accesible desde la busqueda de Productos-->
                         <!-- <div class="nav-item dropdown">
@@ -310,10 +316,10 @@
                         </div> -->
                         <!-- <a routerLink="checkout.html" class="nav-item nav-link">Detalles de Envio</a> -->
                         <a routerLink="/usuarios/contact" class="nav-item nav-link">Contacto</a>
-                        <a routerLink="../../usuarios/contact" class="nav-item nav-link">Devoluciones</a>
+                        <a routerLink="../../usuarios/contact" class="nav-item nav-link" [hidden]="id_cliente == -1">Devoluciones</a>
 
                         <!-- Modificacion de Menu VENTAS a INFORMES -->
-                        <div class="nav-item dropdown">
+                        <div class="nav-item dropdown" [hidden]="id_empleado == -1">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Informes<i
                                     class="fa fa-angle-down mt-1"></i></a>
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0 ">
@@ -331,7 +337,7 @@
                             <span class="badge text-secondary border border-secondary rounded-circle"
                                 style="padding-bottom: 2px;">0</span>
                         </a>
-                        <a routerLink="/productos/cart" class="btn px-0 ml-3">
+                        <a routerLink="/productos/cart" class="btn px-0 ml-3" [hidden]="id_cliente == -1">
                             <i class="fas fa-shopping-cart text-primary"></i>
                             <!-- <span class="badge text-secondary border border-secondary rounded-circle"
                                 style="padding-bottom: 2px;">0</span> -->
