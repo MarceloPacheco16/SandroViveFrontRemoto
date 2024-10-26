@@ -392,6 +392,10 @@ export class NavigationComponent {
     this.router.navigate(['/usuarios/usuario-registro']);
   }
 
+  editProfile(): void{
+    this.router.navigate(['/usuario/editar']);
+  }
+
   logOut(): void{
     localStorage.removeItem('usuarioId');
     localStorage.removeItem('clienteId');

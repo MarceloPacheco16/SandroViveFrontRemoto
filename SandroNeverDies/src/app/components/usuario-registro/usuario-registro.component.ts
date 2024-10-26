@@ -301,5 +301,8 @@ export class UsuarioRegistroComponent {
       return 3;
     return 0;
   }
-
+  
+  volver(): void{
+    this.router.navigate(['usuarios/login']);
+  }
 }

@@ -1,0 +1,132 @@
+<!-- <p>ventas-por-informe works!</p> -->
+
+
+<div>
+    <app-navigation></app-navigation>
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Home</a>
+                    <span class="breadcrumb-item active">Informes</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Contact Start -->
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">Informe de Ventas por Período</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                    <form name="sentMessage" id="contactForm" novalidate="novalidate">                            
+                        <div class="form-row">                                
+                            <div class="control-group col-md-5">
+                                <label for="Fecha desde">Fecha desde:</label>
+                                <input type="date" class="form-control" id="Fechadesde" [(ngModel)]="filtro.fecha_desde" name="filtro.fecha_desde" required="required" data-validation-required-message="Por favor, seleccione una fecha">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group col-md-5">
+                                <label for="Fecha desde">Fecha hasta:</label>
+                                <input type="date" class="form-control" id="Fechahasta" [(ngModel)]="filtro.fecha_hasta" name="filtro.fecha_hasta" required="required" data-validation-required-message="Por favor, seleccione una fecha">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="control-group mt-3">
+                            <button class="btn btn-primary py-2 px-4" (click)="VentasPorPeriodo()" type="submit" id="altaButton">Buscar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">Lista de Ventas por Período</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Nro Pedido</th>
+                                <th>Cantidad Artículos</th>
+                                <th>Monto total</th>
+                                <th>Observaciones</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let venta of ventas_por_periodo">
+                                <td>{{venta.fecha_creacion}}</td>
+                                <td style="text-align: center;">{{venta.pedido_id}}</td>
+                                <td style="text-align: center;">{{venta.total_cantidad}}</td>
+                                <td style="text-align: center;">{{venta.total}}</td>
+                                <td>{{venta.observaciones}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="ventas_por_periodo.length > 0" class="control-group">
+                        <!-- <button class="btn btn-primary py-2 px-4" type="button" id="saveChangesButton">Descargar Excel</button> -->
+                        <button class="btn btn-primary py-2 px-4" type="button" (click)="ExportarExcel()">Descargar Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">Resultados Totales Período</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Cantidad Pedidos</th>
+                                <th>Cantidad Artículos</th>
+                                <th>Monto total</th>
+                                <th>Promedio Venta Por Pedido</th>
+                                <th>Promedio Valor Articulo</th>
+                                <th>Promedio Art por Venta</th>  
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>3</td>
+                                <td>13</td>
+                                <td>304.000</td>
+                                <td>101.333,33</td>
+                                <td>23.384,61</td>
+                                <td>4,33</td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                    <div class="control-group">
+                        <button class="btn btn-primary py-2 px-4" type="button" id="saveChangesButton">Descargar Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Footer Start -->
+<app-footer></app-footer>
+<!-- Footer End -->

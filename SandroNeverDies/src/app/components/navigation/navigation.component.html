@@ -67,7 +67,7 @@
                         <button (click)="logIn()" class="dropdown-item" type="button" [hidden]="id_cliente != -1 || id_empleado != -1">Log In</button>
                         <!-- <button routerLink="/usuarios/usuario-registro" class="dropdown-item" type="button">Sign Up</button> -->
                         <button (click)="signUp()" class="dropdown-item" type="button">Sign Up</button>
-                        <button routerLink="/usuario/editar" class="dropdown-item" type="button" [hidden]="id_cliente == -1 && id_empleado == -1">Edit Profile</button>
+                        <button (click)="editProfile()" class="dropdown-item" type="button" [hidden]="id_cliente == -1 && id_empleado == -1">Edit Profile</button>
                         <!-- <button routerLink="/usuarios/login" class="dropdown-item" type="button">Log Out</button> -->
                         <button (click)="logOut()" class="dropdown-item" type="button" [hidden]="id_cliente == -1 && id_empleado == -1">Log Out</button>
                     </div>
@@ -325,7 +325,8 @@
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0 ">
                                 <a routerLink="alta de producto(menores Ventas).html" class="dropdown-item">Informe Menores Ventas</a>
                                 <a routerLink="alta de producto(menores Ventas).html" class="dropdown-item">Informe Mayores Ventas</a>
-                                <a routerLink="alta de producto(menores Ventas).html" class="dropdown-item">Informe de Ventas por Período</a>
+                                <!-- informes/ventas-por-informe -->
+                                <a routerLink="/informes/ventas-por-informe" class="dropdown-item">Informe de Ventas por Período</a>
                                 <a routerLink="alta de producto(menores Ventas).html" class="dropdown-item">Informe Devoluciones y Reembolsos</a>
                                 <a routerLink="alta de producto(menores Ventas).html" class="dropdown-item">Informe Clientes Destacados</a>
                             </div>

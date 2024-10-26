@@ -39,7 +39,7 @@ import { VentasPorInformeComponent } from './components/informes/ventas-por-info
     AbmSubcategoriaComponent,
     UsuarioEditarComponent,
     FooterComponent,
-    VentasPorInformeComponent
+    VentasPorInformeComponent,
   ],
   imports: [
     BrowserModule,

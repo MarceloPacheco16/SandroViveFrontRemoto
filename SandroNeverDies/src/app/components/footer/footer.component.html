@@ -4,36 +4,37 @@
 <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-            <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-            <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
-            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
+            <h5 class="text-secondary text-uppercase mb-4">Ponte en Contacto</h5>
+            <p class="mb-4">Celebra el legado de Sandro con nosotros. Para cualquier consulta, estamos aquí para ayudarte.</p>
+            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Calle Las Rosas 1234, Buenos Aires, Argentina</p>
+            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>SandroNeverDiesinfo@gmail.com</p>
             <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
         </div>
         <div class="col-lg-8 col-md-12">
             <div class="row">
+                <!--Seccion de Tienda -->
                 <div class="col-md-4 mb-5">
                     <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-secondary mb-2" routerLink="/usuarios/inicio"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                        <a class="text-secondary mb-2" routerLink="/productos/shop"><i class="fa fa-angle-right mr-2"></i>Shop</a>
+                        <a class="text-secondary mb-2" routerLink="/productos/cart" [hidden]="id_cliente == -1"><i class="fa fa-angle-right mr-2"></i>Cart</a>
+                        <!-- <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>-->
+                        <a class="text-secondary" routerLink="/usuarios/contact"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                     </div>
                 </div>
+
+                 <!--Seccion de Usuario -->
                 <div class="col-md-4 mb-5">
                     <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-secondary mb-2" (click)="logIn()" [hidden]="id_cliente != -1 || id_empleado != -1"><i class="fa fa-angle-right mr-2"></i>Log In</a>
+                        <a class="text-secondary mb-2" (click)="signUp()"><i class="fa fa-angle-right mr-2"></i>Sign Up</a>
+                        <a class="text-secondary mb-2" (click)="editProfile()" [hidden]="id_cliente == -1 && id_empleado == -1"><i class="fa fa-angle-right mr-2"></i>Edit Profile</a>
+                        <a class="text-secondary mb-2" (click)="logOut()" [hidden]="id_cliente == -1 && id_empleado == -1"><i class="fa fa-angle-right mr-2"></i>Log Out</a>
                     </div>
                 </div>
+                
                 <!-- <div class="col-md-4 mb-5">
                     <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
                     <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
@@ -53,6 +54,29 @@
                         <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div> -->
+            </div>
+            <div class="row">
+                <!-- ABM Section -->
+                <div class="col-md-4 mb-5" [hidden]="id_empleado == -1">
+                    <h5 class="text-secondary text-uppercase mb-4">ABM</h5>
+                    <div class="d-flex flex-column justify-content-start">
+                        <a class="text-secondary mb-2" routerLink="/abm/producto"><i class="fa fa-angle-right mr-2"></i>ABM de Productos</a>
+                        <a class="text-secondary mb-2" routerLink="/abm/categoria"><i class="fa fa-angle-right mr-2"></i>ABM de Categorías</a>
+                        <a class="text-secondary mb-2" routerLink="/abm/subcategoria"><i class="fa fa-angle-right mr-2"></i>ABM de Subcategorías</a>
+                    </div>
+                </div>
+
+                <!-- Informes Section -->
+                <div class="col-md-4 mb-5" [hidden]="id_empleado == -1">
+                    <h5 class="text-secondary text-uppercase mb-4">Informes</h5>
+                    <div class="d-flex flex-column justify-content-start">
+                        <a class="text-secondary mb-2" routerLink="/informes/ventas-por-informe"><i class="fa fa-angle-right mr-2"></i>Informe de Ventas por Período</a>
+                        <a class="text-secondary mb-2" routerLink="#"><i class="fa fa-angle-right mr-2"></i>Informe Mayores Ventas</a>
+                        <a class="text-secondary mb-2" routerLink="#"><i class="fa fa-angle-right mr-2"></i>Informe Menores Ventas</a>
+                        <a class="text-secondary mb-2" routerLink="#"><i class="fa fa-angle-right mr-2"></i>Informe Devoluciones y Reembolsos</a>
+                        <a class="text-secondary" routerLink="#"><i class="fa fa-angle-right mr-2"></i>Informe Clientes Destacados</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

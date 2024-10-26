@@ -70,7 +70,9 @@ export class ContactComponent {
   }
 
   ngOnInit(): void{
-    this.cargarDatos();
+    if(this.id_usuario != -1){
+      this.cargarDatos();
+    }
   }
 
   cargarDatos(){

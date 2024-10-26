@@ -149,6 +149,10 @@ export class LoginComponent {
     }
   }
 
+  inicio(): void{
+    this.router.navigate(['usuarios/inicio']);
+  }
+
   // login(): void {
   //   if (this.validarCampos()) {
   //     this.usuariosService.login(this.usuario.email, this.usuario.contrasenia).subscribe({

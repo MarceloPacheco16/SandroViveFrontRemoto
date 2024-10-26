@@ -13,6 +13,7 @@ import { AbmProductoComponent } from "./components/abm-producto/abm-producto.com
 import { AbmCategoriaComponent } from "./components/abm-categoria/abm-categoria.component";
 import { AbmSubcategoriaComponent } from "./components/abm-subcategoria/abm-subcategoria.component";
 import { UsuarioEditarComponent } from './components/usuario-editar/usuario-editar.component';
+import { VentasPorInformeComponent } from './components/informes/ventas-por-informe/ventas-por-informe.component';
 import { CustomRouteReuseStrategy } from './custom-route-reuse-strategy'; // Asegúrate de ajustar la ruta según tu estructura de archivos
 // ContactComponent
 const routes: Routes = [
@@ -72,6 +73,10 @@ const routes: Routes = [
 	{
 		path: 'usuario/editar',
 		component: UsuarioEditarComponent
+	},
+	{
+		path: 'informes/ventas-por-informe',
+		component: VentasPorInformeComponent
 	},
 ];
 
