@@ -5,17 +5,26 @@ import { Producto } from '../models/productoModel';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductosService {
-	API_URI = 'http://localhost:8000/producto';
-	API_BuscarProductosActivos = 'http://localhost:8000/buscar_productos/';
-	API_ProductosActivos = 'http://localhost:8000/productos/activos';
-	API_ProdXCategoria = 'http://localhost:8000/productos/categoria';
-	API_ProdXSubcategoria = 'http://localhost:8000/productos/subcategoria';
-	API_FiltrarProductosActivos = 'http://localhost:8000/filtrar_productos/';
+	
+  // Usar la URL base desde el archivo de entorno
+  API_URI = `${environment.apiUrl}/producto`;
+  API_BuscarProductosActivos = `${environment.apiUrl}/buscar_productos/`;
+  API_ProductosActivos = `${environment.apiUrl}/productos/activos`;
+  API_ProdXCategoria = `${environment.apiUrl}/productos/categoria`;
+  API_ProdXSubcategoria = `${environment.apiUrl}/productos/subcategoria`;
+  API_FiltrarProductosActivos = `${environment.apiUrl}/filtrar_productos/`;
+	// API_URI = 'http://localhost:8000/producto';
+	// API_BuscarProductosActivos = 'http://localhost:8000/buscar_productos/';
+	// API_ProductosActivos = 'http://localhost:8000/productos/activos';
+	// API_ProdXCategoria = 'http://localhost:8000/productos/categoria';
+	// API_ProdXSubcategoria = 'http://localhost:8000/productos/subcategoria';
+	// API_FiltrarProductosActivos = 'http://localhost:8000/filtrar_productos/';
   FORMAT_JSON = "?format=json";
 
   productos: Producto[];

@@ -2,12 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Factura } from '../models/facturaModel';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FacturaService {
-	API_URI = 'http://localhost:8000/factura';
+	 
+  // Usar la URL base desde el archivo de entorno
+  API_URI = `${environment.apiUrl}/factura`;
+	// API_URI = 'http://localhost:8000/factura';
 
   constructor(private http: HttpClient) { }
 

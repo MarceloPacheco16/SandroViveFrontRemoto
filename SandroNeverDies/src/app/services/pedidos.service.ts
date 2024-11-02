@@ -3,15 +3,20 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pedido } from '../models/pedidoModel';
 import { PedidoProducto } from '../models/pedidoProductoModel';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidosService {
-
-	API_URI = 'http://localhost:8000/pedido';
-	API_URI_CLI = 'http://localhost:8000/cliente';
-	API_URI_PED_PROD = 'http://localhost:8000/pedido_producto';
+  
+  // Usar la URL base desde el archivo de entorno
+  API_URI = `${environment.apiUrl}/pedido`;
+  API_URI_CLI = `${environment.apiUrl}/cliente`;
+  API_URI_PED_PROD = `${environment.apiUrl}/pedido_producto`;
+	// API_URI = 'http://localhost:8000/pedido';
+	// API_URI_CLI = 'http://localhost:8000/cliente';
+	// API_URI_PED_PROD = 'http://localhost:8000/pedido_producto';
 
   constructor(private http: HttpClient) { }
     

@@ -2,12 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MetodoPago } from '../models/metodoPagoModel';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetodopagoService {
-	API_URI = 'http://localhost:8000/metodopago';
+	  
+  // Usar la URL base desde el archivo de entorno
+  API_URI = `${environment.apiUrl}/metodopago`;
+	// API_URI = 'http://localhost:8000/metodopago';
 
   constructor(private http: HttpClient) { }
 

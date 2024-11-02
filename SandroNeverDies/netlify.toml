@@ -1,0 +1,8 @@
+[build]
+  publish = "dist/prueba01"  # Ruta a la carpeta que contiene los archivos construidos
+  command = "npm run build"  # Comando para construir el proyecto
+  
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

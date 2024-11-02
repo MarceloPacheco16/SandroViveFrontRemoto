@@ -5,13 +5,18 @@ import { Usuario } from "src/app/models/usuarioModel";
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuariosService{
-	API_URI = 'http://localhost:8000/usuario';
-  AUTH_API = 'http://localhost:8000/verificar-credenciales/';
+	
+  // Usar la URL base desde el archivo de entorno
+  API_URI = `${environment.apiUrl}/usuario`;
+  AUTH_API = `${environment.apiUrl}/verificar-credenciales/`;
+	// API_URI = 'http://localhost:8000/usuario';
+  // AUTH_API = 'http://localhost:8000/verificar-credenciales/';
   FORMAT_JSON = "?format=json";
 	
   id_usuario: number;

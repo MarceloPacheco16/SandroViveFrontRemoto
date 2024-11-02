@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InformesService {
-	API_URI = 'http://localhost:8000/informe';
+	  
+  // Usar la URL base desde el archivo de entorno
+  API_URI = `${environment.apiUrl}/informe`;
+	// API_URI = 'http://localhost:8000/informe';
 
   constructor(private http: HttpClient) { }
 

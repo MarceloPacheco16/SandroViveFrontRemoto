@@ -2,13 +2,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DetalleEnvio } from '../models/detalleEnvioModel';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DetalleEnviosService {
 
-	API_URI = 'http://localhost:8000/detalle_envio';
+  // Usar la URL base desde el archivo de entorno
+  API_URI = `${environment.apiUrl}/detalle_envio`;
+	// API_URI = 'http://localhost:8000/detalle_envio';
 
   constructor(private http: HttpClient) { }
 

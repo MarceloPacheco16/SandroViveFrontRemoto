@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Categoria } from '../models/categoriaModel';
 import { Subcategoria } from '../models/subcategoriaModel';
+import { environment } from 'src/environments/environment';
 
 import { Observable } from 'rxjs';
 
@@ -10,10 +11,14 @@ import { Observable } from 'rxjs';
 })
 export class CategoriasService {
   
-	API_Categoria = 'http://localhost:8000/categoria';
-	API_Categoria_Mod = 'http://localhost:8000/categorias';
-	API_Subcategoria = 'http://localhost:8000/subcategoria';
-	// API_Subcategoria = 'http://localhost:8000/subcategorias';
+  // Usar la URL base desde el archivo de entorno
+  API_Categoria = `${environment.apiUrl}/categoria`;
+  API_Categoria_Mod = `${environment.apiUrl}/categorias`;
+  API_Subcategoria = `${environment.apiUrl}/subcategoria`;
+	// API_Categoria = 'http://localhost:8000/categoria';
+	// API_Categoria_Mod = 'http://localhost:8000/categorias';
+	// API_Subcategoria = 'http://localhost:8000/subcategoria';
+	// // API_Subcategoria = 'http://localhost:8000/subcategorias';
   FORMAT_JSON = "?format=json";
 
   id_categoria: number;

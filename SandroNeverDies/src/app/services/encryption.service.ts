@@ -3,13 +3,17 @@ import { Injectable } from '@angular/core';
 import * as forge from 'node-forge';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EncryptionService {
   publicKey: string;
-  private publicKeyUrl = 'http://localhost:8000/get-public-key/';
+    
+  // Usar la URL base desde el archivo de entorno
+  publicKeyUrl = `${environment.apiUrl}/get-public-key/`;
+  // private publicKeyUrl = 'http://localhost:8000/get-public-key/';
 
   constructor(private http: HttpClient) {
     
