@@ -19,7 +19,7 @@ export class AbmProductoComponent {
   
   nuevoProducto: Producto;
   actualizarProducto: Producto;
-  selectedFile: File | null = null;
+  selectedFile: File | null;
 
   // private subscription: Subscription | undefined;
 
@@ -76,6 +76,8 @@ export class AbmProductoComponent {
     this.subcategoriaSeleccionada = -1;
     // this.provinciaSeleccionada = -1;
     // this.localidadSeleccionada = -1;
+
+    this.selectedFile = null;
   }
   
   ngOnInit(): void {
@@ -121,6 +123,7 @@ export class AbmProductoComponent {
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.selectedFile = event.target.files[0];
+      console.log(this.selectedFile);
     }
   }
   // onFileChange(event: any) {
@@ -147,46 +150,44 @@ export class AbmProductoComponent {
     this.nuevoProducto.categoria = this.categoriaSeleccionada;
     this.nuevoProducto.subcategoria = this.subcategoriaSeleccionada;
 
+    // Si se seleccionó una nueva imagen
     if(this.selectedFile != null){
       this.nuevoProducto.imagen = this.selectedFile;
     }
+    // else{
+    //   alert("Debe cargar una imagen al crear un producto");
+    //   return;
+    // }
 
+    this.enviarProducto();
+  }
+
+  enviarProducto() {
     const formData = new FormData();
     formData.append('nombre', this.nuevoProducto.nombre);
     formData.append('descripcion', this.nuevoProducto.descripcion);
     formData.append('talle', this.nuevoProducto.talle);
     formData.append('color', this.nuevoProducto.color);
     formData.append('categoria', this.nuevoProducto.categoria.toString());
-    // formData.append('subcategoria', this.nuevoProducto.subcategoria.toString());
-    if(this.subcategoriaSeleccionada != -1){
+    
+    if (this.subcategoriaSeleccionada != -1) {
       formData.append('subcategoria', this.nuevoProducto.subcategoria.toString());
-    }else{
+    } else {
       formData.append('subcategoria', '');
     }
+  
     formData.append('precio', this.nuevoProducto.precio.toString());
     formData.append('cantidad', this.nuevoProducto.cantidad.toString());
     formData.append('cantidad_disponible', this.nuevoProducto.cantidad_disponible.toString());
     formData.append('cantidad_limite', this.nuevoProducto.cantidad_limite.toString());
     formData.append('observaciones', this.nuevoProducto.observaciones);
     formData.append('activo', this.nuevoProducto.activo.toString());
-
-    // if (this.selectedFile) {
-    //   formData.append('imagen', this.selectedFile);
-    // }
-    
-    // if (this.nuevoProducto.imagen) {
-    //   formData.append('imagen', this.nuevoProducto.imagen);
-    // }
-    if(this.selectedFile != null){
-      if (this.nuevoProducto.imagen) {
-        formData.append('imagen', this.nuevoProducto.imagen);
-      }
+  
+    // Si la imagen está disponible, agregarla al formData
+    if (this.nuevoProducto.imagen) {
+      formData.append('imagen', this.nuevoProducto.imagen);  // La URL de la imagen de Cloudinary
     }
-
-    // if (this.nuevoProducto.imagen) {
-    //   formData.append('imagen', this.nuevoProducto.imagen.name);
-    // }
-
+  
     this.productosService.registrarProducto(formData).subscribe(response => {
       console.log('Producto registrado exitosamente', response);
       // Manejar la respuesta
@@ -195,64 +196,57 @@ export class AbmProductoComponent {
   }
 
   modificarProducto(): void {
+    // Asignamos las selecciones a las propiedades correspondientes
     this.actualizarProducto.categoria = this.categoriaSeleccionada;
     this.actualizarProducto.subcategoria = this.subcategoriaSeleccionada;
 
     // if(this.subcategoriaSeleccionada != -1){
     //   this.actualizarProducto.subcategoria = this.subcategoriaSeleccionada;
     // }
-
+    
+    // Si se seleccionó una nueva imagen
     if(this.selectedFile != null){
       this.actualizarProducto.imagen = this.selectedFile;
     }
+    
+    this.enviarActualizacionProducto();
+  }
 
+  enviarActualizacionProducto() {
     const formData = new FormData();
-    // formData.append('id', this.actualizarProducto.id.toString());
     formData.append('nombre', this.actualizarProducto.nombre);
     formData.append('descripcion', this.actualizarProducto.descripcion);
     formData.append('talle', this.actualizarProducto.talle);
     formData.append('color', this.actualizarProducto.color);
     formData.append('categoria', this.actualizarProducto.categoria.toString());
-    // formData.append('subcategoria', this.actualizarProducto.subcategoria.toString());
-    if(this.subcategoriaSeleccionada != -1){
+  
+    if (this.subcategoriaSeleccionada != -1) {
       formData.append('subcategoria', this.actualizarProducto.subcategoria.toString());
-    }else{
+    } else {
       formData.append('subcategoria', '');
     }
+  
     formData.append('precio', this.actualizarProducto.precio.toString());
     formData.append('cantidad', this.actualizarProducto.cantidad.toString());
     formData.append('cantidad_disponible', this.actualizarProducto.cantidad_disponible.toString());
     formData.append('cantidad_limite', this.actualizarProducto.cantidad_limite.toString());
     formData.append('observaciones', this.actualizarProducto.observaciones);
     formData.append('activo', this.actualizarProducto.activo.toString());
-
-    // if (this.selectedFile) {
-    //   formData.append('imagen', this.selectedFile);
-    // }
-    
-    // if (this.actualizarProducto.imagen) {
-    //   formData.append('imagen', this.actualizarProducto.imagen);
-    // }
-    if(this.selectedFile != null){
-      if (this.actualizarProducto.imagen) {
-        formData.append('imagen', this.actualizarProducto.imagen);
-      }
+  
+    // Agregar la imagen solo si es válida
+    if (this.actualizarProducto.imagen && this.actualizarProducto.imagen instanceof File) {
+      formData.append('imagen', this.actualizarProducto.imagen);
+    } else {
+      formData.append('imagen', ''); // O también 'null', si el backend espera un valor nulo explícito
     }
-    
+    // // Si la imagen ha cambiado o existe una URL de imagen, la agregamos al formData
     // if (this.actualizarProducto.imagen) {
     //   formData.append('imagen', this.actualizarProducto.imagen);
     // }
-
-    // console.log("FormData Producto:");
-    // console.log(formData);
-    
-    // Debug: Imprime los valores del FormData
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-
+  
+    // Llamar al servicio para actualizar el producto
     this.productosService.actualizarProducto(formData, this.actualizarProducto.id).subscribe(response => {
-      console.log('Producto actualizado exitosamente', response);
+      console.log('Producto modificado exitosamente', response);
       // Manejar la respuesta
       this.Refresh();
     });
@@ -376,6 +370,18 @@ export class AbmProductoComponent {
     this.categoriaSeleccionada = -1;
     this.subcategoriaSeleccionada = -1;
 
+    this.selectedFile = null;
+    
+    // Restablecer el campo de imagen usando el id
+    const imagenRegistro = <HTMLInputElement>document.getElementById('imagenRegistro');
+    if (imagenRegistro) {
+      imagenRegistro.value = '';
+    }
+
+    const imagenModificar = <HTMLInputElement>document.getElementById('imagenModificar');
+    if (imagenModificar) {
+      imagenModificar.value = '';
+    }
     this.cargarCategoriasActivas();
     this.obtenerProductos();
   }

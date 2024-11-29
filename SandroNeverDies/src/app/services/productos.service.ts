@@ -56,11 +56,13 @@ export class ProductosService {
 
   normalizeImageUrl(imageUrl: string): string {
     if (imageUrl.startsWith('/media/')) {
-      return 'http://127.0.0.1:8000' + imageUrl;
+      // return 'http://127.0.0.1:8000' + imageUrl;
+      return `${environment.apiUrl}${imageUrl}`;
     } else if (imageUrl.startsWith('http')) {
       return imageUrl;
     } else {
-      return 'http://127.0.0.1:8000/media/' + imageUrl;
+      // return 'http://127.0.0.1:8000/media/' + imageUrl;
+      return `${environment.apiUrl}/media/${imageUrl}`;
     }
   }
   
@@ -132,6 +134,32 @@ export class ProductosService {
   getBuscarProductosActivosPorID(productoID: number): Observable<Producto> {
     return this.http.get<Producto>(`${this.API_ProductosActivos}/${productoID}/`);
   }
+
+  // uploadImageToCloudinary(imagen: File): Observable<any> {
+  //   const formData = new FormData();
+  //   formData.append('file', imagen);
+  //   formData.append('upload_preset', 'your_upload_preset');  // Sustituye 'your_upload_preset' con el preset de carga de Cloudinary
+  
+  //   return this.http.post('https://api.cloudinary.com/v1_1/dophflucq/image/upload', formData);
+  //   // return this.http.post('https://res.cloudinary.com/dophflucq/image/upload/v1/media', formData);
+  // }
+  uploadImageToCloudinary(imagen: File): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/get_cloudinary_signature/`).pipe(  // Llamas al endpoint Django
+      switchMap(response => {
+        const formData = new FormData();
+        formData.append('file', imagen);
+        formData.append('upload_preset', 'your_upload_preset');
+        formData.append('api_key', response.api_key);  // Usas el api_key que te devuelve Django
+        formData.append('timestamp', response.timestamp);  // Usas el timestamp
+        formData.append('signature', response.signature);  // Usas la firma generada en Django
+
+        // Haces la solicitud POST a Cloudinary
+        return this.http.post('https://api.cloudinary.com/v1_1/dophflucq/image/upload', formData);
+        // return this.http.post('https://res.cloudinary.com/dophflucq/image/upload/v1/media', formData);
+      })
+    );
+  }
+
   // setProductoSeleccionado(producto: Producto): void {
   //   this.unproducto = producto;
   // }

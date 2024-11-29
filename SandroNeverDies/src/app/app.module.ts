@@ -21,6 +21,8 @@ import { AbmSubcategoriaComponent } from './components/abm-subcategoria/abm-subc
 import { UsuarioEditarComponent } from './components/usuario-editar/usuario-editar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { VentasPorInformeComponent } from './components/informes/ventas-por-informe/ventas-por-informe.component';
+import { SolicitudReclamoComponent } from './components/reclamos/solicitud-reclamo/solicitud-reclamo.component';
+import { ListadoReclamosComponent } from './components/reclamos/listado-reclamos/listado-reclamos.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { VentasPorInformeComponent } from './components/informes/ventas-por-info
     UsuarioEditarComponent,
     FooterComponent,
     VentasPorInformeComponent,
+    SolicitudReclamoComponent,
+    ListadoReclamosComponent,
   ],
   imports: [
     BrowserModule,

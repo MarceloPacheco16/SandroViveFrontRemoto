@@ -64,13 +64,13 @@
                                 <label for="cantidad_l">Cantidad Limite:</label>
                                 <input type="text" id="cantidad_l" [(ngModel)]="nuevoProducto.cantidad_limite" name="nuevoProducto.cantidad_limite"  placeholder="Stock Limite" class="form-control">
 
-                                <label for="imagen">Imagen:</label>
-                                <input type="file" (change)="onFileChange($event)" class="form-control-file">
+                                <label for="imagenRegistro">Imagen:</label>
+                                <input id="imagenRegistro" type="file" (change)="onFileChange($event)" class="form-control-file">
                                 
                                 <label for="observaciones">Observaciones:</label>
-                                <input type="text" id="observaciones" [(ngModel)]="nuevoProducto.observaciones" name="nuevoProducto.observaciones"  placeholder="Apellido" class="form-control">
+                                <input type="text" id="observaciones" [(ngModel)]="nuevoProducto.observaciones" name="nuevoProducto.observaciones"  placeholder="Observaciones" class="form-control">
                                 <label for="activo">Activo:</label>
-                                <input type="text" id="activo" [(ngModel)]="nuevoProducto.activo" name="nuevoProducto.activo"  placeholder="Apellido" class="form-control">
+                                <input type="text" id="activo" [(ngModel)]="nuevoProducto.activo" name="nuevoProducto.activo"  placeholder="Activo" class="form-control">
                             </div>
                             
                 
@@ -116,14 +116,14 @@
                                 <label for="cantidad_l">Cantidad Limite:</label>
                                 <input type="text" id="cantidad_l" [(ngModel)]="actualizarProducto.cantidad_limite" name="actualizarProducto.cantidad_limite"  placeholder="Apellido" class="form-control">
     
-                                <label for="imagen">Imagen:</label>
-                                <input type="file" id="imagen" (change)="onFileChange($event)" class="form-control-file">
+                                <label for="imagenModificar">Imagen:</label>
+                                <input id="imagenModificar" type="file" (change)="onFileChange($event)" class="form-control-file">
                                 <div>
                                     <label for="observaciones">Observaciones:</label>
-                                    <input type="text"id="observaciones" [(ngModel)]="actualizarProducto.observaciones" name="actualizarProducto.observaciones"  placeholder="Apellido" class="form-control">
+                                    <input type="text"id="observaciones" [(ngModel)]="actualizarProducto.observaciones" name="actualizarProducto.observaciones"  placeholder="Observaciones" class="form-control">
                                 </div>
                                 <label for="activo">Activo:</label>
-                                <input type="text" id="activo" [(ngModel)]="actualizarProducto.activo" name="actualizarProducto.activo"  placeholder="Apellido" class="form-control">
+                                <input type="text" id="activo" [(ngModel)]="actualizarProducto.activo" name="actualizarProducto.activo"  placeholder="Activo" class="form-control">
                             </div>
                 
                             <button (click)="modificarProducto()" type="button">
