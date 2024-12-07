@@ -1,1 +1,102 @@
-<p>listado-reclamos works!</p>
+<!-- <p>listado-reclamos works!</p> -->
+<app-navigation></app-navigation>
+
+<div>
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Home</a>
+                    <a class="breadcrumb-item text-dark" href="#">Reclamos</a>
+                    <span class="breadcrumb-item active">Listado de Reclamos</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Cart Start -->
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">Listado de Reclamos</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-12 table-responsive mb-5">
+
+                <!-- Si hay un Cliente Logueado Mostramos su Carrito de Compras -->
+                <div *ngIf="id_cliente != -1; else SinCliente">
+                    <!-- SI EL CARRITO TIENE PRODUCTOS MOSTRAMOS UNA TABLA CON LOS PRODUCTOS QUE CONTIENE EL CARRITO -->
+                     <div class="table-responsive">
+                        <table *ngIf="listaDevoluciones.length > 0; else emptyCart" class="table table-light table-borderless table-hover text-center mb-0">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Pedido</th>
+                                    <th>Imagen</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Imagen</th>
+                                    <th>Motivo</th>
+                                    <th>Estado</th>
+                                    <th>Observacion</th>
+                                </tr>
+                            </thead>
+                            <tbody class="align-middle">
+                                <!-- Iterar sobre productosCarrito para mostrar cada producto en el carrito -->
+                                <tr *ngFor="let devolucion of listaDevoluciones">
+                                    <td class="align-middle">{{ devolucion.id }}</td>
+                                    <td class="align-middle">{{ devolucion.fecha_solicitud }}</td>
+                                    <td class="align-middle">{{ devolucion.pedido }}</td>
+                                    <!-- <td class="align-middle">{{ devolucion.producto }}</td> -->
+                                    <td class="align-middle">
+                                        <img [src]="devolucion.producto.imagen" alt="Imagen del producto" class="img-thumbnail" style="width: 100px; height: auto;">
+                                    </td>
+                                    <td class="align-middle">{{ devolucion.producto.nombre }}</td>
+                                    <td class="align-middle">{{ devolucion.cantidad }}</td>
+                                    <td class="align-middle" *ngIf="devolucion.imagen != null; else sinImagen">
+                                        <img [src]="devolucion.imagen" alt="Sin Imagen" class="img-thumbnail" style="width: 100px; height: auto;">
+                                    </td>
+                                    <ng-template #sinImagen>
+                                        <td class="align-middle"> (Sin Imagen)</td>
+                                    </ng-template>
+                                    <td class="align-middle">{{ devolucion.motivo }}</td>
+                                    <td class="align-middle">{{ devolucion.estado }}</td>
+                                    <td class="align-middle">{{ devolucion.observacion }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                     </div>                    
+                    <!-- SI EL CARRITO TIENE PRODUCTOS MOSTRAMOS UNA TABLA CON LOS PRODUCTOS QUE CONTIENE EL CARRITO -->
+
+                    <!-- Mostrar un Mensaje cuando el Carrito está Vacío -->
+                    <ng-template #emptyCart>
+                        <!-- <div class="alert alert-info" role="alert" style="border: 1px solid #ff0055; padding: 20px; text-align: center;">
+                            <strong>¡Tu carrito está vacío!</strong> Agrega productos para continuar.
+                        </div> -->
+                        <div style="padding-top: 10px; border: 1px solid blue; background-color: #a3ffff; border-radius: 5px; text-align: center; ">
+                            <p><strong>¡No realizaste Solicitudes!</strong> Cuando realices un Reclamo se mostrara aqui</p>                        
+                        </div>
+                    </ng-template>
+                    <!-- Mostrar un Mensaje cuando el Carrito está Vacío -->
+                </div>
+                <!-- Si hay un Cliente Logueado Mostramos su Carrito de Compras -->
+
+                <!-- Mostrar un Mensaje cuando no hay un Cliente Logueado -->
+                <ng-template #SinCliente>
+                    <div style="padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center; ">
+                        <p><strong>¡No hay un Cliente Logueado!</strong> Sin Cliente no existen Devoluciones para Mostrar</p>                        
+                    </div>
+                </ng-template>
+                <!-- Mostrar un Mensaje cuando el Carrito está Vacío -->                
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+
+    <!-- Footer Start -->
+    <app-footer></app-footer>
+    <!-- Footer End -->
+</div>

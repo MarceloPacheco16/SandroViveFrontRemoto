@@ -17,29 +17,39 @@ export class DevolucionesService {
 
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
   
-  postDevolucion(nuevaDevolucion: Devolucion): Observable<any> {
-    return this.http.post<any>(this.API_URI, nuevaDevolucion, { headers: this.headers });
+  // postDevolucion(nuevaDevolucion: Devolucion): Observable<Devolucion> {
+  //   console.log("Datos enviados");
+  //   console.log(nuevaDevolucion);
+  //   return this.http.post<Devolucion>(this.API_URI, nuevaDevolucion, { headers: this.headers });
+  // }
+  postDevolucion(formData: FormData): Observable<any> {
+    console.log("Devolucion");
+    console.log(formData);
+
+    return this.http.post(this.API_URI, formData);
   }
   
   getDevolucion(idDevolucion: number): Observable<Devolucion> {
     return this.http.get<Devolucion>(`${this.API_URI}/${idDevolucion}`);
   }
   
-  getPedidosCliente(idCliente: number): Observable<any> {
+  getPedidosCliente(idCliente: number): Observable<any> { 
     const data = {
       cliente_id: idCliente
     };
-    console.log(data);
-
     return this.http.post<any>(`${this.API_URI}/pedidos-cliente/`, data);
   }
   
-  getProductosPedidos(idPedido: number): Observable<any> {
+  getProductosPedidos(idPedido: number): Observable<any> { 
     const data = {
       pedido_id: idPedido
     };
-    console.log(data);
-
     return this.http.post<any>(`${this.API_URI}/productos-pedido/`, data);
+  }
+
+  getDevolucionesPorCliente(idCliente: number): Observable<any> {
+    console.log(idCliente);
+
+    return this.http.get<any>(`${this.API_URI}/${idCliente}/`);
   }
 }

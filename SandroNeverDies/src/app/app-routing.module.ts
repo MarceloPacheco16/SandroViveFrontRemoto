@@ -15,6 +15,8 @@ import { AbmSubcategoriaComponent } from "./components/abm-subcategoria/abm-subc
 import { UsuarioEditarComponent } from './components/usuario-editar/usuario-editar.component';
 import { VentasPorInformeComponent } from './components/informes/ventas-por-informe/ventas-por-informe.component';
 import { CustomRouteReuseStrategy } from './custom-route-reuse-strategy'; // Asegúrate de ajustar la ruta según tu estructura de archivos
+import { SolicitudReclamoComponent } from './components/reclamos/solicitud-reclamo/solicitud-reclamo.component';
+import { ListadoReclamosComponent } from './components/reclamos/listado-reclamos/listado-reclamos.component';
 // ContactComponent
 const routes: Routes = [
 	{
@@ -78,6 +80,15 @@ const routes: Routes = [
 		path: 'informes/ventas-por-informe',
 		component: VentasPorInformeComponent
 	},
+	{
+		path: 'reclamo/solicitar-reclamo',
+		component: SolicitudReclamoComponent
+	},
+	{
+		path: 'reclamo/lista-reclamo',
+		component: ListadoReclamosComponent
+	},
+	// SolicitudReclamoComponent
 ];
 
 @NgModule({

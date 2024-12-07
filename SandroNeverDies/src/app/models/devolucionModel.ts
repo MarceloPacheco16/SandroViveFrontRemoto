@@ -1,10 +1,11 @@
 export interface Devolucion {
-    id: number;
+    id?: number;
     pedido: number;
-    fecha_solicitud: Date | null;
+    fecha_solicitud?: Date | null;
     producto: number;
     motivo: number;
     estado: number;
     cantidad: number;
-    observaciones: string;
+    imagen: File | null; // Puede ser un archivo o una URL de imagen
+    observacion: string;
 }

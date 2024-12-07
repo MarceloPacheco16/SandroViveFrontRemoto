@@ -316,7 +316,16 @@
                         </div> -->
                         <!-- <a routerLink="checkout.html" class="nav-item nav-link">Detalles de Envio</a> -->
                         <a routerLink="/usuarios/contact" class="nav-item nav-link">Contacto</a>
-                        <a routerLink="../../usuarios/contact" class="nav-item nav-link" [hidden]="id_cliente == -1">Devoluciones</a>
+                        
+                        <!-- <a routerLink="../../usuarios/contact" class="nav-item nav-link" [hidden]="id_cliente == -1">Devoluciones</a> -->
+                        <div class="nav-item dropdown" [hidden]="id_cliente == -1">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reclamos<i
+                                class="fa fa-angle-down mt-1"></i></a>
+                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0 ">
+                                <a routerLink="/reclamo/solicitar-reclamo" class="dropdown-item">Solicitar Reclamo</a>
+                                <a routerLink="/reclamo/lista-reclamo" class="dropdown-item">Listado de Reclamos</a>
+                            </div>
+                        </div>
 
                         <!-- Modificacion de Menu VENTAS a INFORMES -->
                         <div class="nav-item dropdown" [hidden]="id_empleado == -1">
