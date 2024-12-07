@@ -1,0 +1,119 @@
+<!-- <p>clientes-destacados works!</p> -->
+<div>
+    <!-- Topbar Start -->
+    <app-navigation></app-navigation>
+    <!-- Navbar End -->
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Home</a>
+                    <span class="breadcrumb-item active">Informes / Clientes Destacados</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Informe Start -->
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">Informe de Clientes Destacados</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                    <form name="sentMessage" id="contactForm" novalidate="novalidate">                            
+                        <div class="form-row">                                
+                            <div class="control-group col-md-5">
+                                <label for="Fecha desde">Fecha desde:</label>
+                                <input type="date" class="form-control" id="Fechadesde" [(ngModel)]="filtro.fecha_desde" name="filtro.fecha_desde" required="required" data-validation-required-message="Por favor, seleccione una fecha">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group col-md-5">
+                                <label for="Fecha desde">Fecha hasta:</label>
+                                <input type="date" class="form-control" id="Fechahasta" [(ngModel)]="filtro.fecha_hasta" name="filtro.fecha_hasta" required="required" data-validation-required-message="Por favor, seleccione una fecha">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <!-- <div class="form-row">                                
+                            <div class="control-group col-md-5">
+                                <label for="motivo">Seleccionar Motivo Devolución</label>
+                                <select class="form-control" id="motivo" name="motivo" required>
+                                    <option value="" disabled selected>Seleccione un motivo</option>
+                                    <option value="motivo1">Producto Defectuoso</option>
+                                    <option value="motivo2">Talle Incorrecto</option>
+                                    <option value="motivo3">Producto Faltante/No entregado</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                                <p class="help-block text-danger"></p>
+                            </div>                                
+                        </div>
+                        <div class="form-row">                                
+                            <div class="control-group col-md-5">
+                                <label for="motivo">Seleccionar Estado Devolución</label>
+                                <select class="form-control" id="motivo" name="motivo" required>
+                                    <option value="" disabled selected>Seleccione un estado</option>
+                                    <option value="motivo1">Pendiente</option>
+                                    <option value="motivo2">Aceptado</option>
+                                    <option value="motivo3">Rechazado</option>                                        
+                                </select>
+                                <p class="help-block text-danger"></p>
+                            </div>                                
+                        </div> -->
+                        
+                        <div class="control-group mt-3">
+                            <button class="btn btn-primary py-2 px-4" (click)="ClientesDestacados()" type="submit" id="altaButton">Buscar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">Lista de Clientes Destacados</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-12 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Nro Cliente</th>
+                                <th style="text-align: center;">Nombre Cliente</th>
+                                <th style="text-align: center;">Cantidad Total Artículos</th>
+                                <th style="text-align: center;">Monto Total Compras</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let cliente of clientes_destacados">
+                                <td style="text-align: center;">{{cliente.cliente_id}}</td>
+                                <td style="text-align: center;">{{cliente.cliente_nombre}}</td>
+                                <td style="text-align: center;">{{cliente.total_articulos}}</td>
+                                <td style="text-align: center;">{{cliente.total_compras}}</td>
+                            </tr>
+                            <tr *ngIf="clientes_destacados.length === 0">
+                                <td colspan="5" style="text-align: center;">No se encontraron clientes destacados para el período seleccionado.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="clientes_destacados.length > 0" class="control-group">
+                        <!-- <button class="btn btn-primary py-2 px-4" type="button" id="saveChangesButton">Descargar Excel</button> -->
+                        <button class="btn btn-primary py-2 px-4" type="button" (click)="ExportarExcel()">Descargar Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Informe End -->
+
+    <!-- Footer Start -->
+    <app-footer></app-footer>
+    <!-- Footer End -->
+</div>

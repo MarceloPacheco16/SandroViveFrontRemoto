@@ -96,7 +96,7 @@ export class SolicitudReclamoComponent {
   }
 
   obtenerMotivos(): void{
-    this.motivoDevolucionesService.getMotivodevoluciones().subscribe({
+    this.motivoDevolucionesService.getMotivoDevoluciones().subscribe({
       next: (data: MotivoDevolucion[]) => {        
         this.motivos = data;
         console.log("Motivos:");
@@ -187,7 +187,7 @@ export class SolicitudReclamoComponent {
       return;
     }
     if(this.solicitudReclamo.cantidad < 1){
-      console.log("Elegir una cantidad valida mayor a 1");
+      console.log("Elegir una cantidad valida mayor a 0");
       return;
     }
     if(this.solicitudReclamo.cantidad > this.cantidadMaxima){
@@ -233,6 +233,8 @@ export class SolicitudReclamoComponent {
         if (response) {
           console.log("Solicitud de Reclamo Registrada");
           console.log(response);
+
+          this.Refresh();
         } 
         else {
           console.log("NO se pudo Registrar al Solicitud de Reclamo");

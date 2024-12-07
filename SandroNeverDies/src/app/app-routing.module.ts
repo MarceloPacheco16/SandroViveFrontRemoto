@@ -17,6 +17,10 @@ import { VentasPorInformeComponent } from './components/informes/ventas-por-info
 import { CustomRouteReuseStrategy } from './custom-route-reuse-strategy'; // Asegúrate de ajustar la ruta según tu estructura de archivos
 import { SolicitudReclamoComponent } from './components/reclamos/solicitud-reclamo/solicitud-reclamo.component';
 import { ListadoReclamosComponent } from './components/reclamos/listado-reclamos/listado-reclamos.component';
+import { MenoresVentasComponent } from './components/informes/menores-ventas/menores-ventas.component';
+import { MayoresVentasComponent } from './components/informes/mayores-ventas/mayores-ventas.component';
+import { ClientesDestacadosComponent } from './components/informes/clientes-destacados/clientes-destacados.component';
+import { ReclamosComponent } from './components/informes/reclamos/reclamos.component';
 // ContactComponent
 const routes: Routes = [
 	{
@@ -81,6 +85,22 @@ const routes: Routes = [
 		component: VentasPorInformeComponent
 	},
 	{
+		path: 'informes/menores-ventas',
+		component: MenoresVentasComponent
+	},
+	{
+		path: 'informes/mayores-ventas',
+		component: MayoresVentasComponent
+	},
+	{
+		path: 'informes/clientes-destacados',
+		component: ClientesDestacadosComponent
+	},
+	{
+		path: 'informes/reclamos',
+		component: ReclamosComponent
+	},
+	{
 		path: 'reclamo/solicitar-reclamo',
 		component: SolicitudReclamoComponent
 	},
@@ -88,7 +108,6 @@ const routes: Routes = [
 		path: 'reclamo/lista-reclamo',
 		component: ListadoReclamosComponent
 	},
-	// SolicitudReclamoComponent
 ];
 
 @NgModule({

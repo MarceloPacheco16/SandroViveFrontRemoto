@@ -1,6 +1,4 @@
 <!-- <p>ventas-por-informe works!</p> -->
-
-
 <div>
     <app-navigation></app-navigation>
 
@@ -10,7 +8,7 @@
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
                     <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <span class="breadcrumb-item active">Informes</span>
+                    <span class="breadcrumb-item active">Informes / Por Período</span>
                 </nav>
             </div>
         </div>
@@ -30,12 +28,12 @@
                     <form name="sentMessage" id="contactForm" novalidate="novalidate">                            
                         <div class="form-row">                                
                             <div class="control-group col-md-5">
-                                <label for="Fecha desde">Fecha desde:</label>
+                                <label for="Fechadesde">Fecha desde:</label>
                                 <input type="date" class="form-control" id="Fechadesde" [(ngModel)]="filtro.fecha_desde" name="filtro.fecha_desde" required="required" data-validation-required-message="Por favor, seleccione una fecha">
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="control-group col-md-5">
-                                <label for="Fecha desde">Fecha hasta:</label>
+                                <label for="Fechahasta">Fecha hasta:</label>
                                 <input type="date" class="form-control" id="Fechahasta" [(ngModel)]="filtro.fecha_hasta" name="filtro.fecha_hasta" required="required" data-validation-required-message="Por favor, seleccione una fecha">
                                 <p class="help-block text-danger"></p>
                             </div>
@@ -54,26 +52,29 @@
             <span class="bg-secondary pr-3">Lista de Ventas por Período</span>
         </h2>
         <div class="row px-xl-5">
-            <div class="col-lg-7 mb-5">
+            <div class="col-lg-12 mb-5">
                 <div class="contact-form bg-light p-30">
                     <div id="success"></div>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Fecha</th>
-                                <th>Nro Pedido</th>
-                                <th>Cantidad Artículos</th>
-                                <th>Monto total</th>
-                                <th>Observaciones</th>                                
+                                <th style="text-align: center;">Fecha</th>
+                                <th style="text-align: center;">Nro Pedido</th>
+                                <th style="text-align: center;">Cantidad Artículos</th>
+                                <th style="text-align: center;">Monto total</th>
+                                <th style="text-align: center;">Observaciones</th>                                
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let venta of ventas_por_periodo">
-                                <td>{{venta.fecha_creacion}}</td>
+                                <td style="text-align: center;">{{venta.fecha_creacion}}</td>
                                 <td style="text-align: center;">{{venta.pedido_id}}</td>
                                 <td style="text-align: center;">{{venta.total_cantidad}}</td>
                                 <td style="text-align: center;">{{venta.total}}</td>
-                                <td>{{venta.observaciones}}</td>
+                                <td style="text-align: center;">{{venta.observaciones}}</td>
+                            </tr>
+                            <tr *ngIf="ventas_por_periodo.length === 0">
+                                <td colspan="5" style="text-align: center;">No se encontraron ventas para el período seleccionado.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -91,40 +92,44 @@
             <span class="bg-secondary pr-3">Resultados Totales Período</span>
         </h2>
         <div class="row px-xl-5">
-            <div class="col-lg-7 mb-5">
+            <div class="col-lg-12 mb-5">
                 <div class="contact-form bg-light p-30">
                     <div id="success"></div>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Cantidad Pedidos</th>
-                                <th>Cantidad Artículos</th>
-                                <th>Monto total</th>
-                                <th>Promedio Venta Por Pedido</th>
-                                <th>Promedio Valor Articulo</th>
-                                <th>Promedio Art por Venta</th>  
+                                <th style="text-align: center;">Total Pedidos</th>
+                                <th style="text-align: center;">Total Artículos</th>
+                                <th style="text-align: center;">Monto total</th>
+                                <th style="text-align: center;">Promedio Venta Por Pedido</th>
+                                <th style="text-align: center;">Promedio Valor Articulo</th>
+                                <th style="text-align: center;">Promedio Art por Venta</th>  
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>3</td>
-                                <td>13</td>
-                                <td>304.000</td>
-                                <td>101.333,33</td>
-                                <td>23.384,61</td>
-                                <td>4,33</td>
-                            </tr>                            
+                        <tbody>                            
+                            <tr *ngIf="ventas_por_periodo.length === 0; else totales" >
+                                <td colspan="5" style="text-align: center;">No se encontraron ventas para el período seleccionado.</td>
+                            </tr>
+                            <ng-template #totales>
+                                <tr *ngFor="let totales of totales_por_periodo">
+                                    <td style="text-align: center;">{{totales.total_pedidos}}</td>
+                                    <td style="text-align: center;">{{totales.total_articulos}}</td>
+                                    <td style="text-align: center;">{{totales.monto_total | number:'1.2-2'}}</td>
+                                    <td style="text-align: center;">{{totales.promedio_venta | number:'1.2-2'}}</td>
+                                    <td style="text-align: center;">{{totales.promedio_valor_art | number:'1.2-2'}}</td>
+                                    <td style="text-align: center;">{{totales.promedio_cantidad_art | number:'1.2-2'}}</td>
+                                </tr>
+                            </ng-template>
                         </tbody>
                     </table>
-                    <div class="control-group">
-                        <button class="btn btn-primary py-2 px-4" type="button" id="saveChangesButton">Descargar Excel</button>
+                    <div *ngIf="ventas_por_periodo.length > 0" class="control-group">
+                        <!-- <button class="btn btn-primary py-2 px-4" type="button" id="saveChangesButton">Descargar Excel</button> -->
+                        <button class="btn btn-primary py-2 px-4" type="button" (click)="ExportarExcelTotales()">Descargar Excel</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
 
 <!-- Footer Start -->

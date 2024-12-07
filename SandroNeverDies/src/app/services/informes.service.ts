@@ -34,4 +34,54 @@ export class InformesService {
 
     return this.http.post<any>(`${this.API_URI}/pedido-fecha-desde-hasta/`, data);
   }
+
+  getDevolucionesPorPeriodo(fecha_desde: Date, fecha_hasta: Date, motivo: string, estado: string): Observable<any> {
+    console.log(`${this.API_URI}/devoluciones-fecha-desde-hasta/`)
+    const data = {
+      fecha_inicio: fecha_desde,
+      fecha_fin: fecha_hasta,
+      motivo_id: motivo,
+      estado_id: estado,
+    };    
+
+    console.log(data);
+
+    return this.http.post<any>(`${this.API_URI}/devoluciones-fecha-desde-hasta/`, data);
+  }
+
+  getMayoresVentasPorPeriodo(fecha_desde: Date, fecha_hasta: Date): Observable<any> {
+    console.log(`${this.API_URI}/mayores-ventas-fecha-desde-hasta/`)
+    const data = {
+      desde: fecha_desde,
+      hasta: fecha_hasta
+    };
+
+    console.log(data);
+
+    return this.http.post<any>(`${this.API_URI}/mayores-ventas-fecha-desde-hasta/`, data);
+  }
+
+  getMenoresVentasPorPeriodo(fecha_desde: Date, fecha_hasta: Date): Observable<any> {
+    console.log(`${this.API_URI}/menores-ventas-fecha-desde-hasta/`)
+    const data = {
+      desde: fecha_desde,
+      hasta: fecha_hasta
+    };
+
+    console.log(data);
+
+    return this.http.post<any>(`${this.API_URI}/menores-ventas-fecha-desde-hasta/`, data);
+  }
+
+  getClientesDestacados(fecha_desde: Date, fecha_hasta: Date): Observable<any> {
+    console.log(`${this.API_URI}/clientes-destacados-fecha-desde-hasta/`)
+    const data = {
+      desde: fecha_desde,
+      hasta: fecha_hasta
+    };
+
+    console.log(data);
+
+    return this.http.post<any>(`${this.API_URI}/clientes-destacados-fecha-desde-hasta/`, data);
+  }
 }

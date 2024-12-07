@@ -23,6 +23,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { VentasPorInformeComponent } from './components/informes/ventas-por-informe/ventas-por-informe.component';
 import { SolicitudReclamoComponent } from './components/reclamos/solicitud-reclamo/solicitud-reclamo.component';
 import { ListadoReclamosComponent } from './components/reclamos/listado-reclamos/listado-reclamos.component';
+import { MenoresVentasComponent } from './components/informes/menores-ventas/menores-ventas.component';
+import { MayoresVentasComponent } from './components/informes/mayores-ventas/mayores-ventas.component';
+import { ReclamosComponent } from './components/informes/reclamos/reclamos.component';
+import { ClientesDestacadosComponent } from './components/informes/clientes-destacados/clientes-destacados.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +48,10 @@ import { ListadoReclamosComponent } from './components/reclamos/listado-reclamos
     VentasPorInformeComponent,
     SolicitudReclamoComponent,
     ListadoReclamosComponent,
+    MenoresVentasComponent,
+    MayoresVentasComponent,
+    ReclamosComponent,
+    ClientesDestacadosComponent,
   ],
   imports: [
     BrowserModule,

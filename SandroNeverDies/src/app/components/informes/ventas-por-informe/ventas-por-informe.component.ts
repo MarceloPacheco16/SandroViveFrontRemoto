@@ -11,6 +11,8 @@ export class VentasPorInformeComponent {
 
   filtro: any;
   ventas_por_periodo: any[];
+  totales_por_periodo: any[];
+
   constructor(private informesService: InformesService, private exportarExcelService: ExportarExcelService){
 
     const fechaActual = new Date();
@@ -23,6 +25,8 @@ export class VentasPorInformeComponent {
     };
 
     this.ventas_por_periodo = [];
+
+    this.totales_por_periodo = [];
   }
 
   ngOnInit(): void {
@@ -46,21 +50,46 @@ export class VentasPorInformeComponent {
       this.informesService.getVentasPorPeriodo(this.filtro.fecha_desde, this.filtro.fecha_hasta).subscribe({
         next: (response) => {
           this.ventas_por_periodo = response;
-          // this.ventas_por_periodo = {
-          //   fecha: response.fecha_creacion.toString(),
-          //   pedido: response.pedido_id.toString(),
-          //   cant_art: response.total_cantidad.toString(),
-          //   monto_total: response.total.toString(),
-          //   observaciones: response.observaciones.toString()
-          // }
+          
           console.log("Lista de Ventas por Periodo:");
           console.log(this.ventas_por_periodo);
-  
-          // this.cantProductosCarrito = this.productosCarrito.length;
-        }
+
+          let totales_pedidos: number = 0;
+          let totales_articulos: number = 0;
+          totales_pedidos = this.ventas_por_periodo.length;
+          // console.log(totales_pedidos);
+          let monto_total: number = 0;
+
+          for(let i = 0; i < this.ventas_por_periodo.length; i++){
+
+            totales_articulos = totales_articulos + this.ventas_por_periodo[i].total_cantidad;
+            monto_total = monto_total + this.ventas_por_periodo[i].total;
+          }
+
+          let promedio_venta: number = 0;
+          promedio_venta = monto_total / totales_pedidos;          
+
+          let promedio_valor_art: number = 0;
+          promedio_valor_art = monto_total / totales_articulos;          
+
+          let promedio_cantidad_art: number = 0;
+          promedio_cantidad_art = totales_articulos / totales_pedidos;
+
+          this.totales_por_periodo = [{
+      
+            total_pedidos: totales_pedidos,
+            total_articulos: totales_articulos,
+            monto_total: monto_total,
+            promedio_venta: promedio_venta,
+            promedio_valor_art: promedio_valor_art,
+            promedio_cantidad_art: promedio_cantidad_art,
+      
+          }];
+        }        
       });
     }
   }
+
 
   ExportarExcel(): void {
     const headers = [
@@ -80,5 +109,27 @@ export class VentasPorInformeComponent {
     }));
 
     this.exportarExcelService.ExportarAExcel(data, headers, 'ventas_por_periodo');
+  }
+
+  ExportarExcelTotales(): void {
+    const headers = [
+      { header: 'Pedidos Totales', key: 'pedidos', width: 15 },
+      { header: 'Articulos Totales', key: 'articulos', width: 17 },
+      { header: 'Monto Total', key: 'montos', width: 22 },
+      { header: 'Promedio Venta Por Pedido', key: 'prom_venta', width: 17 },
+      { header: 'Promedio Valor Articulo', key: 'prom_valor_art', width: 40 },
+      { header: 'Promedio Art por Venta', key: 'prom_cant_art', width: 40 },
+    ];
+
+    const data = this.totales_por_periodo.map(totales => ({
+      pedidos: totales.total_pedidos,
+      articulos: totales.total_articulos,
+      montos: totales.monto_total,
+      prom_venta: totales.promedio_venta,
+      prom_valor_art: totales.promedio_valor_art,
+      prom_cant_art: totales.promedio_cantidad_art,
+    }));
+
+    this.exportarExcelService.ExportarAExcel(data, headers, 'totales_por_periodo');
   }
 }

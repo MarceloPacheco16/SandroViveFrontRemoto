@@ -1,0 +1,93 @@
+<!-- <p>mayores-ventas works!</p> -->
+<div>
+    <!-- Topbar Start -->
+    <app-navigation></app-navigation>
+    <!-- Navbar End -->
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Home</a>
+                    <span class="breadcrumb-item active">Informes / Más Vendidos</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Informe Start -->
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">Informe de Productos Más Vendidos</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                    <form name="sentMessage" id="contactForm" novalidate="novalidate">                            
+                        <div class="form-row">                                
+                            <div class="control-group col-md-5">
+                                <label for="Fechadesde">Fecha desde:</label>
+                                <input type="date" class="form-control" id="Fechadesde" [(ngModel)]="filtro.fecha_desde" name="filtro.fecha_desde" required="required" data-validation-required-message="Por favor, seleccione una fecha">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group col-md-5">
+                                <label for="Fechahasta">Fecha hasta:</label>
+                                <input type="date" class="form-control" id="Fechahasta" [(ngModel)]="filtro.fecha_hasta" name="filtro.fecha_hasta" required="required" data-validation-required-message="Por favor, seleccione una fecha">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="control-group mt-3">
+                            <button class="btn btn-primary py-2 px-4" (click)="MayoresVentasPorPeriodo()" type="submit" id="altaButton">Buscar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">Lista de Productos Más Vendidos</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-12 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Nro Producto</th>
+                                <th style="text-align: center;">Nombre Producto</th>
+                                <th style="text-align: center;">Total Vendido</th>
+                                <th style="text-align: center;">Monto total</th>                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let producto of mayoresventas_por_periodo">                                    
+                                <td style="text-align: center;">{{producto.producto_id}}</td>
+                                <td style="text-align: center;">{{producto.producto_nombre}}</td>
+                                <td style="text-align: center;">{{producto.total_vendido}}</td>
+                                <td style="text-align: center;">{{producto.total_vendido * 5000}}</td>
+                            </tr>
+                            <tr *ngIf="mayoresventas_por_periodo.length === 0">
+                                <td colspan="5" style="text-align: center;">No se encontraron ventas para el período seleccionado.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="mayoresventas_por_periodo.length > 0" class="control-group">
+                        <!-- <button class="btn btn-primary py-2 px-4" type="button" id="saveChangesButton">Descargar Excel</button> -->
+                        <button class="btn btn-primary py-2 px-4" type="button" (click)="ExportarExcel()">Descargar Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Informe End -->
+
+    <!-- Footer Start -->
+    <app-footer></app-footer>
+    <!-- Footer End -->
+</div>
