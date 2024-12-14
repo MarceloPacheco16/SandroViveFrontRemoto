@@ -19,6 +19,9 @@ export class AbmCategoriaComponent {
 
   registrar: boolean = true;
 
+  nuevo_error: number;
+  actualizado_error: number;
+
   constructor(private categoriasService: CategoriasService, private router:Router) { 
     // this.usuariosService.setToken();
     console.log("Ir a Registrar...");
@@ -40,6 +43,9 @@ export class AbmCategoriaComponent {
       activo: 1,  // Valor predeterminado para 'activo'
       subcategorias: [] // Añade esta propiedad para anidar subcategorías
     };
+
+    this.nuevo_error = 0;
+    this.actualizado_error = 0;
 
     this.obtenerCategorias();
     this.obtenerSubcategorias();
@@ -97,6 +103,27 @@ export class AbmCategoriaComponent {
   //METODO PARA REGISTRAR A UN USUARIO Y LUEGO IR A REGISTRAR AL CLIENTE
   registrarCategoria(): void {
 
+    //VALIDACIONES
+    this.nuevo_error = 0;
+
+    if(this.categoriaNueva.nombre == null || this.categoriaNueva.nombre == ""){
+      this.nuevo_error = 1;
+      return;
+    }
+    if(this.categoriaNueva.descripcion == null || this.categoriaNueva.descripcion == ""){
+      this.nuevo_error = 2;
+      return;
+    }
+    if(this.categoriaNueva.activo == null || this.categoriaNueva.activo < 0 || this.categoriaNueva.activo > 1){
+      this.nuevo_error = 3;
+      return;
+    }
+
+    this.nuevo_error = 0;
+    //VALIDACIONES
+
+    
+    // console.log(this.categoriaNueva);
     //POST CATEGORIA
     this.categoriasService.postCategoria(this.categoriaNueva).subscribe({
       next: () => {
@@ -129,6 +156,28 @@ export class AbmCategoriaComponent {
   }
 
   actualizarCategoria(): void {
+
+    //VALIDACIONES
+    this.actualizado_error = 0;
+
+    if(this.categoriaActualizar.nombre == null || this.categoriaActualizar.nombre == ""){
+      this.actualizado_error = 1;
+      return;
+    }
+    if(this.categoriaActualizar.descripcion == null || this.categoriaActualizar.descripcion == ""){
+      this.actualizado_error = 2;
+      return;
+    }
+    if(this.categoriaActualizar.activo == null || this.categoriaActualizar.activo < 0 || this.categoriaActualizar.activo > 1){
+      this.actualizado_error = 3;
+      return;
+    }
+
+    this.actualizado_error = 0;
+    //VALIDACIONES
+
+
+    // console.log(this.categoriaActualizar);
     //POST USUARIO
     this.categoriasService.putCategoria(this.categoriaActualizar).subscribe({
       next: () => {
@@ -162,6 +211,9 @@ export class AbmCategoriaComponent {
       activo: 1,  // Valor predeterminado para 'activo'
       subcategorias: [] // Añade esta propiedad para anidar subcategorías
     };
+
+    this.nuevo_error = 0;
+    this.actualizado_error = 0;
 
     this.obtenerCategorias();
     this.obtenerSubcategorias();

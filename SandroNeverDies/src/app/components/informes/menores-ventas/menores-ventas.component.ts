@@ -59,7 +59,6 @@ export class MenoresVentasComponent {
       { header: 'Nombre Producto', key: 'producto_nombre', width: 25 },
       { header: 'Total Vendido', key: 'total_vendido', width: 15 },
       { header: 'Monto total', key: 'total', width: 20 },
-      { header: 'Observaciones', key: 'observaciones', width: 40 },
     ];
 
     const data = this.menoresventas_por_periodo.map(producto => ({
@@ -67,7 +66,6 @@ export class MenoresVentasComponent {
       producto_nombre: producto.producto_nombre,
       total_vendido: producto.total_vendido,
       total: producto.total_vendido * 5000,
-      observaciones: producto.observaciones,
     }));
 
     this.exportarExcelService.ExportarAExcel(data, headers, 'menores_ventas_por_periodo');

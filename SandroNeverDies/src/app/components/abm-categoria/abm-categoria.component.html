@@ -29,25 +29,22 @@
                         <form action="">
                             <h3>Formulario de Registro</h3>
                             <div class="form-group">
+                                <label for="nombre">Nombre:</label>
                                 <input type="text" [(ngModel)]="categoriaNueva.nombre" name="categoriaNueva.nombre" placeholder="Nombre" class="form-control">
+                                <div [hidden]="nuevo_error !== 1" style="margin: 10px 0; padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center;">
+                                    <p><strong>El Nombre es Obligatorio</strong></p>                        
+                                </div>
+                                <label for="descripcion">Descripcion:</label>
                                 <input type="text" [(ngModel)]="categoriaNueva.descripcion" name="categoriaNueva.descripcion"  placeholder="Descripcion" class="form-control">
-                                <!-- <input type="text" [(ngModel)]="categoriaNueva.subcategoria" name="categoriaNueva.subcategoria"  placeholder="Subcategoria" class="form-control"> -->
-                                <input type="text" [(ngModel)]="categoriaNueva.activo" name="nuevoPcategoriaNuevaroducto.activo"  placeholder="Activo" class="form-control">
+                                <div [hidden]="nuevo_error !== 2" style="margin: 10px 0; padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center;">
+                                    <p><strong>La Descripcion es Obligatoria</strong></p>                        
+                                </div>
+                                <label for="activo">Activo:</label>
+                                <input type="number" [(ngModel)]="categoriaNueva.activo" name="nuevoPcategoriaNuevaroducto.activo"  placeholder="Activo" class="form-control">
+                                <div [hidden]="nuevo_error !== 3" style="margin: 10px 0; padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center;">
+                                    <p><strong>El Activo debe ser 1(Activo) o 0(Inactivo)</strong></p>                        
+                                </div>
                             </div>
-                            
-                            
-                            <!-- <div class="form-group">
-                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
-                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
-                                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
-                                </select>
-                            </div> -->
                 
                             <button (click)="registrarCategoria()" type="button">
                                     Registrar <i class="zmdi zmdi-arrow-right"></i>
@@ -58,62 +55,62 @@
                         <form action="">
                             <h3>Formulario de Modificacion</h3>
                             <div class="form-group">
+                                <label for="nombre">Nombre:</label>
                                 <input type="text" [(ngModel)]="categoriaActualizar.nombre" name="categoriaActualizar.nombre" placeholder="Nombre" class="form-control">
+                                <div [hidden]="actualizado_error !== 1" style="margin: 10px 0; padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center;">
+                                    <p><strong>El Nombre es Obligatorio</strong></p>                        
+                                </div>
+                                <label for="descripcion">Descripcion:</label>
                                 <input type="text" [(ngModel)]="categoriaActualizar.descripcion" name="categoriaActualizar.descripcion"  placeholder="Descripcion" class="form-control">
-                                <input type="text" [(ngModel)]="categoriaActualizar.activo" name="categoriaActualizar.activo"  placeholder="Activo" class="form-control">
+                                <div [hidden]="actualizado_error !== 2" style="margin: 10px 0; padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center;">
+                                    <p><strong>La Descripcion es Obligatoria</strong></p>                        
+                                </div>
+                                <label for="activo">Activo:</label>
+                                <input type="number" [(ngModel)]="categoriaActualizar.activo" name="categoriaActualizar.activo"  placeholder="Activo" class="form-control">
+                                <div [hidden]="actualizado_error !== 3" style="margin: 10px 0; padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center;">
+                                    <p><strong>El Activo debe ser 1(Activo) o 0(Inactivo)</strong></p>                        
+                                </div>
                             </div>
-                            
-                            
-                            <!-- <div class="form-group">
-                                <select id="provinciaSelect" [(ngModel)]="provinciaSeleccionada" name="provincia" (change)="onProvinciaChange()" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Provincia</option>
-                                    <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{ provincia.descripcion }}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select id="localidadSelect" [(ngModel)]="localidadSeleccionada" name="localidad" [disabled]="localidades.length == 0" class="form-control">
-                                    <option [ngValue]="-1" disabled>Seleccione una Localidad</option>
-                                    <option *ngFor="let localidad of localidades" [value]="localidad">{{ localidad.descripcion }}</option>
-                                </select>
-                            </div> -->
-                
+
                             <button (click)="actualizarCategoria()" type="button">
                                     Actualizar <i class="zmdi zmdi-arrow-right"></i>
                             </button>
                         </form>
-                    </ng-template>
+                    </ng-template>                                        
+                </div>
+            </div>
+        </div>
 
-                    
-                    <!-- <td style="text-align: center;">
-                                <ul>
-                                  <li *ngFor="let subcategoria of categoria.subcategorias">
-                                    {{ subcategoria.nombre }}
-                                  </li>
-                                </ul>
-                    </td> -->
-                              
-                    <table class="abm" border="1" style="width: 1350; margin-top: 20px;">
-                        <thead>
-                          <tr>
-                            <th>Nombre</th>
-                            <th>Descripcion</th>
-                            <th>Activo</th>
-                            <!-- Agrega más encabezados según sea necesario -->
-                          </tr>
+        <div class="row px-xl-5">
+            <div class="col-lg-12 table-responsive mb-5">
+                <div class="table-responsive">
+                    <table *ngIf="categorias.length > 0; else empty" class="table table-light table-borderless table-hover text-center mb-0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descripcion</th>
+                                <th>Activo</th>
+                            </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="align-middle">
+                            <!-- Iterar sobre productosCarrito para mostrar cada producto en el carrito -->
                             <tr *ngFor="let categoria of categorias" (click)="onSelect(categoria)">
-                            <!-- <tr *ngFor="let categoria of categorias"> -->
-                            <!-- <tr *ngFor="let producto of productos"> -->
-                              <td style="text-align: center;">{{ categoria.nombre }}</td>
-                              <td style="text-align: center;">{{ categoria.descripcion }}</td>
-                              <td style="text-align: center;">{{ categoria.activo }}</td>
-                              <!-- Agrega más celdas según sea necesario -->
+                                <td style="text-align: center;">{{ categoria.nombre }}</td>
+                                <td style="text-align: center;">{{ categoria.descripcion }}</td>
+                                <td style="text-align: center;">{{ categoria.activo }}</td>
+                                <!-- Agrega más celdas según sea necesario -->
                             </tr>
                         </tbody>
                     </table>
-                    
-                </div>
+                </div>     
+
+                <!-- Mostrar un Mensaje cuando el Carrito está Vacío -->
+                <ng-template #empty>
+                    <div style="padding-top: 10px; border: 1px solid blue; background-color: #a3ffff; border-radius: 5px; text-align: center; ">
+                        <p><strong>No hay Categorias Cargadas</strong></p>                        
+                    </div>
+                </ng-template>
+                <!-- Mostrar un Mensaje cuando el Carrito está Vacío -->
             </div>
         </div>
     </div>

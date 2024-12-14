@@ -19,6 +19,9 @@ export class AbmSubcategoriaComponent {
   registrar: boolean = true;
 
   categoriaSeleccionada: number;
+  
+  nuevo_error: number;
+  actualizado_error: number;
 
   constructor(private categoriasService: CategoriasService, private router:Router) { 
     // this.usuariosService.setToken();
@@ -43,6 +46,9 @@ export class AbmSubcategoriaComponent {
     };
 
     this.categoriaSeleccionada = -1;
+
+    this.nuevo_error = 0;
+    this.actualizado_error = 0;
 
     this.obtenerCategoriasActivas();
     this.obtenerSubcategorias();
@@ -77,6 +83,30 @@ export class AbmSubcategoriaComponent {
   registrarSubcategoria(): void {
     this.SubcategoriaNueva.categoria = this.categoriaSeleccionada;
 
+    //VALIDACIONES
+    this.nuevo_error = 0;
+
+    if(this.SubcategoriaNueva.nombre == null || this.SubcategoriaNueva.nombre == ""){
+      this.nuevo_error = 1;
+      return;
+    }
+    if(this.SubcategoriaNueva.descripcion == null || this.SubcategoriaNueva.descripcion == ""){
+      this.nuevo_error = 2;
+      return;
+    }
+    if(this.SubcategoriaNueva.categoria == null || this.SubcategoriaNueva.categoria == -1){
+      this.nuevo_error = 3;
+      return;
+    }
+    if(this.SubcategoriaNueva.activo == null || this.SubcategoriaNueva.activo < 0 || this.SubcategoriaNueva.activo > 1){
+      this.nuevo_error = 4;
+      return;
+    }
+
+    this.nuevo_error = 0;
+    //VALIDACIONES
+
+    // console.log(this.SubcategoriaNueva);
     //POST CATEGORIA
     this.categoriasService.postSubcategoria(this.SubcategoriaNueva).subscribe({
       next: () => {
@@ -117,6 +147,31 @@ export class AbmSubcategoriaComponent {
   //METODO PARA ACTUALIZAR A UNA SUBCATEGORIA
   actualizarSubcategoria(): void {
     this.SubcategoriaActualizar.categoria = this.categoriaSeleccionada;
+    
+    //VALIDACIONES
+    this.actualizado_error = 0;
+
+    if(this.SubcategoriaActualizar.nombre == null || this.SubcategoriaActualizar.nombre == ""){
+      this.actualizado_error = 1;
+      return;
+    }
+    if(this.SubcategoriaActualizar.descripcion == null || this.SubcategoriaActualizar.descripcion == ""){
+      this.actualizado_error = 2;
+      return;
+    }
+    if(this.SubcategoriaActualizar.categoria == null || this.SubcategoriaActualizar.categoria == -1){
+      this.actualizado_error = 3;
+      return;
+    }
+    if(this.SubcategoriaActualizar.activo == null || this.SubcategoriaActualizar.activo < 0 || this.SubcategoriaActualizar.activo > 1){
+      this.actualizado_error = 4;
+      return;
+    }
+
+    this.actualizado_error = 0;
+    //VALIDACIONES
+
+    // console.log(this.SubcategoriaActualizar);
     //POST USUARIO
     this.categoriasService.putSubcategoria(this.SubcategoriaActualizar).subscribe({
       next: () => {
@@ -170,6 +225,9 @@ export class AbmSubcategoriaComponent {
     };
 
     this.categoriaSeleccionada = -1;
+
+    this.nuevo_error = 0;
+    this.actualizado_error = 0;
 
     this.obtenerCategoriasActivas();
     this.obtenerSubcategorias();

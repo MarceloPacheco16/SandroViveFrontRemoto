@@ -30,6 +30,9 @@ export class AbmProductoComponent {
 
   archivo: File | null = null;
 
+  nuevo_error: number;
+  actualizado_error: number;
+
   registrar: boolean = true;
   constructor(private router:Router, private productosService: ProductosService, private categoriasService: CategoriasService) { 
     // this.usuariosService.setToken();
@@ -78,6 +81,9 @@ export class AbmProductoComponent {
     // this.localidadSeleccionada = -1;
 
     this.selectedFile = null;
+
+    this.nuevo_error = 0;
+    this.actualizado_error = 0;
   }
   
   ngOnInit(): void {
@@ -159,6 +165,49 @@ export class AbmProductoComponent {
     //   return;
     // }
 
+    this.nuevo_error = 0;
+
+    if(this.nuevoProducto.nombre == null || this.nuevoProducto.nombre == ""){
+      this.nuevo_error = 1;
+      return;
+    }
+    if(this.nuevoProducto.descripcion == null || this.nuevoProducto.descripcion == ""){
+      this.nuevo_error = 2;
+      return;
+    }
+    if(this.nuevoProducto.color == null || this.nuevoProducto.color == ""){
+      this.nuevo_error = 3;
+      return;
+    }
+    if(this.nuevoProducto.categoria == null || this.nuevoProducto.categoria == -1){
+      this.nuevo_error = 4;
+      return;
+    }
+    if(this.nuevoProducto.precio == null || this.nuevoProducto.precio < 0){
+      this.nuevo_error = 5;
+      return;
+    }
+    if(this.nuevoProducto.cantidad == null || this.nuevoProducto.cantidad < 0){
+      this.nuevo_error = 6;
+      return;
+    }
+    if(this.nuevoProducto.cantidad_disponible == null || this.nuevoProducto.cantidad_disponible < 0 || this.nuevoProducto.cantidad_disponible > this.nuevoProducto.cantidad){
+      this.nuevo_error = 7;
+      return;
+    }
+    if(this.nuevoProducto.cantidad_limite == null || this.nuevoProducto.cantidad_limite < 0){
+      this.nuevo_error = 8;
+      return;
+    }
+    if(this.nuevoProducto.activo == null || this.nuevoProducto.activo < 0 || this.nuevoProducto.activo > 1){
+      this.nuevo_error = 9;
+      return;
+    }
+
+    this.nuevo_error = 0;
+    
+    // console.log("Nuevo Producto:")
+    // console.log(this.nuevoProducto);
     this.enviarProducto();
   }
 
@@ -209,6 +258,50 @@ export class AbmProductoComponent {
       this.actualizarProducto.imagen = this.selectedFile;
     }
     
+    this.actualizado_error = 0;
+
+    if(this.actualizarProducto.nombre == null || this.actualizarProducto.nombre == ""){
+      this.actualizado_error = 1;
+      return;
+    }
+    if(this.actualizarProducto.descripcion == null || this.actualizarProducto.descripcion == ""){
+      this.actualizado_error = 2;
+      return;
+    }
+    if(this.actualizarProducto.color == null || this.actualizarProducto.color == ""){
+      this.actualizado_error = 3;
+      return;
+    }
+    if(this.actualizarProducto.categoria == null || this.actualizarProducto.categoria == -1){
+      this.actualizado_error = 4;
+      return;
+    }
+    if(this.actualizarProducto.precio == null || this.actualizarProducto.precio < 0){
+      this.actualizado_error = 5;
+      return;
+    }
+    if(this.actualizarProducto.cantidad == null || this.actualizarProducto.cantidad < 0){
+      this.actualizado_error = 6;
+      return;
+    }
+    if(this.actualizarProducto.cantidad_disponible == null || this.actualizarProducto.cantidad_disponible < 0 || this.actualizarProducto.cantidad_disponible > this.actualizarProducto.cantidad){
+      this.actualizado_error = 7;
+      return;
+    }
+    if(this.actualizarProducto.cantidad_limite == null || this.actualizarProducto.cantidad_limite < 0){
+      this.actualizado_error = 8;
+      return;
+    }
+    if(this.actualizarProducto.activo == null || this.actualizarProducto.activo < 0 || this.actualizarProducto.activo > 1){
+      this.actualizado_error = 9;
+      return;
+    }
+
+    this.actualizado_error = 0;
+    
+    console.log("Actualizado Producto:")
+    console.log(this.actualizarProducto);
+
     this.enviarActualizacionProducto();
   }
 
@@ -372,6 +465,9 @@ export class AbmProductoComponent {
 
     this.selectedFile = null;
     
+    this.nuevo_error = 0;
+    this.actualizado_error = 0;
+
     // Restablecer el campo de imagen usando el id
     const imagenRegistro = <HTMLInputElement>document.getElementById('imagenRegistro');
     if (imagenRegistro) {
