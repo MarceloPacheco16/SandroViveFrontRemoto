@@ -102,9 +102,20 @@ export class ProductosService {
     return this.http.get<Producto[]>(this.API_URI + this.FORMAT_JSON, { headers: this.headers });
   }
   
-  getProducto(): Observable<Producto> {
-    return this.http.get<Producto>(this.API_URI + this.FORMAT_JSON, { headers: this.headers });
+  getProducto(productoId: number): Observable<Producto> {
+    return this.http.get<Producto>(`${this.API_URI}/${productoId}`, { headers: this.headers });
   }
+
+  patchProducto(productoId: number, data: Partial<Producto>): Observable<Producto> {
+    return this.http.patch<Producto>(`${this.API_URI}/${productoId}`, data, { headers: this.headers });
+  }
+  // // Modifica el método para enviar FormData
+  // actualizarProducto(formData: FormData, idProducto: Number): Observable<any> {
+  //   return this.http.put(`${this.API_URI}/${idProducto}`, formData);
+  // }
+  // patchProducto(id: Number, formData: FormData): Observable<any> {
+  //   return this.http.patch(`${this.API_URI}/${id}`, formData);
+  // }
 
   getBuscarProductosActivos(busqueda: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.API_BuscarProductosActivos}?busqueda=${busqueda}`);

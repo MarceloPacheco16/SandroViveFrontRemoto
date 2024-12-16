@@ -28,10 +28,10 @@
                 <div class="col-md-4 mb-5">
                     <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" (click)="logIn()" [hidden]="id_cliente != -1 || id_empleado != -1"><i class="fa fa-angle-right mr-2"></i>Log In</a>
-                        <a class="text-secondary mb-2" (click)="signUp()"><i class="fa fa-angle-right mr-2"></i>Sign Up</a>
-                        <a class="text-secondary mb-2" (click)="editProfile()" [hidden]="id_cliente == -1 && id_empleado == -1"><i class="fa fa-angle-right mr-2"></i>Edit Profile</a>
-                        <a class="text-secondary mb-2" (click)="logOut()" [hidden]="id_cliente == -1 && id_empleado == -1"><i class="fa fa-angle-right mr-2"></i>Log Out</a>
+                        <a class="text-secondary mb-2" style="cursor: pointer" (click)="logIn()" [hidden]="id_cliente != -1 || id_empleado != -1"><i class="fa fa-angle-right mr-2"></i>Log In</a>
+                        <a class="text-secondary mb-2" style="cursor: pointer" (click)="signUp()"><i class="fa fa-angle-right mr-2"></i>Sign Up</a>
+                        <a class="text-secondary mb-2" style="cursor: pointer" (click)="editProfile()" [hidden]="id_cliente == -1 && id_empleado == -1"><i class="fa fa-angle-right mr-2"></i>Edit Profile</a>
+                        <a class="text-secondary mb-2" style="cursor: pointer" (click)="logOut()" [hidden]="id_cliente == -1 && id_empleado == -1"><i class="fa fa-angle-right mr-2"></i>Log Out</a>
                     </div>
                 </div>
                 
@@ -71,10 +71,10 @@
                     <h5 class="text-secondary text-uppercase mb-4">Informes</h5>
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-secondary mb-2" routerLink="/informes/ventas-por-informe"><i class="fa fa-angle-right mr-2"></i>Informe de Ventas por Período</a>
-                        <a class="text-secondary mb-2" routerLink="#"><i class="fa fa-angle-right mr-2"></i>Informe Mayores Ventas</a>
-                        <a class="text-secondary mb-2" routerLink="#"><i class="fa fa-angle-right mr-2"></i>Informe Menores Ventas</a>
-                        <a class="text-secondary mb-2" routerLink="#"><i class="fa fa-angle-right mr-2"></i>Informe Devoluciones y Reembolsos</a>
-                        <a class="text-secondary" routerLink="#"><i class="fa fa-angle-right mr-2"></i>Informe Clientes Destacados</a>
+                        <a class="text-secondary mb-2" routerLink="/informes/mayores-ventas"><i class="fa fa-angle-right mr-2"></i>Informe Mayores Ventas</a>
+                        <a class="text-secondary mb-2" routerLink="/informes/menores-ventas"><i class="fa fa-angle-right mr-2"></i>Informe Menores Ventas</a>
+                        <a class="text-secondary mb-2" routerLink="/informes/reclamos"><i class="fa fa-angle-right mr-2"></i>Informe Reclamos y Reembolsos</a>
+                        <a class="text-secondary" routerLink="/informes/clientes-destacados"><i class="fa fa-angle-right mr-2"></i>Informe Clientes Destacados</a>
                     </div>
                 </div>
             </div>

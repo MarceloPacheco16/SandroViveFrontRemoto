@@ -41,7 +41,8 @@
                                 <td class="align-left">
                                     <!-- [src]="normalizeImageUrl(producto.imagen)" alt="product.imagen" -->
                                     <!-- <img [src]="producto.producto_imagen" alt="{{ producto.producto_nombre }}" style="width: 50px;"> -->
-                                    <img [src]="normalizeImageUrl(producto.producto_imagen)" alt="{{ producto.producto_nombre }}" style="max-height: 100px; object-fit: cover;">
+                                    <!-- <img [src]="normalizeImageUrl(producto.producto_imagen)" alt="{{ producto.producto_nombre }}" style="max-height: 100px; object-fit: cover;"> -->
+                                    <img [src]="normalizeImageUrl(producto.producto_imagen)" alt="{{ producto.producto_nombre }}" class="img-thumbnail" style="width: 100px; height: auto;">
                                     <!-- <img class="img-fluid w-100" [src]="normalizeImageUrl(product.imagen)" alt="{{ product.imagen }}" style="max-height: 350px; object-fit: cover;"> -->
                                     {{ producto.producto_nombre }}
                                 </td>

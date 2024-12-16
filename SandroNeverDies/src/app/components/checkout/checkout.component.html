@@ -260,6 +260,25 @@
                         <button (click)="ConfirmarCompra()" class="btn btn-block btn-primary font-weight-bold py-3">Confirmar Compra</button>
                     </div>
                 </div>
+            </div>            
+        </div>
+
+        <div class="row px-xl-5">
+            <div class="col-lg-12">
+                <div *ngIf="mensaje_error === 1">
+                    <div style="padding-top: 10px; border: 1px solid red; background-color: #ffa3a3; border-radius: 5px; text-align: center; ">
+                        <p><strong>¡Productos con Disponible Insuficiente!</strong></p>
+                        
+                        <!-- Mostrar lista de productos sin disponibilidad -->
+                        <div *ngFor="let producto of producto_sin_disponible" class="producto-item">
+                            <p>
+                                <strong>Producto:</strong> {{ producto.nombre_producto }} |
+                                <strong>Cantidad Solicitada:</strong> {{ producto.cantidad_a_cargar }} |
+                                <strong>Cantidad Disponible:</strong> {{ producto.cantidad_disponible }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

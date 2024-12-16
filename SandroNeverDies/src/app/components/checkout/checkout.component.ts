@@ -7,6 +7,7 @@ import { Localidad } from 'src/app/models/localidadModel';
 import { MetodoPago } from 'src/app/models/metodoPagoModel';
 import { Pedido } from 'src/app/models/pedidoModel';
 import { PedidoProducto } from 'src/app/models/pedidoProductoModel';
+import { Producto } from 'src/app/models/productoModel';
 import { Provincia } from 'src/app/models/provinciaModel';
 import { Usuario } from 'src/app/models/usuarioModel';
 import { ClientesService } from 'src/app/services/clientes.service';
@@ -14,8 +15,10 @@ import { DetalleEnviosService } from 'src/app/services/detalle-envio.service';
 import { FacturaService } from 'src/app/services/factura.service';
 import { MetodopagoService } from 'src/app/services/metodopago.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
+import { ProductosService } from 'src/app/services/productos.service';
 import { UbicacionesService } from 'src/app/services/ubicaciones.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { forkJoin, tap } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -38,6 +41,9 @@ export class CheckoutComponent {
 
   pedido: Pedido;
   productosCarrito: PedidoProducto[];
+  productos: Producto[];
+  producto_sin_disponible: any[];
+  producto_con_disponible: any[];
 
   metodoPagos: MetodoPago[];
   detalleEnvio: DetalleEnvio;
@@ -48,8 +54,11 @@ export class CheckoutComponent {
   subtotal_descuento: number;
   totalFinal: number;
   
-  constructor(private usuariosService: UsuariosService ,private clientesService: ClientesService, private pedidosService: PedidosService, private ubicacionesService: UbicacionesService,
-    private detalleEnviosService: DetalleEnviosService, private facturasService: FacturaService, private metodoPagosService:MetodopagoService, private router:Router)
+  mensaje_error: number;
+
+  constructor(private usuariosService: UsuariosService ,private clientesService: ClientesService, private pedidosService: PedidosService, 
+    private ubicacionesService: UbicacionesService, private detalleEnviosService: DetalleEnviosService, private facturasService: FacturaService, 
+    private metodoPagosService:MetodopagoService, private productosService: ProductosService, private router:Router)
   {    
     this.id_usuario = Number.parseInt(this.usuariosService.getUsuarioId() ?? '-1');    
     this.id_cliente = Number.parseInt(this.clientesService.getClienteId() ?? '-1');
@@ -127,11 +136,16 @@ export class CheckoutComponent {
     this.metodoPagos = [];
 
     this.productosCarrito = [];
+    this.productos = [];
+    this.producto_sin_disponible = [];
+    this.producto_con_disponible = [];
     
     this.iva = 0;
     this.descuento = 0;
     this.subtotal_descuento = 0;
     this.totalFinal = 0;
+
+    this.mensaje_error = 0;
   }
 
   ngOnInit(): void{
@@ -282,78 +296,263 @@ export class CheckoutComponent {
   }
 
   ConfirmarCompra(): void{
-    // this.detalleEnvio = {  
-    //   id: -1,
-    //   pedido: this.pedido.id,
-    //   domicilio: this.cliente.domicilio,
-    //   localidad: this.cliente.provincia,
-    //   provincia: this.cliente.localidad,
-    //   fecha_creacion: new Date(),  // Fecha actual
-    //   observaciones: ''
+
+    // //VALIDACION
+    // for (let i = 0; i < this.productosCarrito.length; i++) {      
+    //   this.productosService.getProducto(this.productosCarrito[i].producto_id).subscribe({
+    //     next: (response: Producto) => {
+    //       console.log("Producto ", i,":");
+    //       console.log(response);
+
+    //       this.productos.push(response);
+
+    //       // this.router.navigate(['usuarios/contact']);
+    //     },
+    //     error: (error) => {
+    //       console.error("Error al Confirmar Compra (Factura):", error);
+    //     }
+    //   });      
     // }
+    // //VALIDACION
 
-
-    // this.factura = {  
-    //   id: -1,
-    //   pedido: this.pedido.id,
-    //   fecha_emision: new Date(),
-    //   total:this.pedido.total,
-    //   estado_pago: 'Pendiente',
-    //   metodo_pago: '',
-    //   observaciones: ''
-    // }
     
-    this.pedido.estado = 2;
+    // console.log("Informacion Productos:");
+    // console.log(this.productos);
 
-    console.log("Pedido:");
-    console.log(this.pedido);
+    this.mensaje_error = 0;
+    this.productos = [];
+    this.producto_sin_disponible = [];
+    this.producto_con_disponible = [];
 
-    this.detalleEnvio.pedido = this.pedido.id;
-    this.detalleEnvio.domicilio = this.cliente.domicilio;
-    this.detalleEnvio.provincia = this.provinciaSeleccionada.descripcion;
-    this.detalleEnvio.localidad = this.localidadSeleccionada.descripcion;
-    
-    // console.log("Detalle de Envio:");
-    // console.log(this.detalleEnvio);
-    
-    this.factura.pedido = this.pedido.id;
-    this.factura.descuento = this.subtotal_descuento;
-    this.factura.iva = this.iva;
-    this.factura.total = this.totalFinal;
+    // 1. Crear un array de observables, uno por cada producto en el carrito
+    const requests = this.productosCarrito.map((item, i) =>
+      this.productosService.getProducto(item.producto_id).pipe(
+        tap((producto) => {
+          // console.log("Producto ", i, ":");
+          // console.log(producto);
 
-    // console.log("Factura:");
-    // console.log(this.factura);
-    
-    this.pedidosService.putPedido(this.pedido).subscribe({
-      next: (response) => {
-        console.log("Estado de Pedido Actualizado:");
-        console.log(this.pedido);
-        
-        this.detalleEnviosService.postDetalleEnvio(this.detalleEnvio).subscribe({
-          next: (response) => {
-            console.log("Detalle de Envio Realizado:");
-            console.log(this.detalleEnvio);
-            
-            this.facturasService.postFactura(this.factura).subscribe({
-              next: (response) => {
-                console.log("Factura Realizada:");
-                console.log(this.factura);
-                
-                this.router.navigate(['usuarios/contact']);
-              },
-              error: (error) => {
-                console.error("Error al Confirmar Compra (Factura):", error);
+          // 2. Agregar el producto al array de productos
+          this.productos.push(producto);
+        })
+      )
+    );
+  
+    // 3. Ejecutar las solicitudes y esperar a que todas terminen
+    forkJoin(requests).subscribe({
+      next: () => {
+        // 4. Este bloque se ejecuta después de que todas las solicitudes terminen
+        console.log("Informacion Productos:");
+        console.log(this.productos);
+
+        for (let i = 0; i < this.productosCarrito.length; i++) {
+          for (let j = 0; j < this.productos.length; j++) {
+
+            if(this.productosCarrito[i].producto_id == this.productos[j].id){
+              let cant_a_comprometer = Number.parseInt(this.productosCarrito[i].cantidad.toString());
+              let cant_disponible = Number.parseInt(this.productos[j].cantidad_disponible.toString());
+              let nuevo_disponible = cant_disponible - cant_a_comprometer;
+
+              if((nuevo_disponible) < 0) {
+                // Agregar producto sin stock suficiente a la lista
+                this.producto_sin_disponible.push({
+                  id_producto: this.productos[j].id,
+                  nombre_producto: this.productos[j].nombre, // Asume que el modelo tiene un campo 'nombre'
+                  cantidad_a_cargar: cant_a_comprometer,
+                  cantidad_disponible: cant_disponible,
+                });
+              }else{
+                // Preparar los datos para el PATCH
+                this.producto_con_disponible.push({
+                  id: this.productos[j].id,
+                  cantidad_disponible: nuevo_disponible,
+                });
               }
-            });
-          },
-          error: (error) => {
-            console.error("Error al Confirmar Compra (Detalle Envio):", error);
-          }
-        });
+            }            
+          }          
+        }
+
+        if(this.producto_sin_disponible.length > 0){
+          console.log("Productos con Disponible Insuficiente:");
+          console.log(this.producto_sin_disponible);
+          this.mensaje_error = 1;
+        }else{
+          console.log("Los Productos tienen Stock Disponible Suficiente");
+
+          // 3. Realizar el PATCH para actualizar cada producto
+          const patchRequests = this.producto_con_disponible.map((update) =>
+            this.productosService.patchProducto(update.id, { cantidad_disponible: update.cantidad_disponible })
+          );
+
+          // // Realizar el PATCH para actualizar cada producto utilizando FormData
+          // const patchRequests = this.producto_con_disponible.map((update) => {
+          //   const formData = new FormData();
+          //   formData.append('cantidad_disponible', update.cantidad_disponible.toString());
+
+          //   // Llamar al servicio con FormData
+          //   return this.productosService.patchProducto(update.id, formData);
+          // });
+
+          forkJoin(patchRequests).subscribe({
+            next: () => {
+              console.log("Todos los productos han sido actualizados correctamente.");
+
+                        
+              // this.detalleEnvio = {  
+              //   id: -1,
+              //   pedido: this.pedido.id,
+              //   domicilio: this.cliente.domicilio,
+              //   localidad: this.cliente.provincia,
+              //   provincia: this.cliente.localidad,
+              //   fecha_creacion: new Date(),  // Fecha actual
+              //   observaciones: ''
+              // }
+
+
+              // this.factura = {  
+              //   id: -1,
+              //   pedido: this.pedido.id,
+              //   fecha_emision: new Date(),
+              //   total:this.pedido.total,
+              //   estado_pago: 'Pendiente',
+              //   metodo_pago: '',
+              //   observaciones: ''
+              // }
+              
+              this.pedido.estado = 2;
+
+              console.log("Pedido:");
+              console.log(this.pedido);
+
+              this.detalleEnvio.pedido = this.pedido.id;
+              this.detalleEnvio.domicilio = this.cliente.domicilio;
+              this.detalleEnvio.provincia = this.provinciaSeleccionada.descripcion;
+              this.detalleEnvio.localidad = this.localidadSeleccionada.descripcion;
+              
+              // console.log("Detalle de Envio:");
+              // console.log(this.detalleEnvio);
+              
+              this.factura.pedido = this.pedido.id;
+              this.factura.descuento = this.subtotal_descuento;
+              this.factura.iva = this.iva;
+              this.factura.total = this.totalFinal;
+
+
+              // console.log("Factura:");
+              // console.log(this.factura);
+
+              this.pedidosService.putPedido(this.pedido).subscribe({
+                next: (response) => {
+                  console.log("Estado de Pedido Actualizado:");
+                  console.log(this.pedido);
+                  
+                  this.detalleEnviosService.postDetalleEnvio(this.detalleEnvio).subscribe({
+                    next: (response) => {
+                      console.log("Detalle de Envio Realizado:");
+                      console.log(this.detalleEnvio);
+                      
+                      this.facturasService.postFactura(this.factura).subscribe({
+                        next: (response) => {
+                          console.log("Factura Realizada:");
+                          console.log(this.factura);
+                          
+                          // this.router.navigate(['usuarios/contact']);
+
+
+                          // for (let index = 0; index < this.productosCarrito.length; index++) {                            
+                          //   this.facturasService.postFactura(this.factura).subscribe({
+                          //     next: (response) => {
+                          //       console.log("Producto Actualizando cantidad:");
+                          //       console.log(this.factura);
+                
+                          //       this.router.navigate(['usuarios/contact']);
+                          //     },
+                          //     error: (error) => {
+                          //       console.error("Error al Confirmar Compra (Factura):", error);
+                          //     }
+                          //   });
+                            
+                          // }
+
+                          this.router.navigate(['usuarios/contact']);
+                        },
+                        error: (error) => {
+                          console.error("Error al Confirmar Compra (Factura):", error);
+                        }
+                      });
+                    },
+                    error: (error) => {
+                      console.error("Error al Confirmar Compra (Detalle Envio):", error);
+                    }
+                  });
+                },
+                error: (error) => {
+                  console.error("Error al Actualizar Pedido:", error);
+                }
+              });   
+
+            },
+            error: (error) => {
+              console.error("Error al actualizar productos:", error);
+            },
+          });
+        }
       },
       error: (error) => {
-        console.error("Error al Actualizar Pedido:", error);
+        // 5. Manejar errores si alguna solicitud falla
+        console.error("Error al Confirmar Compra (Factura):", error);
       }
-    });    
+    });
+
+    
+    // this.pedidosService.putPedido(this.pedido).subscribe({
+    //   next: (response) => {
+    //     console.log("Estado de Pedido Actualizado:");
+    //     console.log(this.pedido);
+        
+    //     this.detalleEnviosService.postDetalleEnvio(this.detalleEnvio).subscribe({
+    //       next: (response) => {
+    //         console.log("Detalle de Envio Realizado:");
+    //         console.log(this.detalleEnvio);
+            
+    //         this.facturasService.postFactura(this.factura).subscribe({
+    //           next: (response) => {
+    //             console.log("Factura Realizada:");
+    //             console.log(this.factura);
+                
+
+    //             // for (let index = 0; index < this.productosCarrito.length; index++) {
+                  
+
+                  
+    //             //   this.facturasService.postFactura(this.factura).subscribe({
+    //             //     next: (response) => {
+    //             //       console.log("Producto Actualizando cantidad:");
+    //             //       console.log(this.factura);
+      
+    //             //       this.router.navigate(['usuarios/contact']);
+    //             //     },
+    //             //     error: (error) => {
+    //             //       console.error("Error al Confirmar Compra (Factura):", error);
+    //             //     }
+    //             //   });
+                  
+    //             // }
+
+    //             this.router.navigate(['usuarios/contact']);
+    //           },
+    //           error: (error) => {
+    //             console.error("Error al Confirmar Compra (Factura):", error);
+    //           }
+    //         });
+    //       },
+    //       error: (error) => {
+    //         console.error("Error al Confirmar Compra (Detalle Envio):", error);
+    //       }
+    //     });
+    //   },
+    //   error: (error) => {
+    //     console.error("Error al Actualizar Pedido:", error);
+    //   }
+    // });    
   }
 }
