@@ -239,7 +239,7 @@
             <!-- Shop Product Start -->
             <div class="col-lg-9 col-md-8">
                 <div class="row pb-3">
-                    <div class="col-12 pb-1">
+                    <!-- <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div>
                                 <button class="btn btn-sm btn-light"><i class="fa fa-th-large"></i></button>
@@ -266,7 +266,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Iteración sobre los productos con Paginacion -->
                     <!-- <div class="row" *ngIf="paginatedProducts.length > 0; else sin_productos">
@@ -297,7 +297,7 @@
                                 <!-- normalizeImageUrl(product.imagen) -->
 
                                 <!--  La Imagen tiene una altura máxima de 300 píxeles, manteniendo sus proporciones y rellenando el contenedor, recortando si es necesario -->
-                                <img class="img-fluid w-100" [src]="normalizeImageUrl(product.imagen)" alt="{{ product.imagen }}" style="max-height: 350px; object-fit: cover;">
+                                <img class="img-fluid w-100" [src]="normalizeImageUrl(product.imagen)" alt="{{ product.imagen }}" style="max-height: 400px; object-fit: cover;">
                                 <!-- <img class="img-fluid w-100" [src]="'http://127.0.0.1:8000' + product.imagen" alt="{{ product.imagen }}"> -->
                             </div>
                             <div class="text-center py-4">

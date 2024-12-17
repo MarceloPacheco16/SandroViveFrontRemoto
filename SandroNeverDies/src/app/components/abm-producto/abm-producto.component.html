@@ -224,7 +224,7 @@
                                 <td style="text-align: center;">{{ producto.cantidad_disponible }}</td>
                                 <td style="text-align: center;">{{ producto.cantidad_limite }}</td>
                                 <td class="align-middle" *ngIf="producto.imagen != null; else sinImagen">
-                                    <img [src]="producto.imagen" alt="{{ producto.imagen }}" class="img-thumbnail" style="width: 700px; height: auto;">
+                                    <img [src]="producto.imagen" alt="{{ producto.imagen }}" class="img-thumbnail" style="width: 200px; height: auto;">
                                 </td>
                                 <ng-template #sinImagen>
                                     <td class="align-middle"> (Sin Imagen)</td>
